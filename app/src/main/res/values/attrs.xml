@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="shape">
+        <enum name="rect" value="0"/>
+        <enum name="round_rect" value="1"/>
+        <enum name="left_circle_rect" value="2"/>
+        <enum name="right_circle_rect" value="3"/>
+        <enum name="both_circle_rect" value="4"/>
+        <enum name="round_side_rect" value="5"/>
+        <enum name="circle" value="6"/>
+    </attr>
+    <attr name="fill_mode">
+        <enum name="solid" value="0"/>
+        <enum name="bitmap" value="1"/>
+    </attr>
+    <attr name="stroke_mode">
+        <enum name="none" value="0"/>
+        <enum name="solid" value="1"/>
+        <enum name="dash" value="2"/>
+    </attr>
+
+    <declare-styleable name="common_background_drawable">
+        <attr name="shape"/>
+        <attr name="fill_mode"/>
+        <attr name="stroke_mode"/>
+        <attr name="radius" format="dimension"/>
+        <attr name="stroke_width" format="dimension"/>
+        <attr name="stroke_dash_space" format="dimension"/>
+        <attr name="color_disabled" format="color"/>
+        <attr name="color_normal" format="color"/>
+        <attr name="color_pressed" format="color"/>
+        <attr name="color_stroke" format="color"/>
+        <attr name="fill_bitmap" format="reference"/>
+    </declare-styleable>
+</resources>

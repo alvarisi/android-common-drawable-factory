@@ -5,32 +5,58 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.ytb.myapp.widget.CommonBackgroundButton
-        android:id="@+id/btn0"
+    <Button
+        android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center"
-        android:text="btn0"
-        myapp:color_normal="@color/lighter_blue"
-        myapp:color_pressed="@color/darker_blue"
-        myapp:fill_mode="solid"
-        myapp:radius="5dp"
-        myapp:shape="round_rect"
-        myapp:stroke_mode="none"
-        />
+        android:text="btn"/>
 
     <com.ytb.myapp.widget.CommonBackgroundButton
         android:id="@+id/btn1"
-        android:layout_width="50dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="btn1"
+        myapp:color_disabled="@android:color/darker_gray"
         myapp:color_normal="@color/lighter_blue"
         myapp:color_pressed="@color/darker_blue"
+        myapp:color_stroke="@android:color/darker_gray"
         myapp:fill_mode="solid"
-        myapp:radius="20dp"
+        myapp:radius="10dp"
+        myapp:shape="round_rect"
+        myapp:stroke_mode="solid"
+        myapp:stroke_width="5dp"/>
+
+    <com.ytb.myapp.widget.CommonBackgroundButton
+        android:id="@+id/btn2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="btn2"
+        myapp:color_disabled="@android:color/darker_gray"
+        myapp:color_normal="@color/lighter_blue"
+        myapp:color_pressed="@color/darker_blue"
+        myapp:color_stroke="@android:color/darker_gray"
+        myapp:fill_mode="solid"
         myapp:shape="circle"
-        myapp:stroke_mode="none"
-        />
+        myapp:stroke_mode="solid"
+        myapp:stroke_width="1dp"/>
+
+    <com.ytb.myapp.widget.CommonBackgroundButton
+        android:id="@+id/btn3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="btn3"
+        myapp:color_stroke="@android:color/darker_gray"
+        myapp:fill_mode="bitmap"
+        myapp:fill_bitmap="@mipmap/ic_launcher"
+        myapp:shape="circle"
+        myapp:stroke_mode="solid"
+        myapp:stroke_width="1dp"/>
 
 </LinearLayout>

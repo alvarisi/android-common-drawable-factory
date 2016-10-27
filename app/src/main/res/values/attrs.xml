@@ -6,8 +6,7 @@
         <enum name="left_circle_rect" value="2"/>
         <enum name="right_circle_rect" value="3"/>
         <enum name="both_circle_rect" value="4"/>
-        <enum name="round_side_rect" value="5"/>
-        <enum name="circle" value="6"/>
+        <enum name="circle" value="5"/>
     </attr>
     <attr name="fill_mode">
         <enum name="solid" value="0"/>

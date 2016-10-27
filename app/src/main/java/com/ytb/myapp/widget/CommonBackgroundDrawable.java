@@ -1,9 +1,9 @@
 package com.ytb.myapp.widget;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -11,8 +11,8 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
+
+import com.ytb.myapp.util.LogUtils;
 
 /**
  * Created by Administrator on 2016-10-25.
@@ -33,25 +33,23 @@ public class CommonBackgroundDrawable extends Drawable {
     public static final int STROKE_MODE_SOLID = 1;
     public static final int STROKE_MODE_DASH = 2;
 
-    private Canvas mCanvasFill;
-    private Paint mPaintFill;
-    private Paint mPaintStroke;
+    private Paint mPaint;
     private Bitmap mBitmap;
     private BitmapShader mShader;
-//    private DisplayMetrics mDisplayMetrics;
     private int mShape;
     private int mFillMode;
     private int mStrokeMode;
     private RectF mBounds;
-    private int mColorFill;
-    private int mColorStroke;
-    private int mStrokeWidth;       // px
-    private int mStrokeDashSpace;   // px
-    private int mRadius;            // px
-    private int[] mPaddings;        // px
+    private int mColorFill = Color.WHITE;
+    private int mColorStroke = Color.WHITE;
+    private float mStrokeWidth;       // px
+    private float mStrokeDashSpace;   // px
+    private float mRadius;            // px
+    private float mCx, mCy;
 
     public CommonBackgroundDrawable() {
-        mCanvasFill = new Canvas();
+        mPaint = new Paint();
+        mPaint.setAntiAlias(true);
     }
 
     public CommonBackgroundDrawable shape(int shape) {
@@ -95,19 +93,19 @@ public class CommonBackgroundDrawable extends Drawable {
 //        return this;
 //    }
 
-    public CommonBackgroundDrawable padding(int unit, int padding) {
-        return padding(unit, padding, padding, padding, padding);
-    }
-
-    public CommonBackgroundDrawable padding(int unit, int paddingLeft, int paddingTop, int
-            paddingRight, int paddingBottom) {
-        mPaddings = new int[4];
-//        mPaddings[0] = (int) TypedValue.applyDimension(unit, paddingLeft, mDisplayMetrics);
-//        mPaddings[1] = (int) TypedValue.applyDimension(unit, paddingTop, mDisplayMetrics);
-//        mPaddings[2] = (int) TypedValue.applyDimension(unit, paddingRight, mDisplayMetrics);
-//        mPaddings[3] = (int) TypedValue.applyDimension(unit, paddingBottom, mDisplayMetrics);
-        return this;
-    }
+//    public CommonBackgroundDrawable padding(int unit, int padding) {
+//        return padding(unit, padding, padding, padding, padding);
+//    }
+//
+//    public CommonBackgroundDrawable padding(int unit, int paddingLeft, int paddingTop, int
+//            paddingRight, int paddingBottom) {
+//        mPaddings = new int[4];
+////        mPaddings[0] = (int) TypedValue.applyDimension(unit, paddingLeft, mDisplayMetrics);
+////        mPaddings[1] = (int) TypedValue.applyDimension(unit, paddingTop, mDisplayMetrics);
+////        mPaddings[2] = (int) TypedValue.applyDimension(unit, paddingRight, mDisplayMetrics);
+////        mPaddings[3] = (int) TypedValue.applyDimension(unit, paddingBottom, mDisplayMetrics);
+//        return this;
+//    }
 
     public CommonBackgroundDrawable colorFill(int colorFill) {
         mColorFill = colorFill;
@@ -124,92 +122,78 @@ public class CommonBackgroundDrawable extends Drawable {
     }
 
     public CommonBackgroundDrawable bitmap(Bitmap bitmap) {
-        mBitmap = bitmap;
-        mPaintFill.setShader(new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode
-                .CLAMP));
+        if (bitmap != null) {
+            mBitmap = bitmap;
+            mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode
+                    .CLAMP);
+        }
         return this;
     }
 
     @Override
-    public void draw(Canvas canvasStroke) {
-        drawFill(mCanvasFill);
-        drawStroke(canvasStroke);
+    public void draw(Canvas canvas) {
+        drawFill(canvas);
+        drawShape(canvas);
+        drawStroke(canvas);
     }
 
-    private void drawFill(Canvas canvasFill) {
-        if (mPaintFill == null) {
-            mPaintFill = new Paint();
-            mPaintFill.setAntiAlias(true);
+    private void drawFill(Canvas canvas) {
+        switch (mFillMode) {
+            case FILL_MODE_BITMAP:
+                LogUtils.e("drawable-set shader");
+                mPaint.setShader(mShader);
+                break;
+            case FILL_MODE_SOLID:
+            default:
+                mPaint.setStyle(Paint.Style.FILL);
+                mPaint.setColor(mColorFill);
+                break;
         }
-        if (mShader == null && mBitmap != null) {
-            mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        }
+    }
 
-        initPaintFill();
-
+    private void drawShape(Canvas canvas) {
         switch (mShape) {
             case SHAPE_ROUND_RECT:
-                drawFillRoundRect(canvasFill);
+                canvas.drawRoundRect(mBounds, mRadius, mRadius, mPaint);
                 break;
             case SHAPE_LEFT_CIRCLE_RECT:
                 break;
             case SHAPE_RIGHT_CIRCLE_RECT:
                 break;
             case SHAPE_BOTH_CIRCLE_RECT:
-                drawFillBothCircle(canvasFill);
+                mRadius = (mBounds.top + mBounds.bottom) / 2.0f;
+                canvas.drawRoundRect(mBounds, mRadius, mRadius, mPaint);
                 break;
             case SHAPE_CIRCLE:
-                drawFillCircle(canvasFill);
+                mCx = (mBounds.left + mBounds.right) / 2.0f;
+                mCy = (mBounds.top + mBounds.bottom) / 2.0f;
+                mRadius = Math.min(mCx, mCy);
+                canvas.drawCircle(mCx, mCy, mRadius, mPaint);
                 break;
             case SHAPE_RECT:
             default:
+                canvas.drawRect(mBounds, mPaint);
                 break;
         }
     }
 
-    private void drawFillRoundRect(Canvas canvasFill) {
-        canvasFill.drawRoundRect(mBounds, mRadius, mRadius, mPaintFill);
-    }
-
-    private void drawFillBothCircle(Canvas canvasFill) {
-        float radius = (mBounds.top + mBounds.bottom) / 2.0f;
-        canvasFill.drawRoundRect(mBounds, radius, radius, mPaintFill);
-    }
-
-    private void drawFillCircle(Canvas canvasFill) {
-        float cx = (mBounds.left + mBounds.right) / 2.0f;
-        float cy = (mBounds.top + mBounds.bottom) / 2.0f;
-        canvasFill.drawCircle(cx, cy, mRadius, mPaintFill);
-    }
-
-    private void drawStroke(Canvas canvasStroke) {
-        if (mPaintStroke == null) {
-            mPaintStroke = new Paint();
-            mPaintStroke.setAntiAlias(true);
-            mPaintStroke.setStyle(Paint.Style.STROKE);
-            mPaintStroke.setColor(mColorStroke);
-        }
+    private void drawStroke(Canvas canvas) {
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setColor(mColorStroke);
+        mPaint.setStrokeWidth(mStrokeWidth);
 
         switch (mStrokeMode) {
             case STROKE_MODE_SOLID:
+                if (mShape == SHAPE_ROUND_RECT) {
+                    canvas.drawRoundRect(mBounds, mRadius, mRadius, mPaint);
+                } else if (mShape == SHAPE_CIRCLE) {
+                    canvas.drawCircle(mCx, mCy, mRadius, mPaint);
+                }
                 break;
             case STROKE_MODE_DASH:
                 break;
             case STROKE_MODE_NONE:
             default:
-                break;
-        }
-    }
-
-    private void initPaintFill() {
-        switch (mFillMode) {
-            case FILL_MODE_BITMAP:
-                mPaintFill.setShader(mShader);
-                break;
-            case FILL_MODE_SOLID:
-            default:
-                mPaintFill.setStyle(Paint.Style.FILL);
-                mPaintFill.setColor(mColorFill);
                 break;
         }
     }
@@ -227,17 +211,33 @@ public class CommonBackgroundDrawable extends Drawable {
     }
 
     @Override
+    public int getIntrinsicWidth() {
+        if (mBitmap != null) {
+            return mBitmap.getWidth();
+        }
+        return super.getIntrinsicWidth();
+    }
+
+    @Override
+    public int getIntrinsicHeight() {
+        if (mBitmap != null) {
+            return mBitmap.getHeight();
+        }
+        return super.getIntrinsicHeight();
+    }
+
+    @Override
     public void setAlpha(int alpha) {
-        mPaintFill.setAlpha(alpha);
+        mPaint.setAlpha(alpha);
     }
 
     @Override
     public void setColorFilter(ColorFilter colorFilter) {
-        mPaintFill.setColorFilter(colorFilter);
+        mPaint.setColorFilter(colorFilter);
     }
 
     @Override
     public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
+        return PixelFormat.OPAQUE;
     }
 }

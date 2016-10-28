@@ -3,60 +3,124 @@
               xmlns:myapp="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:gravity="center_horizontal"
               android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="btn"/>
+        android:layout_height="wrap_content"
+        android:text="6种形状：矩形、圆角矩形、3种圆头矩形、圆形\n3种描边：无描边、实线描边、虚线描边\n3种状态：disabled、normal、pressed\n2种填充：纯色、图片"
+        android:textSize="18sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.ytb.myapp.widget.CommonBackgroundButton
+            android:id="@+id/btn1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="btn1"
+            myapp:color_disabled="@android:color/darker_gray"
+            myapp:color_normal="@color/lighter_blue"
+            myapp:color_pressed="@color/darker_blue"
+            myapp:fill_mode="solid"
+            myapp:shape="rect"
+            myapp:stroke_mode="none"/>
+
+        <com.ytb.myapp.widget.CommonBackgroundButton
+            android:id="@+id/btn2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="btn2"
+            myapp:color_disabled="@android:color/darker_gray"
+            myapp:color_normal="@color/lighter_blue"
+            myapp:color_pressed="@color/darker_blue"
+            myapp:color_stroke="@android:color/darker_gray"
+            myapp:fill_mode="solid"
+            myapp:radius="10dp"
+            myapp:shape="round_rect"
+            myapp:stroke_mode="none"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.ytb.myapp.widget.CommonBackgroundButton
+            android:id="@+id/btn3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="btn3"
+            myapp:color_disabled="@android:color/darker_gray"
+            myapp:color_normal="@android:color/transparent"
+            myapp:color_pressed="@color/lighter_blue"
+            myapp:color_stroke="@color/lighter_blue"
+            myapp:fill_mode="solid"
+            myapp:shape="rect"
+            myapp:stroke_mode="solid"
+            myapp:stroke_width="5dp"/>
+
+        <com.ytb.myapp.widget.CommonBackgroundButton
+            android:id="@+id/btn4"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="btn4"
+            myapp:color_disabled="@android:color/darker_gray"
+            myapp:color_normal="@color/lighter_blue"
+            myapp:color_pressed="@color/darker_blue"
+            myapp:color_stroke="@android:color/darker_gray"
+            myapp:fill_mode="solid"
+            myapp:radius="10dp"
+            myapp:shape="round_rect"
+            myapp:stroke_mode="solid"
+            myapp:stroke_width="5dp"/>
+    </LinearLayout>
 
     <com.ytb.myapp.widget.CommonBackgroundButton
-        android:id="@+id/btn1"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:id="@+id/btn5"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="btn1"
+        android:text="btn5"
         myapp:color_disabled="@android:color/darker_gray"
         myapp:color_normal="@color/lighter_blue"
         myapp:color_pressed="@color/darker_blue"
         myapp:color_stroke="@android:color/darker_gray"
         myapp:fill_mode="solid"
-        myapp:radius="10dp"
-        myapp:shape="round_rect"
+        myapp:shape="circle"
         myapp:stroke_mode="solid"
         myapp:stroke_width="5dp"/>
 
     <com.ytb.myapp.widget.CommonBackgroundButton
-        android:id="@+id/btn2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:id="@+id/btn6"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="btn2"
-        myapp:color_disabled="@android:color/darker_gray"
-        myapp:color_normal="@color/lighter_blue"
-        myapp:color_pressed="@color/darker_blue"
-        myapp:color_stroke="@android:color/darker_gray"
-        myapp:fill_mode="solid"
-        myapp:shape="circle"
-        myapp:stroke_mode="solid"
-        myapp:stroke_width="1dp"/>
-
-    <com.ytb.myapp.widget.CommonBackgroundButton
-        android:id="@+id/btn3"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
-        android:gravity="center"
-        android:text="btn3"
-        myapp:color_stroke="@android:color/darker_gray"
+        android:text="btn6"
+        android:textColor="@android:color/white"
+        myapp:bitmap="@mipmap/icon"
+        myapp:color_stroke="@color/darker_blue"
         myapp:fill_mode="bitmap"
-        myapp:fill_bitmap="@mipmap/ic_launcher"
         myapp:shape="circle"
         myapp:stroke_mode="solid"
-        myapp:stroke_width="1dp"/>
+        myapp:stroke_width="5dp"/>
 
 </LinearLayout>

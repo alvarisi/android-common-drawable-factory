@@ -132,29 +132,38 @@ public class CommonBackgroundDrawable extends Drawable {
 
     @Override
     public void draw(Canvas canvas) {
-        drawFill(canvas);
-        drawShape(canvas);
         drawStroke(canvas);
+        drawFill(canvas);
     }
 
-    private void drawFill(Canvas canvas) {
-        switch (mFillMode) {
-            case FILL_MODE_BITMAP:
-                LogUtils.e("drawable-set shader");
-                mPaint.setShader(mShader);
+    private void drawStroke(Canvas canvas) {
+//        mPaint.setStrokeJoin(Paint.Join.ROUND);
+//        mPaint.setStrokeCap(Paint.Cap.ROUND);
+//        mPaint.setStrokeMiter(5.0f);
+
+        switch (mStrokeMode) {
+            case STROKE_MODE_SOLID:
+                mPaint.setStyle(Paint.Style.STROKE);
+                mPaint.setColor(mColorStroke);
+                mPaint.setStrokeWidth(mStrokeWidth);
+                drawStrokeShape(canvas);
                 break;
-            case FILL_MODE_SOLID:
+            case STROKE_MODE_DASH:
+                break;
+            case STROKE_MODE_NONE:
             default:
-                mPaint.setStyle(Paint.Style.FILL);
-                mPaint.setColor(mColorFill);
                 break;
         }
     }
 
-    private void drawShape(Canvas canvas) {
+    private void drawStrokeShape(Canvas canvas) {
+        final float narrowBy = mStrokeWidth / 2.0f;
+        float strokeRadius;
+
         switch (mShape) {
             case SHAPE_ROUND_RECT:
-                canvas.drawRoundRect(mBounds, mRadius, mRadius, mPaint);
+                strokeRadius = mRadius - mStrokeWidth / 2.0f;
+                canvas.drawRoundRect(narrow(mBounds, narrowBy), strokeRadius, strokeRadius, mPaint);
                 break;
             case SHAPE_LEFT_CIRCLE_RECT:
                 break;
@@ -162,38 +171,67 @@ public class CommonBackgroundDrawable extends Drawable {
                 break;
             case SHAPE_BOTH_CIRCLE_RECT:
                 mRadius = (mBounds.top + mBounds.bottom) / 2.0f;
-                canvas.drawRoundRect(mBounds, mRadius, mRadius, mPaint);
+                strokeRadius = mRadius - mStrokeWidth / 2.0f;
+                canvas.drawRoundRect(mBounds, strokeRadius, strokeRadius, mPaint);
                 break;
             case SHAPE_CIRCLE:
                 mCx = (mBounds.left + mBounds.right) / 2.0f;
                 mCy = (mBounds.top + mBounds.bottom) / 2.0f;
                 mRadius = Math.min(mCx, mCy);
-                canvas.drawCircle(mCx, mCy, mRadius, mPaint);
+                strokeRadius = mRadius - mStrokeWidth / 2.0f;
+                canvas.drawCircle(mCx, mCy, strokeRadius, mPaint);
                 break;
             case SHAPE_RECT:
             default:
-                canvas.drawRect(mBounds, mPaint);
+                canvas.drawRect(narrow(mBounds, narrowBy), mPaint);
                 break;
         }
     }
 
-    private void drawStroke(Canvas canvas) {
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setColor(mColorStroke);
-        mPaint.setStrokeWidth(mStrokeWidth);
+    private void drawFill(Canvas canvas) {
+        mPaint.setStyle(Paint.Style.FILL);
 
-        switch (mStrokeMode) {
-            case STROKE_MODE_SOLID:
-                if (mShape == SHAPE_ROUND_RECT) {
-                    canvas.drawRoundRect(mBounds, mRadius, mRadius, mPaint);
-                } else if (mShape == SHAPE_CIRCLE) {
-                    canvas.drawCircle(mCx, mCy, mRadius, mPaint);
-                }
+        switch (mFillMode) {
+            case FILL_MODE_BITMAP:
+                mPaint.setShader(mShader);
+                drawFillShape(canvas);
                 break;
-            case STROKE_MODE_DASH:
-                break;
-            case STROKE_MODE_NONE:
+            case FILL_MODE_SOLID:
             default:
+                mPaint.setColor(mColorFill);
+                drawFillShape(canvas);
+                break;
+        }
+    }
+
+    private void drawFillShape(Canvas canvas) {
+        final float narrowBy = mStrokeWidth - 0.5f;
+        float fillRadius;
+
+        switch (mShape) {
+            case SHAPE_ROUND_RECT:
+                fillRadius = mRadius - mStrokeWidth + 0.5f;
+                canvas.drawRoundRect(narrow(mBounds, narrowBy), fillRadius, fillRadius, mPaint);
+                break;
+            case SHAPE_LEFT_CIRCLE_RECT:
+                break;
+            case SHAPE_RIGHT_CIRCLE_RECT:
+                break;
+            case SHAPE_BOTH_CIRCLE_RECT:
+                mRadius = (mBounds.top + mBounds.bottom) / 2.0f;
+                fillRadius = mRadius - mStrokeWidth + 0.5f;
+                canvas.drawRoundRect(mBounds, fillRadius, fillRadius, mPaint);
+                break;
+            case SHAPE_CIRCLE:
+                mCx = (mBounds.left + mBounds.right) / 2.0f;
+                mCy = (mBounds.top + mBounds.bottom) / 2.0f;
+                mRadius = Math.min(mCx, mCy);
+                fillRadius = mRadius - mStrokeWidth + 0.5f;
+                canvas.drawCircle(mCx, mCy, fillRadius, mPaint);
+                break;
+            case SHAPE_RECT:
+            default:
+                canvas.drawRect(narrow(mBounds, narrowBy), mPaint);
                 break;
         }
     }
@@ -239,5 +277,9 @@ public class CommonBackgroundDrawable extends Drawable {
     @Override
     public int getOpacity() {
         return PixelFormat.OPAQUE;
+    }
+
+    private RectF narrow(RectF src, float by) {
+        return new RectF(src.left + by, src.top + by, src.right - by, src.bottom - by);
     }
 }

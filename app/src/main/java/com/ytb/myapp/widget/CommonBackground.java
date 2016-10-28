@@ -7,19 +7,18 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 
-import com.ytb.myapp.util.LogUtils;
-
 /**
  * Created by Administrator on 2016-10-25.
  */
 
-public class CommonBackgroundDrawable extends Drawable {
+public class CommonBackground extends Drawable {
     public static final int SHAPE_RECT = 0;
     public static final int SHAPE_ROUND_RECT = 1;
     public static final int SHAPE_LEFT_CIRCLE_RECT = 2;
@@ -34,46 +33,48 @@ public class CommonBackgroundDrawable extends Drawable {
     public static final int STROKE_MODE_SOLID = 1;
     public static final int STROKE_MODE_DASH = 2;
 
-    private Paint mPaint;
+    // user data
     private Bitmap mBitmap;
-    private BitmapShader mShader;
     private int mShape;
     private int mFillMode;
     private int mStrokeMode;
-    private RectF mBounds;
     private int mColorFill = Color.WHITE;
-    private int mColorStroke = Color.WHITE;
+    private int mColorStroke = Color.TRANSPARENT;
     private float mStrokeWidth;       // px
     private float[] mStrokeDash;      // px
     private float mRadius;            // px
+
+    // inner data
+    private Paint mPaint;
+    private RectF mBounds;
     private float mCx, mCy;
 
-    public CommonBackgroundDrawable() {
+    CommonBackground() {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
     }
 
-    public CommonBackgroundDrawable shape(int shape) {
+    public CommonBackground shape(int shape) {
         mShape = shape;
         return this;
     }
 
-    public CommonBackgroundDrawable fillMode(int fillMode) {
+    public CommonBackground fillMode(int fillMode) {
         mFillMode = fillMode;
         return this;
     }
 
-    public CommonBackgroundDrawable strokeMode(int strokeMode) {
+    public CommonBackground strokeMode(int strokeMode) {
         mStrokeMode = strokeMode;
         return this;
     }
 
-    public CommonBackgroundDrawable strokeWidth(int strokeWidth) {
+    public CommonBackground strokeWidth(int strokeWidth) {
         mStrokeWidth = strokeWidth;
         return this;
     }
 
-    public CommonBackgroundDrawable strokeDashSolid(int strokeDashSolid) {
+    public CommonBackground strokeDashSolid(int strokeDashSolid) {
         if (mStrokeDash == null) {
             mStrokeDash = new float[2];
         }
@@ -81,7 +82,7 @@ public class CommonBackgroundDrawable extends Drawable {
         return this;
     }
 
-    public CommonBackgroundDrawable strokeDashSpace(int strokeDashSpace) {
+    public CommonBackground strokeDashSpace(int strokeDashSpace) {
         if (mStrokeDash == null) {
             mStrokeDash = new float[2];
         }
@@ -89,42 +90,18 @@ public class CommonBackgroundDrawable extends Drawable {
         return this;
     }
 
-    public CommonBackgroundDrawable radius(int radius) {
+    public CommonBackground radius(int radius) {
 //        return radius(unit, radius, radius, radius, radius);
         mRadius = radius;
         return this;
     }
-//
-//    public CommonBackgroundDrawable radius(int unit, int radiusLeftTop, int radiusRightTop, int
-//            radiusRightBottom, int radiusLeftBottom) {
-//        mRadius = new int[4];
-//        mRadius[0] = (int) TypedValue.applyDimension(unit, radiusLeftTop, mDisplayMetrics);
-//        mRadius[1] = (int) TypedValue.applyDimension(unit, radiusRightTop, mDisplayMetrics);
-//        mRadius[2] = (int) TypedValue.applyDimension(unit, radiusRightBottom, mDisplayMetrics);
-//        mRadius[3] = (int) TypedValue.applyDimension(unit, radiusLeftBottom, mDisplayMetrics);
-//        return this;
-//    }
 
-//    public CommonBackgroundDrawable padding(int unit, int padding) {
-//        return padding(unit, padding, padding, padding, padding);
-//    }
-//
-//    public CommonBackgroundDrawable padding(int unit, int paddingLeft, int paddingTop, int
-//            paddingRight, int paddingBottom) {
-//        mPaddings = new int[4];
-////        mPaddings[0] = (int) TypedValue.applyDimension(unit, paddingLeft, mDisplayMetrics);
-////        mPaddings[1] = (int) TypedValue.applyDimension(unit, paddingTop, mDisplayMetrics);
-////        mPaddings[2] = (int) TypedValue.applyDimension(unit, paddingRight, mDisplayMetrics);
-////        mPaddings[3] = (int) TypedValue.applyDimension(unit, paddingBottom, mDisplayMetrics);
-//        return this;
-//    }
-
-    public CommonBackgroundDrawable colorFill(int colorFill) {
+    public CommonBackground colorFill(int colorFill) {
         mColorFill = colorFill;
         return this;
     }
 
-    public CommonBackgroundDrawable colorStroke(int colorStroke) {
+    public CommonBackground colorStroke(int colorStroke) {
         mColorStroke = colorStroke;
         return this;
     }
@@ -133,11 +110,9 @@ public class CommonBackgroundDrawable extends Drawable {
         return mBitmap;
     }
 
-    public CommonBackgroundDrawable bitmap(Bitmap bitmap) {
+    public CommonBackground bitmap(Bitmap bitmap) {
         if (bitmap != null) {
             mBitmap = bitmap;
-            mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode
-                    .CLAMP);
         }
         return this;
     }
@@ -149,37 +124,26 @@ public class CommonBackgroundDrawable extends Drawable {
     }
 
     private void drawStroke(Canvas canvas) {
-//        mPaint.setStrokeJoin(Paint.Join.ROUND);
-//        mPaint.setStrokeCap(Paint.Cap.ROUND);
-//        mPaint.setStrokeMiter(5.0f);
-
-        switch (mStrokeMode) {
-            case STROKE_MODE_SOLID:
-                mPaint.setStyle(Paint.Style.STROKE);
-                mPaint.setColor(mColorStroke);
-                mPaint.setStrokeWidth(mStrokeWidth);
-                drawStrokeShape(canvas);
-                break;
-            case STROKE_MODE_DASH:
-                mPaint.setStyle(Paint.Style.STROKE);
-                mPaint.setColor(mColorStroke);
-                mPaint.setStrokeWidth(mStrokeWidth);
-                mPaint.setPathEffect(new DashPathEffect(mStrokeDash, 1.0f));
-                drawStrokeShape(canvas);
-                break;
-            case STROKE_MODE_NONE:
-            default:
-                break;
+        if (mStrokeMode == STROKE_MODE_NONE) {
+            return;
         }
+
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setColor(mColorStroke);
+        mPaint.setStrokeWidth(mStrokeWidth);
+        if (mStrokeMode == STROKE_MODE_DASH) {
+            mPaint.setPathEffect(new DashPathEffect(mStrokeDash, 1.0f));
+        }
+        drawStrokeShape(canvas);
     }
 
     private void drawStrokeShape(Canvas canvas) {
-        final float narrowBy = mStrokeWidth / 2.0f;
-        float strokeRadius;
+        final float narrowBy = mStrokeWidth / 2.0f; // 绘图半径需缩小mStrokeWidth/2
+        final float strokeRadius;
 
         switch (mShape) {
             case SHAPE_ROUND_RECT:
-                strokeRadius = mRadius - mStrokeWidth / 2.0f;
+                strokeRadius = mRadius - narrowBy;
                 canvas.drawRoundRect(narrow(mBounds, narrowBy), strokeRadius, strokeRadius, mPaint);
                 break;
             case SHAPE_LEFT_CIRCLE_RECT:
@@ -187,15 +151,15 @@ public class CommonBackgroundDrawable extends Drawable {
             case SHAPE_RIGHT_CIRCLE_RECT:
                 break;
             case SHAPE_BOTH_CIRCLE_RECT:
-                mRadius = (mBounds.top + mBounds.bottom) / 2.0f;
-                strokeRadius = mRadius - mStrokeWidth / 2.0f;
+                mRadius = (mBounds.top + mBounds.bottom) / 2.0f; // 自动计算半径
+                strokeRadius = mRadius - narrowBy;
                 canvas.drawRoundRect(mBounds, strokeRadius, strokeRadius, mPaint);
                 break;
             case SHAPE_CIRCLE:
                 mCx = (mBounds.left + mBounds.right) / 2.0f;
                 mCy = (mBounds.top + mBounds.bottom) / 2.0f;
                 mRadius = Math.min(mCx, mCy);
-                strokeRadius = mRadius - mStrokeWidth / 2.0f;
+                strokeRadius = mRadius - narrowBy;
                 canvas.drawCircle(mCx, mCy, strokeRadius, mPaint);
                 break;
             case SHAPE_RECT:
@@ -210,7 +174,10 @@ public class CommonBackgroundDrawable extends Drawable {
 
         switch (mFillMode) {
             case FILL_MODE_BITMAP:
-                mPaint.setShader(mShader);
+                if (mPaint.getShader() == null && mBitmap != null) {
+                    mPaint.setShader(new BitmapShader(mBitmap, Shader.TileMode.CLAMP,
+                            Shader.TileMode.CLAMP));
+                }
                 drawFillShape(canvas);
                 break;
             case FILL_MODE_SOLID:
@@ -227,7 +194,7 @@ public class CommonBackgroundDrawable extends Drawable {
 
         switch (mShape) {
             case SHAPE_ROUND_RECT:
-                fillRadius = mRadius - mStrokeWidth + 0.5f;
+                fillRadius = mRadius - narrowBy;
                 canvas.drawRoundRect(narrow(mBounds, narrowBy), fillRadius, fillRadius, mPaint);
                 break;
             case SHAPE_LEFT_CIRCLE_RECT:
@@ -236,14 +203,14 @@ public class CommonBackgroundDrawable extends Drawable {
                 break;
             case SHAPE_BOTH_CIRCLE_RECT:
                 mRadius = (mBounds.top + mBounds.bottom) / 2.0f;
-                fillRadius = mRadius - mStrokeWidth + 0.5f;
+                fillRadius = mRadius - narrowBy;
                 canvas.drawRoundRect(mBounds, fillRadius, fillRadius, mPaint);
                 break;
             case SHAPE_CIRCLE:
                 mCx = (mBounds.left + mBounds.right) / 2.0f;
                 mCy = (mBounds.top + mBounds.bottom) / 2.0f;
                 mRadius = Math.min(mCx, mCy);
-                fillRadius = mRadius - mStrokeWidth + 0.5f;
+                fillRadius = mRadius - narrowBy;
                 canvas.drawCircle(mCx, mCy, fillRadius, mPaint);
                 break;
             case SHAPE_RECT:

@@ -29,6 +29,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         CommonBackgroundButton btn3 = (CommonBackgroundButton) findViewById(R.id.btn3);
 //        btn3.refreshBackground();
         btn3.setOnClickListener(this);
+
+
     }
 
     @Override

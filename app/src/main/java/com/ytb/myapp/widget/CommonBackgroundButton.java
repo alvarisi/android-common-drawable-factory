@@ -23,6 +23,7 @@ public class CommonBackgroundButton extends Button {
     private int strokeMode;
     private int radius;
     private int strokeWidth;
+    private int strokeDashSolid;
     private int strokeDashSpace;
     private int colorDisabled;
     private int colorNormal;
@@ -58,6 +59,8 @@ public class CommonBackgroundButton extends Button {
                     0);
             strokeWidth = a.getDimensionPixelSize(
                     R.styleable.common_background_drawable_stroke_width, 0);
+            strokeDashSolid = a.getDimensionPixelSize(
+                    R.styleable.common_background_drawable_stroke_dash_solid, 0);
             strokeDashSpace = a.getDimensionPixelSize(
                     R.styleable.common_background_drawable_stroke_dash_space, 0);
             colorDisabled = a.getColor(R.styleable.common_background_drawable_color_disabled,
@@ -93,9 +96,10 @@ public class CommonBackgroundButton extends Button {
                 drawables[i].shape(shape)
                         .fillMode(fillMode)
                         .strokeMode(strokeMode)
-                        .radius(radius)
                         .strokeWidth(strokeWidth)
+                        .strokeDashSolid(strokeDashSolid)
                         .strokeDashSpace(strokeDashSpace)
+                        .radius(radius)
                         .colorStroke(colorStroke);
 
                 if (i == 0) {
@@ -131,7 +135,10 @@ public class CommonBackgroundButton extends Button {
                     .fillMode(fillMode)
                     .strokeMode(strokeMode)
                     .strokeWidth(strokeWidth)
+                    .strokeDashSolid(strokeDashSolid)
+                    .strokeDashSpace(strokeDashSpace)
                     .colorStroke(colorStroke)
+                    .radius(radius)
                     .bitmap(bitmap);
 
             setBackground(drawable);

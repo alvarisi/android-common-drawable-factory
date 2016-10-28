@@ -5,6 +5,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
@@ -43,7 +44,7 @@ public class CommonBackgroundDrawable extends Drawable {
     private int mColorFill = Color.WHITE;
     private int mColorStroke = Color.WHITE;
     private float mStrokeWidth;       // px
-    private float mStrokeDashSpace;   // px
+    private float[] mStrokeDash;      // px
     private float mRadius;            // px
     private float mCx, mCy;
 
@@ -72,8 +73,19 @@ public class CommonBackgroundDrawable extends Drawable {
         return this;
     }
 
+    public CommonBackgroundDrawable strokeDashSolid(int strokeDashSolid) {
+        if (mStrokeDash == null) {
+            mStrokeDash = new float[2];
+        }
+        mStrokeDash[0] = strokeDashSolid;
+        return this;
+    }
+
     public CommonBackgroundDrawable strokeDashSpace(int strokeDashSpace) {
-        mStrokeDashSpace = strokeDashSpace;
+        if (mStrokeDash == null) {
+            mStrokeDash = new float[2];
+        }
+        mStrokeDash[1] = strokeDashSpace;
         return this;
     }
 
@@ -149,6 +161,11 @@ public class CommonBackgroundDrawable extends Drawable {
                 drawStrokeShape(canvas);
                 break;
             case STROKE_MODE_DASH:
+                mPaint.setStyle(Paint.Style.STROKE);
+                mPaint.setColor(mColorStroke);
+                mPaint.setStrokeWidth(mStrokeWidth);
+                mPaint.setPathEffect(new DashPathEffect(mStrokeDash, 1.0f));
+                drawStrokeShape(canvas);
                 break;
             case STROKE_MODE_NONE:
             default:

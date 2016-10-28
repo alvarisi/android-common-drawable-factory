@@ -20,6 +20,7 @@
         </attr>
         <attr name="radius" format="dimension"/>
         <attr name="stroke_width" format="dimension"/>
+        <attr name="stroke_dash_solid" format="dimension"/>
         <attr name="stroke_dash_space" format="dimension"/>
         <attr name="color_disabled" format="color"/>
         <attr name="color_normal" format="color"/>

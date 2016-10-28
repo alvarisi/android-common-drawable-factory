@@ -70,8 +70,10 @@
             myapp:color_stroke="@color/lighter_blue"
             myapp:fill_mode="solid"
             myapp:shape="rect"
-            myapp:stroke_mode="solid"
-            myapp:stroke_width="5dp"/>
+            myapp:stroke_mode="dash"
+            myapp:stroke_width="5dp"
+            myapp:stroke_dash_solid="10dp"
+            myapp:stroke_dash_space="10dp"/>
 
         <com.ytb.myapp.widget.CommonBackgroundButton
             android:id="@+id/btn4"

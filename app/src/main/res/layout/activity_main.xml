@@ -30,6 +30,7 @@
             myapp:color_pressed="@color/darker_blue"
             myapp:fill_mode="solid"
             myapp:shape="rect"
+            myapp:stateful="true"
             myapp:stroke_mode="none"/>
 
         <com.ytb.myapp.widget.CommonBackgroundButton
@@ -47,6 +48,7 @@
             myapp:fill_mode="solid"
             myapp:radius="10dp"
             myapp:shape="round_rect"
+            myapp:stateful="true"
             myapp:stroke_mode="none"/>
     </LinearLayout>
 
@@ -70,10 +72,11 @@
             myapp:color_stroke="@color/lighter_blue"
             myapp:fill_mode="solid"
             myapp:shape="rect"
-            myapp:stroke_mode="dash"
-            myapp:stroke_width="5dp"
+            myapp:stateful="true"
             myapp:stroke_dash_solid="10dp"
-            myapp:stroke_dash_space="10dp"/>
+            myapp:stroke_dash_space="10dp"
+            myapp:stroke_mode="dash"
+            myapp:stroke_width="5dp"/>
 
         <com.ytb.myapp.widget.CommonBackgroundButton
             android:id="@+id/btn4"
@@ -90,6 +93,7 @@
             myapp:fill_mode="solid"
             myapp:radius="10dp"
             myapp:shape="round_rect"
+            myapp:stateful="true"
             myapp:stroke_mode="solid"
             myapp:stroke_width="5dp"/>
     </LinearLayout>
@@ -107,6 +111,7 @@
         myapp:color_stroke="@android:color/darker_gray"
         myapp:fill_mode="solid"
         myapp:shape="circle"
+        myapp:stateful="true"
         myapp:stroke_mode="solid"
         myapp:stroke_width="5dp"/>
 
@@ -119,9 +124,13 @@
         android:text="btn6"
         android:textColor="@android:color/white"
         myapp:bitmap="@mipmap/icon"
+        myapp:color_disabled="#88888888"
+        myapp:color_normal="#FFFFFFFF"
+        myapp:color_pressed="#88FFFFFF"
         myapp:color_stroke="@color/darker_blue"
-        myapp:fill_mode="bitmap"
+        myapp:fill_mode="solid|bitmap"
         myapp:shape="circle"
+        myapp:stateful="true"
         myapp:stroke_mode="solid"
         myapp:stroke_width="5dp"/>
 

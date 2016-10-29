@@ -10,6 +10,7 @@ import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 
 import com.ytb.myapp.R;
+import com.ytb.myapp.util.LogUtils;
 
 /**
  * Created by Administrator on 2016-10-28.
@@ -22,6 +23,7 @@ public class CommonBackgroundFactory {
     private static final int STATE_PRESSED = 2;
 
     public static class AttrSet {
+        boolean stateful;
         int shape;
         int fillMode;
         int strokeMode;
@@ -34,6 +36,10 @@ public class CommonBackgroundFactory {
         int colorNormal;
         int colorPressed;
         Bitmap bitmap;
+
+        void recycle() {
+            bitmap = null;
+        }
     }
 
     public static CommonBackground newStateless() {
@@ -47,12 +53,14 @@ public class CommonBackgroundFactory {
     public static Drawable fromXml(Context context, AttributeSet attributeSet) {
         AttrSet attrs = obtainAttrs(context, attributeSet);
         if (attrs != null) {
-            switch (attrs.fillMode) {
-                case CommonBackground.FILL_MODE_BITMAP:
-                    return stateless(attrs);
-                case CommonBackground.FILL_MODE_SOLID:
-                default:
-                    return stateful(attrs);
+            if (attrs.stateful) {
+                StateListDrawable stateList = stateful(attrs);
+                attrs.recycle();
+                return stateList;
+            } else {
+                CommonBackground drawable = stateless(attrs);
+                attrs.recycle();
+                return drawable;
             }
         }
         return null;
@@ -63,6 +71,7 @@ public class CommonBackgroundFactory {
             AttrSet attrs = new AttrSet();
             TypedArray a = context.obtainStyledAttributes(attributeSet, R.styleable
                     .common_background_drawable);
+            attrs.stateful = a.getBoolean(R.styleable.common_background_drawable_stateful, false);
             attrs.shape = a.getInt(R.styleable.common_background_drawable_shape,
                     CommonBackground.SHAPE_RECT); // 默认直角矩形
             attrs.strokeMode = a.getInt(R.styleable.common_background_drawable_stroke_mode,
@@ -105,6 +114,7 @@ public class CommonBackgroundFactory {
                 .strokeDashSpace(attrs.strokeDashSpace)
                 .radius(attrs.radius)
                 .colorStroke(attrs.colorStroke)
+                .colorFill(attrs.colorNormal)
                 .bitmap(attrs.bitmap);
     }
 
@@ -119,7 +129,8 @@ public class CommonBackgroundFactory {
                     .strokeDashSolid(attrs.strokeDashSolid)
                     .strokeDashSpace(attrs.strokeDashSpace)
                     .colorStroke(attrs.colorStroke)
-                    .radius(attrs.radius);
+                    .radius(attrs.radius)
+                    .bitmap(attrs.bitmap);
         }
         drawables[STATE_DISABLED].colorFill(attrs.colorDisabled);
         drawables[STATE_NORMAL].colorFill(attrs.colorNormal);

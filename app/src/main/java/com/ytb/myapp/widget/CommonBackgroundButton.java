@@ -12,20 +12,6 @@ import android.widget.Button;
  */
 
 public class CommonBackgroundButton extends Button {
-    private StateListDrawable mStateList;
-    private int shape;
-    private int fillMode;
-    private int strokeMode;
-    private int radius;
-    private int strokeWidth;
-    private int strokeDashSolid;
-    private int strokeDashSpace;
-    private int colorDisabled;
-    private int colorNormal;
-    private int colorPressed;
-    private int colorStroke;
-    private Bitmap bitmap;
-
 
     public CommonBackgroundButton(Context context) {
         this(context, null);

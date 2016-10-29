@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="common_background_drawable">
+        <attr name="stateful" format="boolean"/>
         <attr name="shape">
             <enum name="rect" value="0"/>
             <enum name="round_rect" value="1"/>
@@ -10,8 +11,8 @@
             <enum name="circle" value="5"/>
         </attr>
         <attr name="fill_mode">
-            <enum name="solid" value="0"/>
-            <enum name="bitmap" value="1"/>
+            <flag name="solid" value="1"/>
+            <flag name="bitmap" value="2"/>
         </attr>
         <attr name="stroke_mode">
             <enum name="none" value="0"/>

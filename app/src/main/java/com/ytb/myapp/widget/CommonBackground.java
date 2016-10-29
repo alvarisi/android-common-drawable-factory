@@ -5,9 +5,10 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -26,8 +27,8 @@ public class CommonBackground extends Drawable {
     public static final int SHAPE_BOTH_CIRCLE_RECT = 4;
     public static final int SHAPE_CIRCLE = 5;
 
-    public static final int FILL_MODE_SOLID = 0;
-    public static final int FILL_MODE_BITMAP = 1;
+    public static final int FILL_MODE_SOLID = 1;
+    public static final int FILL_MODE_BITMAP = 2;
 
     public static final int STROKE_MODE_NONE = 0;
     public static final int STROKE_MODE_SOLID = 1;
@@ -35,6 +36,8 @@ public class CommonBackground extends Drawable {
 
     // user data
     private Bitmap mBitmap;
+    private BitmapShader mShader;
+    private ColorMatrixColorFilter mColorFilter;
     private int mShape;
     private int mFillMode;
     private int mStrokeMode;
@@ -91,7 +94,6 @@ public class CommonBackground extends Drawable {
     }
 
     public CommonBackground radius(int radius) {
-//        return radius(unit, radius, radius, radius, radius);
         mRadius = radius;
         return this;
     }
@@ -113,6 +115,7 @@ public class CommonBackground extends Drawable {
     public CommonBackground bitmap(Bitmap bitmap) {
         if (bitmap != null) {
             mBitmap = bitmap;
+            mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         }
         return this;
     }
@@ -124,15 +127,21 @@ public class CommonBackground extends Drawable {
     }
 
     private void drawStroke(Canvas canvas) {
+        // STROKE_MODE_NONE
         if (mStrokeMode == STROKE_MODE_NONE) {
             return;
         }
 
+        // STROKE_MODE_DASH or STROKE_MODE_SOLID
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setColor(mColorStroke);
+        mPaint.setShader(null);
+        mPaint.setColorFilter(null);
         mPaint.setStrokeWidth(mStrokeWidth);
         if (mStrokeMode == STROKE_MODE_DASH) {
-            mPaint.setPathEffect(new DashPathEffect(mStrokeDash, 1.0f));
+            if (mPaint.getPathEffect() == null) {
+                mPaint.setPathEffect(new DashPathEffect(mStrokeDash, 1.0f));
+            }
         }
         drawStrokeShape(canvas);
     }
@@ -172,20 +181,31 @@ public class CommonBackground extends Drawable {
     private void drawFill(Canvas canvas) {
         mPaint.setStyle(Paint.Style.FILL);
 
-        switch (mFillMode) {
-            case FILL_MODE_BITMAP:
-                if (mPaint.getShader() == null && mBitmap != null) {
-                    mPaint.setShader(new BitmapShader(mBitmap, Shader.TileMode.CLAMP,
-                            Shader.TileMode.CLAMP));
+        if ((mFillMode & FILL_MODE_BITMAP) != 0) {
+            mPaint.setShader(mShader);
+            if ((mFillMode & FILL_MODE_SOLID) != 0) {
+                if (mColorFilter == null) {
+                    mColorFilter = new ColorMatrixColorFilter(parseColorMatrix());
                 }
-                drawFillShape(canvas);
-                break;
-            case FILL_MODE_SOLID:
-            default:
-                mPaint.setColor(mColorFill);
-                drawFillShape(canvas);
-                break;
+                mPaint.setColorFilter(mColorFilter);
+            }
+        } else {
+            mPaint.setColor(mColorFill);
         }
+        drawFillShape(canvas);
+    }
+
+    private ColorMatrix parseColorMatrix() {
+        float r = Color.red(mColorFill) / 255f;
+        float g = Color.green(mColorFill) / 255f;
+        float b = Color.blue(mColorFill) / 255f;
+        float a = Color.alpha(mColorFill) / 255f;
+        return new ColorMatrix(new float[]{
+                r, 0, 0, 0, 0,
+                0, g, 0, 0, 0,
+                0, 0, b, 0, 0,
+                0, 0, 0, a, 0
+        });
     }
 
     private void drawFillShape(Canvas canvas) {

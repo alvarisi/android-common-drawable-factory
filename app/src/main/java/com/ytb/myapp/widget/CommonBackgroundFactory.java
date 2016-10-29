@@ -66,37 +66,36 @@ public class CommonBackgroundFactory {
         if (context != null && attributeSet != null) {
             AttrSet attrs = new AttrSet();
             TypedArray a = context.obtainStyledAttributes(attributeSet, R.styleable
-                    .common_background_drawable);
-            attrs.stateful = a.getBoolean(R.styleable.common_background_drawable_stateful, false);
-            attrs.shape = a.getInt(R.styleable.common_background_drawable_shape,
+                    .common_background);
+            attrs.stateful = a.getBoolean(R.styleable.common_background_stateful, false);
+            attrs.shape = a.getInt(R.styleable.common_background_shape,
                     CommonBackground.SHAPE_RECT); // 默认直角矩形
-            attrs.fillMode = a.getInt(R.styleable.common_background_drawable_fill_mode,
+            attrs.fillMode = a.getInt(R.styleable.common_background_fill_mode,
                     CommonBackground.FILL_MODE_SOLID); // 默认颜色填充
-            attrs.scaleType = a.getInt(R.styleable.common_background_drawable_scale_type,
+            attrs.scaleType = a.getInt(R.styleable.common_background_scale_type,
                     CommonBackground.SCALE_TYPE_NONE);
-            attrs.strokeMode = a.getInt(R.styleable.common_background_drawable_stroke_mode,
+            attrs.strokeMode = a.getInt(R.styleable.common_background_stroke_mode,
                     CommonBackground.STROKE_MODE_NONE); // 默认无描边
             if (attrs.strokeMode == CommonBackground.STROKE_MODE_NONE) {
                 attrs.strokeWidth = 0;
             } else {
                 attrs.strokeWidth = a.getDimensionPixelSize(
-                        R.styleable.common_background_drawable_stroke_width, 0);
+                        R.styleable.common_background_stroke_width, 0);
             }
-            attrs.radius = a.getDimensionPixelSize(R.styleable.common_background_drawable_radius,
-                    0);
+            attrs.radius = a.getDimensionPixelSize(R.styleable.common_background_radius, 0);
             attrs.strokeDashSolid = a.getDimensionPixelSize(
-                    R.styleable.common_background_drawable_stroke_dash_solid, 0);
+                    R.styleable.common_background_stroke_dash_solid, 0);
             attrs.strokeDashSpace = a.getDimensionPixelSize(
-                    R.styleable.common_background_drawable_stroke_dash_space, 0);
-            attrs.colorDisabled = a.getColor(R.styleable.common_background_drawable_color_disabled,
+                    R.styleable.common_background_stroke_dash_space, 0);
+            attrs.colorDisabled = a.getColor(R.styleable.common_background_color_disabled,
                     Color.LTGRAY); // disabled状态默认使用浅灰色
-            attrs.colorNormal = a.getColor(R.styleable.common_background_drawable_color_normal,
+            attrs.colorNormal = a.getColor(R.styleable.common_background_color_normal,
                     Color.WHITE); // normal状态默认使用白色
-            attrs.colorPressed = a.getColor(R.styleable.common_background_drawable_color_pressed,
+            attrs.colorPressed = a.getColor(R.styleable.common_background_color_pressed,
                     attrs.colorNormal); // pressed状态默认与normal状态相同
-            attrs.colorStroke = a.getColor(R.styleable.common_background_drawable_color_stroke,
+            attrs.colorStroke = a.getColor(R.styleable.common_background_color_stroke,
                     Color.TRANSPARENT); // 描边默认使用透明
-            int bitmapResId = a.getResourceId(R.styleable.common_background_drawable_bitmap,
+            int bitmapResId = a.getResourceId(R.styleable.common_background_bitmap,
                     R.mipmap.ic_launcher);
             attrs.bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResId);
 

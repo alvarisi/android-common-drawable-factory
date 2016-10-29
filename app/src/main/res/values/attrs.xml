@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="common_background_drawable">
+    <declare-styleable name="common_background">
         <attr name="stateful" format="boolean"/>
         <attr name="shape">
             <enum name="rect" value="0"/>

@@ -1,19 +1,25 @@
 package com.ytb.myapp.activity;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import com.ytb.myapp.R;
+import com.ytb.myapp.widget.CommonBackground;
 import com.ytb.myapp.widget.CommonBackgroundButton;
+import com.ytb.myapp.widget.CommonBackgroundFactory;
 import com.ytb.myapp.widget.CommonBackgroundImageView;
+import com.ytb.myapp.widget.CommonBackgroundSet;
 
 /**
  * Created by Administrator on 2016-10-26.
  */
 
 public class MainActivity extends Activity implements View.OnClickListener {
+    CommonBackgroundImageView iv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,17 +29,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //        btn1.refreshBackground();
         btn1.setOnClickListener(this);
 
-        CommonBackgroundButton btn2 = (CommonBackgroundButton) findViewById(R.id.btn2);
-//        btn2.refreshBackground();
-        btn2.setOnClickListener(this);
-
-        CommonBackgroundButton btn3 = (CommonBackgroundButton) findViewById(R.id.btn3);
-//        btn3.refreshBackground();
-        btn3.setOnClickListener(this);
-
         iv = (CommonBackgroundImageView) findViewById(R.id.btn6);
+
+        CommonBackgroundFactory.createStateless()
+                .shape(0)
+                .showOn(iv);
+
+        CommonBackgroundSet set = CommonBackgroundFactory.createStateful();
+        set.forEach()
+                .shape(0)
+                .fillMode(0);
+              //...
+        set.theDisabled().colorFill(Color.RED);
+        set.theNormal().colorFill(Color.GREEN);
+        set.thePressed().colorFill(Color.BLUE);
+        set.showOn(iv);
     }
-CommonBackgroundImageView iv;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {

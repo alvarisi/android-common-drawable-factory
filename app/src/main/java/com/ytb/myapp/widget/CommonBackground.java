@@ -17,15 +17,13 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import com.ytb.myapp.util.LogUtils;
-
 /**
  * 通用背景Drawable
  *
  * @author yintaibing
  * @date 2016/10/28
  */
-public class CommonBackground extends Drawable {
+public class CommonBackground extends Drawable implements ICommonBackground {
     public static final int SHAPE_RECT = 0;
     public static final int SHAPE_ROUND_RECT = 1;
     public static final int SHAPE_SIDE_CIRCLE_RECT = 2;
@@ -71,6 +69,7 @@ public class CommonBackground extends Drawable {
      *
      * @param yourView 你的View
      */
+    @Override
     public void showOn(View yourView) {
         if (yourView != null) {
             yourView.setBackground(this);
@@ -84,7 +83,8 @@ public class CommonBackground extends Drawable {
      * @param shape 形状
      * @return
      */
-    public CommonBackground shape(int shape) {
+    @Override
+    public ICommonBackground shape(int shape) {
         mShape = shape;
         return this;
     }
@@ -95,7 +95,8 @@ public class CommonBackground extends Drawable {
      * @param fillMode 填充模式
      * @return
      */
-    public CommonBackground fillMode(int fillMode) {
+    @Override
+    public ICommonBackground fillMode(int fillMode) {
         mFillMode = fillMode;
         return this;
     }
@@ -106,7 +107,8 @@ public class CommonBackground extends Drawable {
      * @param scaleType 缩放类型
      * @return
      */
-    public CommonBackground scaleType(int scaleType) {
+    @Override
+    public ICommonBackground scaleType(int scaleType) {
         mScaleType = scaleType;
         return this;
     }
@@ -117,7 +119,8 @@ public class CommonBackground extends Drawable {
      * @param strokeMode 描边模式
      * @return
      */
-    public CommonBackground strokeMode(int strokeMode) {
+    @Override
+    public ICommonBackground strokeMode(int strokeMode) {
         mStrokeMode = strokeMode;
         return this;
     }
@@ -128,7 +131,8 @@ public class CommonBackground extends Drawable {
      * @param strokeWidth 设置描边宽度
      * @return
      */
-    public CommonBackground strokeWidth(int strokeWidth) {
+    @Override
+    public ICommonBackground strokeWidth(int strokeWidth) {
         mStrokeWidth = strokeWidth;
         return this;
     }
@@ -139,7 +143,8 @@ public class CommonBackground extends Drawable {
      * @param strokeDashSolid 单个实线的长度
      * @return
      */
-    public CommonBackground strokeDashSolid(int strokeDashSolid) {
+    @Override
+    public ICommonBackground strokeDashSolid(int strokeDashSolid) {
         if (mStrokeDash == null) {
             mStrokeDash = new float[2];
         }
@@ -153,7 +158,8 @@ public class CommonBackground extends Drawable {
      * @param strokeDashSpace 单个空白的长度
      * @return
      */
-    public CommonBackground strokeDashSpace(int strokeDashSpace) {
+    @Override
+    public ICommonBackground strokeDashSpace(int strokeDashSpace) {
         if (mStrokeDash == null) {
             mStrokeDash = new float[2];
         }
@@ -167,7 +173,8 @@ public class CommonBackground extends Drawable {
      * @param radius 圆角或圆形的半径
      * @return
      */
-    public CommonBackground radius(int radius) {
+    @Override
+    public ICommonBackground radius(int radius) {
         mRadius = radius;
         return this;
     }
@@ -178,7 +185,8 @@ public class CommonBackground extends Drawable {
      * @param colorFill 填充颜色
      * @return
      */
-    public CommonBackground colorFill(int colorFill) {
+    @Override
+    public ICommonBackground colorFill(int colorFill) {
         mColorFill = colorFill;
         return this;
     }
@@ -189,8 +197,24 @@ public class CommonBackground extends Drawable {
      * @param colorStroke 描边颜色
      * @return
      */
-    public CommonBackground colorStroke(int colorStroke) {
+    @Override
+    public ICommonBackground colorStroke(int colorStroke) {
         mColorStroke = colorStroke;
+        return this;
+    }
+
+    /**
+     * 设置填充位图
+     *
+     * @param bitmap 填充位图
+     * @return
+     */
+    @Override
+    public ICommonBackground bitmap(Bitmap bitmap) {
+        if (bitmap != null) {
+            mBitmap = bitmap;
+            mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+        }
         return this;
     }
 
@@ -201,20 +225,6 @@ public class CommonBackground extends Drawable {
      */
     public Bitmap bitmap() {
         return mBitmap;
-    }
-
-    /**
-     * 设置填充位图
-     *
-     * @param bitmap 填充位图
-     * @return
-     */
-    public CommonBackground bitmap(Bitmap bitmap) {
-        if (bitmap != null) {
-            mBitmap = bitmap;
-            mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        }
-        return this;
     }
 
     @Override

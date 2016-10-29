@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.ytb.myapp.R;
 import com.ytb.myapp.widget.CommonBackgroundButton;
+import com.ytb.myapp.widget.CommonBackgroundImageView;
 
 /**
  * Created by Administrator on 2016-10-26.
@@ -30,14 +31,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
 //        btn3.refreshBackground();
         btn3.setOnClickListener(this);
 
-
+        iv = (CommonBackgroundImageView) findViewById(R.id.btn6);
     }
-
+CommonBackgroundImageView iv;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn1:
                 Toast.makeText(this, "btn1", Toast.LENGTH_SHORT).show();
+                iv.setImageResource(R.mipmap.ic_launcher);
                 break;
         }
     }

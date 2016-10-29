@@ -45,9 +45,10 @@
             myapp:color_normal="@color/lighter_blue"
             myapp:color_pressed="@color/darker_blue"
             myapp:color_stroke="@android:color/darker_gray"
-            myapp:fill_mode="solid"
-            myapp:radius="10dp"
-            myapp:shape="round_rect"
+            myapp:bitmap="@mipmap/icon"
+            myapp:fill_mode="bitmap|solid"
+            myapp:scale_type="fit_frame"
+            myapp:shape="side_circle_rect"
             myapp:stateful="true"
             myapp:stroke_mode="none"/>
     </LinearLayout>
@@ -81,17 +82,20 @@
         <com.ytb.myapp.widget.CommonBackgroundButton
             android:id="@+id/btn4"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="100dp"
             android:layout_margin="10dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text="btn4"
+            android:textColor="@android:color/white"
+            myapp:bitmap="@mipmap/ic_launcher"
             myapp:color_disabled="@android:color/darker_gray"
-            myapp:color_normal="@color/lighter_blue"
-            myapp:color_pressed="@color/darker_blue"
+            myapp:color_normal="#FFFFFFFF"
+            myapp:color_pressed="#88FFFFFF"
             myapp:color_stroke="@android:color/darker_gray"
-            myapp:fill_mode="solid"
+            myapp:fill_mode="solid|bitmap"
             myapp:radius="10dp"
+            myapp:scale_type="at_least"
             myapp:shape="round_rect"
             myapp:stateful="true"
             myapp:stroke_mode="solid"
@@ -115,13 +119,12 @@
         myapp:stroke_mode="solid"
         myapp:stroke_width="5dp"/>
 
-    <com.ytb.myapp.widget.CommonBackgroundButton
+    <com.ytb.myapp.widget.CommonBackgroundImageView
         android:id="@+id/btn6"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="300dp"
+        android:layout_height="80dp"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:text="btn6"
         android:textColor="@android:color/white"
         myapp:bitmap="@mipmap/icon"
         myapp:color_disabled="#88888888"
@@ -129,9 +132,10 @@
         myapp:color_pressed="#88FFFFFF"
         myapp:color_stroke="@color/darker_blue"
         myapp:fill_mode="solid|bitmap"
+        myapp:scale_type="at_least"
         myapp:shape="circle"
         myapp:stateful="true"
-        myapp:stroke_mode="solid"
+        myapp:stroke_mode="none"
         myapp:stroke_width="5dp"/>
 
 </LinearLayout>

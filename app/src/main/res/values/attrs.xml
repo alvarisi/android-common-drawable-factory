@@ -5,14 +5,18 @@
         <attr name="shape">
             <enum name="rect" value="0"/>
             <enum name="round_rect" value="1"/>
-            <enum name="left_circle_rect" value="2"/>
-            <enum name="right_circle_rect" value="3"/>
-            <enum name="both_circle_rect" value="4"/>
-            <enum name="circle" value="5"/>
+            <enum name="side_circle_rect" value="2"/>
+            <enum name="circle" value="3"/>
         </attr>
         <attr name="fill_mode">
             <flag name="solid" value="1"/>
             <flag name="bitmap" value="2"/>
+        </attr>
+        <attr name="scale_type">
+            <enum name="none" value="0"/>
+            <enum name="at_most" value="1"/>
+            <enum name="at_least" value="2"/>
+            <enum name="fit_frame" value="3"/>
         </attr>
         <attr name="stroke_mode">
             <enum name="none" value="0"/>

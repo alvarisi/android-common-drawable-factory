@@ -49,4 +49,13 @@ public class CommonBackgroundImageView extends ImageView {
         mAttrSet.bitmap = bitmap;
         CommonBackgroundFactory.fromAttrSet(this, mAttrSet);
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        if (mAttrSet != null && mAttrSet.bitmap != null) {
+            mAttrSet.bitmap.recycle();
+        }
+    }
 }

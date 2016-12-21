@@ -9,7 +9,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.jieli.remarry.base.util.ImageUtils;
+import com.ytb.myapp.util.ImageUtils;
 
 /**
  * 支持XML配置的通用背景ImageView

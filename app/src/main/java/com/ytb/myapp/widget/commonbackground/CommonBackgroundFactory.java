@@ -2,7 +2,6 @@ package com.ytb.myapp.widget.commonbackground;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -10,8 +9,6 @@ import android.view.View;
 
 
 import com.ytb.myapp.R;
-
-import java.io.Serializable;
 
 
 /**
@@ -29,7 +26,7 @@ public class CommonBackgroundFactory {
      * @param attributeSet AttributeSet
      */
     public static void fromXml(View view, AttributeSet attributeSet) {
-        AttrSet attrs = obtainAttrs(view.getContext(), attributeSet);
+        CommonBackgroundAttrs attrs = obtainAttrs(view.getContext(), attributeSet);
         fromAttrSet(view, attrs);
     }
 
@@ -39,7 +36,7 @@ public class CommonBackgroundFactory {
      * @param view View
      * @param attrSet AttrSet
      */
-    public static void fromAttrSet(View view, AttrSet attrSet) {
+    public static void fromAttrSet(View view, CommonBackgroundAttrs attrSet) {
         if (attrSet != null) {
             if (attrSet.stateful) {
                 CommonBackgroundSet set = stateful(attrSet);
@@ -78,40 +75,49 @@ public class CommonBackgroundFactory {
      * @param attributeSet AttributeSet
      * @return AttrSet
      */
-    public static AttrSet obtainAttrs(Context context, AttributeSet attributeSet) {
+    public static CommonBackgroundAttrs obtainAttrs(Context context, AttributeSet attributeSet) {
         if (context != null && attributeSet != null) {
-            AttrSet attrs = new AttrSet();
-            TypedArray a = context.obtainStyledAttributes(attributeSet, R.styleable
-                    .common_background);
-            attrs.stateful = a.getBoolean(R.styleable.common_background_stateful, false);
-            attrs.shape = a.getInt(R.styleable.common_background_shape,
+            CommonBackgroundAttrs attrs = new CommonBackgroundAttrs();
+            TypedArray a = context.obtainStyledAttributes(attributeSet,
+                    R.styleable.CommonBackground);
+            attrs.stateful = a.getBoolean(R.styleable.CommonBackground_stateful, false);
+            attrs.stateMode = a.getInt(R.styleable.CommonBackground_stateMode,
+                    CommonBackgroundSet.STATE_MODE_CLICK);
+            attrs.shape = a.getInt(R.styleable.CommonBackground_shape,
                     CommonBackground.SHAPE_RECT); // 默认直角矩形
-            attrs.fillMode = a.getInt(R.styleable.common_background_fill_mode,
+            attrs.fillMode = a.getInt(R.styleable.CommonBackground_fillMode,
                     CommonBackground.FILL_MODE_SOLID); // 默认颜色填充
-            attrs.scaleType = a.getInt(R.styleable.common_background_scale_type,
+            attrs.scaleType = a.getInt(R.styleable.CommonBackground_scaleType,
                     CommonBackground.SCALE_TYPE_NONE); // 默认无缩放
-            attrs.strokeMode = a.getInt(R.styleable.common_background_stroke_mode,
+            attrs.strokeMode = a.getInt(R.styleable.CommonBackground_strokeMode,
                     CommonBackground.STROKE_MODE_NONE); // 默认无描边
-            if (attrs.strokeMode == CommonBackground.STROKE_MODE_NONE) {
-                attrs.strokeWidth = 0;
-            } else {
+            if (attrs.strokeMode != CommonBackground.STROKE_MODE_NONE) {
                 attrs.strokeWidth = a.getDimensionPixelSize(
-                        R.styleable.common_background_stroke_width, 0);
+                        R.styleable.CommonBackground_strokeWidth, 0);
             }
-            attrs.radius = a.getDimensionPixelSize(R.styleable.common_background_radius, 0);
+            attrs.radius = a.getDimensionPixelSize(R.styleable.CommonBackground_radius, 0);
             attrs.strokeDashSolid = a.getDimensionPixelSize(
-                    R.styleable.common_background_stroke_dash_solid, 0);
+                    R.styleable.CommonBackground_strokeDashSolid, 0);
             attrs.strokeDashSpace = a.getDimensionPixelSize(
-                    R.styleable.common_background_stroke_dash_space, 0);
-            attrs.colorDisabled = a.getColor(R.styleable.common_background_color_disabled,
+                    R.styleable.CommonBackground_strokeDashSpace, 0);
+            attrs.colorDisabled = a.getColor(R.styleable.CommonBackground_colorDisabled,
                     Color.LTGRAY); // disabled状态默认使用浅灰色
-            attrs.colorNormal = a.getColor(R.styleable.common_background_color_normal,
-                    Color.WHITE); // normal状态默认使用白色
-            attrs.colorPressed = a.getColor(R.styleable.common_background_color_pressed,
-                    attrs.colorNormal); // pressed状态默认与normal状态相同
-            attrs.colorStroke = a.getColor(R.styleable.common_background_color_stroke,
+            if (attrs.stateful) {
+                if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CLICK) {
+                    attrs.colorNormal = a.getColor(R.styleable.CommonBackground_colorNormal,
+                            Color.WHITE); // normal状态默认使用白色
+                    attrs.colorPressed = a.getColor(R.styleable.CommonBackground_colorPressed,
+                            attrs.colorNormal); // pressed状态默认与normal状态相同
+                } else if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CHECK) {
+                    attrs.colorUnchecked = a.getColor(R.styleable.CommonBackground_colorUnchecked,
+                            Color.WHITE);
+                    attrs.colorChecked = a.getColor(R.styleable.CommonBackground_colorChecked,
+                            Color.WHITE);
+                }
+            }
+            attrs.colorStroke = a.getColor(R.styleable.CommonBackground_colorStroke,
                     Color.TRANSPARENT); // 描边默认使用透明
-            int bitmapResId = a.getResourceId(R.styleable.common_background_bitmap,
+            int bitmapResId = a.getResourceId(R.styleable.CommonBackground_bitmap,
                     android.R.drawable.ic_delete);
             attrs.bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResId);
 
@@ -121,7 +127,7 @@ public class CommonBackgroundFactory {
         return null;
     }
 
-    private static ICommonBackground stateless(AttrSet attrs) {
+    private static ICommonBackground stateless(CommonBackgroundAttrs attrs) {
         return new CommonBackground()
                 .shape(attrs.shape)
                 .fillMode(attrs.fillMode)
@@ -136,8 +142,8 @@ public class CommonBackgroundFactory {
                 .bitmap(attrs.bitmap);
     }
 
-    private static CommonBackgroundSet stateful(AttrSet attrs) {
-        CommonBackgroundSet set = new CommonBackgroundSet();
+    private static CommonBackgroundSet stateful(CommonBackgroundAttrs attrs) {
+        CommonBackgroundSet set = new CommonBackgroundSet(attrs.stateMode);
         set.forEach()
                 .shape(attrs.shape)
                 .fillMode(attrs.fillMode)
@@ -150,32 +156,14 @@ public class CommonBackgroundFactory {
                 .radius(attrs.radius)
                 .bitmap(attrs.bitmap);
         set.theDisabled().colorFill(attrs.colorDisabled);
-        set.theNormal().colorFill(attrs.colorNormal);
-        set.thePressed().colorFill(attrs.colorPressed);
+        if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CLICK) {
+            set.theNormal().colorFill(attrs.colorNormal);
+            set.thePressed().colorFill(attrs.colorPressed);
+        } else if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CHECK) {
+            set.theUnchecked().colorFill(attrs.colorUnchecked);
+            set.theChecked().colorFill(attrs.colorChecked);
+        }
         return set;
     }
 
-    /**
-     * 属性集
-     */
-    public static class AttrSet implements Serializable {
-        boolean stateful;
-        int shape;
-        int fillMode;
-        int scaleType;
-        int strokeMode;
-        int radius;
-        int strokeWidth;
-        int strokeDashSolid;
-        int strokeDashSpace;
-        int colorStroke;
-        int colorDisabled;
-        int colorNormal;
-        int colorPressed;
-        Bitmap bitmap;
-
-        void recycle() {
-            bitmap = null;
-        }
-    }
 }

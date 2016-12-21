@@ -1,5 +1,6 @@
 package com.ytb.myapp.widget.commonbackground;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -16,6 +17,8 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 /**
@@ -25,22 +28,22 @@ import android.view.View;
  * @date 2016/10/28
  */
 public class CommonBackground extends Drawable implements ICommonBackground {
-    public static final int SHAPE_RECT = 0;
-    public static final int SHAPE_ROUND_RECT = 1;
-    public static final int SHAPE_SIDE_CIRCLE_RECT = 2;
-    public static final int SHAPE_CIRCLE = 3;
+    public static final int SHAPE_RECT = 0;             // 矩形
+    public static final int SHAPE_ROUND_RECT = 1;       // 圆角矩形
+    public static final int SHAPE_SIDE_CIRCLE_RECT = 2; // 圆头矩形
+    public static final int SHAPE_CIRCLE = 3;           // 圆形
 
-    public static final int FILL_MODE_SOLID = 0x01;
-    public static final int FILL_MODE_BITMAP = 0x02;
+    public static final int FILL_MODE_SOLID = 1;        // 纯色填充
+    public static final int FILL_MODE_BITMAP = 2;       // 图片填充
 
-    public static final int SCALE_TYPE_NONE = 0;
-    public static final int SCALE_TYPE_AT_MOST = 1;
-    public static final int SCALE_TYPE_AT_LEAST = 2;
-    public static final int SCALE_TYPE_FIT_FRAME = 3;
+    public static final int SCALE_TYPE_NONE = 0;        // 无缩放
+    public static final int SCALE_TYPE_AT_MOST = 1;     // 以控件较长边为准进行缩放
+    public static final int SCALE_TYPE_AT_LEAST = 2;    // 以控件较短边为准进行缩放
+    public static final int SCALE_TYPE_FIT_XY = 3;      // fitXY
 
-    public static final int STROKE_MODE_NONE = 0;
-    public static final int STROKE_MODE_SOLID = 1;
-    public static final int STROKE_MODE_DASH = 2;
+    public static final int STROKE_MODE_NONE = 0;       // 无描边
+    public static final int STROKE_MODE_SOLID = 1;      // 实线描边
+    public static final int STROKE_MODE_DASH = 2;       // 断续线描边
 
     // user data
     private Bitmap mBitmap;
@@ -86,7 +89,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置形状
      *
      * @param shape 形状
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground shape(int shape) {
@@ -98,7 +101,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置填充模式
      *
      * @param fillMode 填充模式
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground fillMode(int fillMode) {
@@ -110,7 +113,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置缩放类型
      *
      * @param scaleType 缩放类型
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground scaleType(int scaleType) {
@@ -122,7 +125,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置描边模式
      *
      * @param strokeMode 描边模式
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground strokeMode(int strokeMode) {
@@ -134,7 +137,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置描边宽度
      *
      * @param strokeWidth 设置描边宽度
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground strokeWidth(int strokeWidth) {
@@ -146,7 +149,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置虚线描边时，单个实线的长度
      *
      * @param strokeDashSolid 单个实线的长度
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground strokeDashSolid(int strokeDashSolid) {
@@ -161,7 +164,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置虚线描边时，单个空白的长度
      *
      * @param strokeDashSpace 单个空白的长度
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground strokeDashSpace(int strokeDashSpace) {
@@ -176,7 +179,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置圆角或圆形的半径
      *
      * @param radius 圆角或圆形的半径
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground radius(int radius) {
@@ -188,7 +191,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置填充颜色
      *
      * @param colorFill 填充颜色
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground colorFill(int colorFill) {
@@ -197,10 +200,23 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     }
 
     /**
+     * 设置填充颜色（通过颜色资源ID）
+     *
+     * @param context        Context
+     * @param colorFillResId 填充颜色资源ID
+     * @return this
+     */
+    @Override
+    public ICommonBackground colorFill(Context context, int colorFillResId) {
+        mColorFill = ContextCompat.getColor(context, colorFillResId);
+        return this;
+    }
+
+    /**
      * 设置描边颜色
      *
      * @param colorStroke 描边颜色
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground colorStroke(int colorStroke) {
@@ -209,10 +225,23 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     }
 
     /**
+     * 设置描边颜色（通过颜色资源ID）
+     *
+     * @param context          Context
+     * @param colorStrokeResId 描边颜色资源ID
+     * @return this
+     */
+    @Override
+    public ICommonBackground colorStroke(Context context, int colorStrokeResId) {
+        mColorStroke = ContextCompat.getColor(context, colorStrokeResId);
+        return this;
+    }
+
+    /**
      * 设置填充位图
      *
      * @param bitmap 填充位图
-     * @return
+     * @return this
      */
     @Override
     public CommonBackground bitmap(Bitmap bitmap) {
@@ -228,12 +257,13 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      *
      * @return 填充位图
      */
+    @SuppressWarnings("unused")
     public Bitmap bitmap() {
         return mBitmap;
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(@NonNull Canvas canvas) {
         // 先绘制描边，再缩小边界，绘制填充
         drawStroke(canvas);
         drawFill(canvas);
@@ -333,7 +363,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                             scaleX = scaleY = parentWidth / mBitmap.getWidth();
                         }
                         break;
-                    case SCALE_TYPE_FIT_FRAME:
+                    case SCALE_TYPE_FIT_XY:
                         scaleX = parentWidth / mBitmap.getWidth();
                         scaleY = parentHeight / mBitmap.getHeight();
                         break;
@@ -385,7 +415,8 @@ public class CommonBackground extends Drawable implements ICommonBackground {
             case SHAPE_SIDE_CIRCLE_RECT:
                 mRadius = (mBounds.top + mBounds.bottom) / 2.0f;
                 fillRadius = mRadius - narrowBy;
-                canvas.drawRoundRect(narrowBounds(mBounds, narrowBy), fillRadius, fillRadius, mPaint);
+                canvas.drawRoundRect(narrowBounds(mBounds, narrowBy), fillRadius, fillRadius,
+                        mPaint);
                 break;
             case SHAPE_CIRCLE:
                 // 计算圆心
@@ -409,7 +440,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     }
 
     @Override
-    public void setBounds(Rect bounds) {
+    public void setBounds(@NonNull Rect bounds) {
         super.setBounds(bounds);
         mBounds = new RectF(bounds.left, bounds.top, bounds.right, bounds.bottom);
     }

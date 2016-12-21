@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 通用背景图属性定义 -->
-    <declare-styleable name="common_background">
-        <!-- 是否区分disabled/normal/pressed状态 -->
+    <declare-styleable name="CommonBackground">
+        <!-- 是否区分点击（disabled/normal/pressed）或选择（disabled/unchecked/checked）状态 -->
         <attr name="stateful" format="boolean"/>
+
+        <!-- 状态的区分模式-->
+        <attr name="stateMode">
+            <enum name="click" value="0"/><!-- 点击模式，类似于Button -->
+            <enum name="check" value="1"/><!-- 选择模式，类似于CheckBox -->
+        </attr>
 
         <!-- 形状 -->
         <attr name="shape">
@@ -14,33 +20,35 @@
         </attr>
 
         <!-- 填充模式，若为solid|bitmap，此时填充色将作为图片蒙层，注意设置填充色的透明度 -->
-        <attr name="fill_mode">
+        <attr name="fillMode">
             <flag name="solid" value="1"/><!-- 纯色填充 -->
             <flag name="bitmap" value="2"/><!-- 图片填充 -->
         </attr>
 
         <!-- 填充图的缩放类型 -->
-        <attr name="scale_type">
+        <attr name="scaleType">
             <enum name="none" value="0"/>
             <enum name="at_most" value="1"/><!-- 对齐控件width/height中的大者 -->
             <enum name="at_least" value="2"/><!-- 对齐控件width/height中的小者 -->
-            <enum name="fit_frame" value="3"/><!-- 对齐控件长宽 -->
+            <enum name="fitXY" value="3"/><!-- 对齐控件长宽 -->
         </attr>
 
         <!-- 描边模式 -->
-        <attr name="stroke_mode">
+        <attr name="strokeMode">
             <enum name="none" value="0"/>
             <enum name="solid" value="1"/><!-- 实线描边 -->
             <enum name="dash" value="2"/><!-- 断续线描边 -->
         </attr>
         <attr name="radius" format="dimension"/><!-- 圆角半径/形状为圆时的半径 -->
-        <attr name="stroke_width" format="dimension"/><!-- 描边宽度 -->
-        <attr name="stroke_dash_solid" format="dimension"/><!-- 断续线描边时，每一段实线的长度 -->
-        <attr name="stroke_dash_space" format="dimension"/><!-- 断续线描边时，每一段空白的长度 -->
-        <attr name="color_disabled" format="color"/><!-- 三种状态的颜色 -->
-        <attr name="color_normal" format="color"/>
-        <attr name="color_pressed" format="color"/>
-        <attr name="color_stroke" format="color"/><!-- 描边颜色 -->
+        <attr name="strokeWidth" format="dimension"/><!-- 描边宽度 -->
+        <attr name="strokeDashSolid" format="dimension"/><!-- 断续线描边时，每一段实线的长度 -->
+        <attr name="strokeDashSpace" format="dimension"/><!-- 断续线描边时，每一段空白的长度 -->
+        <attr name="colorDisabled" format="color"/><!-- 各种状态的颜色 -->
+        <attr name="colorNormal" format="color"/>
+        <attr name="colorPressed" format="color"/>
+        <attr name="colorUnchecked" format="color"/>
+        <attr name="colorChecked" format="color"/>
+        <attr name="colorStroke" format="color"/><!-- 描边颜色 -->
         <attr name="bitmap" format="reference"/><!-- 填充图资源id -->
     </declare-styleable>
 </resources>

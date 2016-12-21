@@ -23,26 +23,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        CommonBackgroundButton btn1 = (CommonBackgroundButton) findViewById(R.id.btn1);
-//        btn1.refreshBackground();
-        btn1.setOnClickListener(this);
-
-        iv = (CommonBackgroundImageView) findViewById(R.id.btn6);
-
-        CommonBackgroundFactory.createStateless()
-                .shape(0)
-                .showOn(iv);
-
-        CommonBackgroundSet set = CommonBackgroundFactory.createStateful();
-        set.forEach()
-                .shape(0)
-                .fillMode(0);
-              //...
-        set.theDisabled().colorFill(Color.RED);
-        set.theNormal().colorFill(Color.GREEN);
-        set.thePressed().colorFill(Color.BLUE);
-        set.showOn(iv);
     }
 
     @Override

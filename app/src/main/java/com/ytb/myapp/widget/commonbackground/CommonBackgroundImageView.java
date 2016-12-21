@@ -22,7 +22,7 @@ public class CommonBackgroundImageView extends ImageView {
     private static final String STATE_SUPER = "state_super";
     private static final String STATE_COMMON_BACKGROUND = "state_common_background";
 
-    private CommonBackgroundFactory.AttrSet mAttrSet;
+    private CommonBackgroundAttrs mCommonBackgroundAttrs;
 
     public CommonBackgroundImageView(Context context) {
         this(context, null);
@@ -34,36 +34,36 @@ public class CommonBackgroundImageView extends ImageView {
 
     public CommonBackgroundImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        mAttrSet = CommonBackgroundFactory.obtainAttrs(context, attrs);
-        CommonBackgroundFactory.fromAttrSet(this, mAttrSet);
+        mCommonBackgroundAttrs = CommonBackgroundFactory.obtainAttrs(context, attrs);
+        CommonBackgroundFactory.fromAttrSet(this, mCommonBackgroundAttrs);
     }
 
     @Override
     public void setImageResource(int resId) {
-        mAttrSet.bitmap = BitmapFactory.decodeResource(getResources(), resId);
-        resetFillMode(mAttrSet);
-        CommonBackgroundFactory.fromAttrSet(this, mAttrSet);
+        mCommonBackgroundAttrs.bitmap = BitmapFactory.decodeResource(getResources(), resId);
+        resetFillMode(mCommonBackgroundAttrs);
+        CommonBackgroundFactory.fromAttrSet(this, mCommonBackgroundAttrs);
     }
 
     @Override
     public void setImageDrawable(Drawable drawable) {
-        mAttrSet.bitmap = ImageUtils.drawableToBitmap(drawable);
-        resetFillMode(mAttrSet);
-        CommonBackgroundFactory.fromAttrSet(this, mAttrSet);
+        mCommonBackgroundAttrs.bitmap = ImageUtils.drawableToBitmap(drawable);
+        resetFillMode(mCommonBackgroundAttrs);
+        CommonBackgroundFactory.fromAttrSet(this, mCommonBackgroundAttrs);
     }
 
     @Override
     public void setImageBitmap(Bitmap bitmap) {
-        mAttrSet.bitmap = bitmap;
-        resetFillMode(mAttrSet);
-        CommonBackgroundFactory.fromAttrSet(this, mAttrSet);
+        mCommonBackgroundAttrs.bitmap = bitmap;
+        resetFillMode(mCommonBackgroundAttrs);
+        CommonBackgroundFactory.fromAttrSet(this, mCommonBackgroundAttrs);
     }
 
     @Override
     protected Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
         bundle.putParcelable(STATE_SUPER, super.onSaveInstanceState());
-        bundle.putSerializable(STATE_COMMON_BACKGROUND, mAttrSet);
+        bundle.putSerializable(STATE_COMMON_BACKGROUND, mCommonBackgroundAttrs);
         return bundle;
     }
 
@@ -72,7 +72,7 @@ public class CommonBackgroundImageView extends ImageView {
         if (state instanceof Bundle) {
             Bundle bundle = (Bundle) state;
             super.onRestoreInstanceState(bundle.getParcelable(STATE_SUPER));
-            mAttrSet = (CommonBackgroundFactory.AttrSet) bundle.getSerializable
+            mCommonBackgroundAttrs = (CommonBackgroundAttrs) bundle.getSerializable
                     (STATE_COMMON_BACKGROUND);
         } else {
             super.onRestoreInstanceState(state);
@@ -83,8 +83,8 @@ public class CommonBackgroundImageView extends ImageView {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        if (mAttrSet != null && mAttrSet.bitmap != null) {
-            mAttrSet.bitmap.recycle();
+        if (mCommonBackgroundAttrs != null && mCommonBackgroundAttrs.bitmap != null) {
+            mCommonBackgroundAttrs.bitmap.recycle();
         }
     }
 
@@ -96,7 +96,7 @@ public class CommonBackgroundImageView extends ImageView {
      *
      * @param attrSet 源属性集
      */
-    private void resetFillMode(CommonBackgroundFactory.AttrSet attrSet) {
+    private void resetFillMode(CommonBackgroundAttrs attrSet) {
         if ((CommonBackground.FILL_MODE_BITMAP & attrSet.fillMode) == 0) {
             attrSet.fillMode = CommonBackground.FILL_MODE_BITMAP;
         }

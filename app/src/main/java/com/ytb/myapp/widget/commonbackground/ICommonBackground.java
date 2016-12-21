@@ -1,5 +1,6 @@
 package com.ytb.myapp.widget.commonbackground;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.View;
 
@@ -80,12 +81,28 @@ public interface ICommonBackground {
     ICommonBackground colorFill(int colorFill);
 
     /**
+     * 设置填充颜色
+     *
+     * @param colorFillResId 填充颜色资源ID
+     * @return
+     */
+    ICommonBackground colorFill(Context context, int colorFillResId);
+
+    /**
      * 设置描边颜色
      *
      * @param colorStroke 描边颜色
      * @return
      */
     ICommonBackground colorStroke(int colorStroke);
+
+    /**
+     * 设置描边颜色
+     *
+     * @param colorStrokeResId 描边颜色资源ID
+     * @return
+     */
+    ICommonBackground colorStroke(Context context, int colorStrokeResId);
 
     /**
      * 设置填充位图

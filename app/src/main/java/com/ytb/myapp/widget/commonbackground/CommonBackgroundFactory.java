@@ -8,7 +8,8 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.jieli.remarry.base.R;
+
+import com.ytb.myapp.R;
 
 import java.io.Serializable;
 

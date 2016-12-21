@@ -1,4 +1,4 @@
-package com.ytb.myapp.widget;
+package com.ytb.myapp.widget.commonbackground;
 
 import android.content.Context;
 import android.util.AttributeSet;

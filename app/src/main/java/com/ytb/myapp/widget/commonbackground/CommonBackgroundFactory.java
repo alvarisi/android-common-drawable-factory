@@ -1,4 +1,4 @@
-package com.ytb.myapp.widget;
+package com.ytb.myapp.widget.commonbackground;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,7 +8,10 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.ytb.myapp.R;
+import com.jieli.remarry.base.R;
+
+import java.io.Serializable;
+
 
 /**
  * 通用背景工厂类
@@ -18,18 +21,30 @@ import com.ytb.myapp.R;
  */
 public class CommonBackgroundFactory {
 
+    /**
+     * 从XML解析通用背景
+     *
+     * @param view         View
+     * @param attributeSet AttributeSet
+     */
     public static void fromXml(View view, AttributeSet attributeSet) {
         AttrSet attrs = obtainAttrs(view.getContext(), attributeSet);
         fromAttrSet(view, attrs);
     }
 
+    /**
+     * 从AttrSet解析通用背景
+     *
+     * @param view View
+     * @param attrSet AttrSet
+     */
     public static void fromAttrSet(View view, AttrSet attrSet) {
         if (attrSet != null) {
             if (attrSet.stateful) {
                 CommonBackgroundSet set = stateful(attrSet);
                 set.showOn(view);
             } else {
-                CommonBackground drawable = stateless(attrSet);
+                ICommonBackground drawable = stateless(attrSet);
                 drawable.showOn(view);
             }
 
@@ -73,7 +88,7 @@ public class CommonBackgroundFactory {
             attrs.fillMode = a.getInt(R.styleable.common_background_fill_mode,
                     CommonBackground.FILL_MODE_SOLID); // 默认颜色填充
             attrs.scaleType = a.getInt(R.styleable.common_background_scale_type,
-                    CommonBackground.SCALE_TYPE_NONE);
+                    CommonBackground.SCALE_TYPE_NONE); // 默认无缩放
             attrs.strokeMode = a.getInt(R.styleable.common_background_stroke_mode,
                     CommonBackground.STROKE_MODE_NONE); // 默认无描边
             if (attrs.strokeMode == CommonBackground.STROKE_MODE_NONE) {
@@ -96,7 +111,7 @@ public class CommonBackgroundFactory {
             attrs.colorStroke = a.getColor(R.styleable.common_background_color_stroke,
                     Color.TRANSPARENT); // 描边默认使用透明
             int bitmapResId = a.getResourceId(R.styleable.common_background_bitmap,
-                    R.mipmap.ic_launcher);
+                    android.R.drawable.ic_delete);
             attrs.bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResId);
 
             a.recycle();
@@ -105,7 +120,7 @@ public class CommonBackgroundFactory {
         return null;
     }
 
-    private static CommonBackground stateless(AttrSet attrs) {
+    private static ICommonBackground stateless(AttrSet attrs) {
         return new CommonBackground()
                 .shape(attrs.shape)
                 .fillMode(attrs.fillMode)
@@ -122,7 +137,7 @@ public class CommonBackgroundFactory {
 
     private static CommonBackgroundSet stateful(AttrSet attrs) {
         CommonBackgroundSet set = new CommonBackgroundSet();
-        set.theDisabled()
+        set.forEach()
                 .shape(attrs.shape)
                 .fillMode(attrs.fillMode)
                 .scaleType(attrs.scaleType)
@@ -132,39 +147,17 @@ public class CommonBackgroundFactory {
                 .strokeDashSpace(attrs.strokeDashSpace)
                 .colorStroke(attrs.colorStroke)
                 .radius(attrs.radius)
-                .bitmap(attrs.bitmap)
-                .colorFill(attrs.colorDisabled);
-        set.theNormal()
-                .shape(attrs.shape)
-                .fillMode(attrs.fillMode)
-                .scaleType(attrs.scaleType)
-                .strokeMode(attrs.strokeMode)
-                .strokeWidth(attrs.strokeWidth)
-                .strokeDashSolid(attrs.strokeDashSolid)
-                .strokeDashSpace(attrs.strokeDashSpace)
-                .colorStroke(attrs.colorStroke)
-                .radius(attrs.radius)
-                .bitmap(attrs.bitmap)
-                .colorFill(attrs.colorNormal);
-        set.thePressed()
-                .shape(attrs.shape)
-                .fillMode(attrs.fillMode)
-                .scaleType(attrs.scaleType)
-                .strokeMode(attrs.strokeMode)
-                .strokeWidth(attrs.strokeWidth)
-                .strokeDashSolid(attrs.strokeDashSolid)
-                .strokeDashSpace(attrs.strokeDashSpace)
-                .colorStroke(attrs.colorStroke)
-                .radius(attrs.radius)
-                .bitmap(attrs.bitmap)
-                .colorFill(attrs.colorPressed);
+                .bitmap(attrs.bitmap);
+        set.theDisabled().colorFill(attrs.colorDisabled);
+        set.theNormal().colorFill(attrs.colorNormal);
+        set.thePressed().colorFill(attrs.colorPressed);
         return set;
     }
 
     /**
      * 属性集
      */
-    public static class AttrSet {
+    public static class AttrSet implements Serializable {
         boolean stateful;
         int shape;
         int fillMode;

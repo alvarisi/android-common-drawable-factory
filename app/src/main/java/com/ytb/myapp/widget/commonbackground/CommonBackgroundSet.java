@@ -1,7 +1,8 @@
-package com.ytb.myapp.widget;
+package com.ytb.myapp.widget.commonbackground;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.view.View;
 
 /**
@@ -20,6 +21,9 @@ public class CommonBackgroundSet {
 
     CommonBackgroundSet() {
         mDrawables = new CommonBackground[STATE_COUNT];
+        for (int i = 0; i < STATE_COUNT; i++) {
+            mDrawables[i] = new CommonBackground();
+        }
     }
 
     /**
@@ -37,7 +41,6 @@ public class CommonBackgroundSet {
      * @return 对应disabled状态的CommonBackground对象
      */
     public ICommonBackground theDisabled() {
-        mDrawables[STATE_DISABLED] = new CommonBackground();
         return mDrawables[STATE_DISABLED];
     }
 
@@ -47,7 +50,6 @@ public class CommonBackgroundSet {
      * @return 对应normal状态的CommonBackground对象
      */
     public ICommonBackground theNormal() {
-        mDrawables[STATE_NORMAL] = new CommonBackground();
         return mDrawables[STATE_NORMAL];
     }
 
@@ -57,7 +59,6 @@ public class CommonBackgroundSet {
      * @return 对应pressed状态的CommonBackground对象
      */
     public ICommonBackground thePressed() {
-        mDrawables[STATE_PRESSED] = new CommonBackground();
         return mDrawables[STATE_PRESSED];
     }
 
@@ -70,6 +71,9 @@ public class CommonBackgroundSet {
         if (yourView != null) {
             StateListDrawable stateList = new StateListDrawable();
             // 以下顺序不可更改
+            // when disabled
+            stateList.addState(new int[]{-android.R.attr.state_enabled},
+                    mDrawables[STATE_DISABLED]);
             // View.PRESSED_ENABLED_STATE_SET
             stateList.addState(new int[]{android.R.attr.state_pressed, android.R.attr
                     .state_enabled}, mDrawables[STATE_PRESSED]);
@@ -86,7 +90,11 @@ public class CommonBackgroundSet {
             stateList.addState(new int[]{android.R.attr.state_window_focused},
                     mDrawables[STATE_DISABLED]);
 
-            yourView.setBackground(stateList);
+            if (Build.VERSION.SDK_INT >= 16) {
+                yourView.setBackground(stateList);
+            } else {
+                yourView.setBackgroundDrawable(stateList);
+            }
             yourView.setClickable(true);
         }
     }

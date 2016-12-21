@@ -7,11 +7,10 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.ytb.myapp.R;
-import com.ytb.myapp.widget.CommonBackground;
-import com.ytb.myapp.widget.CommonBackgroundButton;
-import com.ytb.myapp.widget.CommonBackgroundFactory;
-import com.ytb.myapp.widget.CommonBackgroundImageView;
-import com.ytb.myapp.widget.CommonBackgroundSet;
+import com.ytb.myapp.widget.commonbackground.CommonBackgroundButton;
+import com.ytb.myapp.widget.commonbackground.CommonBackgroundFactory;
+import com.ytb.myapp.widget.commonbackground.CommonBackgroundImageView;
+import com.ytb.myapp.widget.commonbackground.CommonBackgroundSet;
 
 /**
  * Created by Administrator on 2016-10-26.

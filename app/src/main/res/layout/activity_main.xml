@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.ytb.myapp.widget.CommonBackgroundButton
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
             android:id="@+id/btn1"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -33,7 +33,7 @@
             myapp:stateful="true"
             myapp:stroke_mode="none"/>
 
-        <com.ytb.myapp.widget.CommonBackgroundButton
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
             android:id="@+id/btn2"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <com.ytb.myapp.widget.CommonBackgroundButton
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
             android:id="@+id/btn3"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -79,7 +79,7 @@
             myapp:stroke_mode="dash"
             myapp:stroke_width="5dp"/>
 
-        <com.ytb.myapp.widget.CommonBackgroundButton
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
             android:id="@+id/btn4"
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -102,7 +102,7 @@
             myapp:stroke_width="5dp"/>
     </LinearLayout>
 
-    <com.ytb.myapp.widget.CommonBackgroundButton
+    <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
         android:id="@+id/btn5"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -119,7 +119,7 @@
         myapp:stroke_mode="solid"
         myapp:stroke_width="5dp"/>
 
-    <com.ytb.myapp.widget.CommonBackgroundImageView
+    <com.ytb.myapp.widget.commonbackground.CommonBackgroundImageView
         android:id="@+id/btn6"
         android:layout_width="300dp"
         android:layout_height="80dp"

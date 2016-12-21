@@ -1,4 +1,4 @@
-package com.ytb.myapp.widget;
+package com.ytb.myapp.widget.commonbackground;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
@@ -15,6 +15,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.View;
 
 /**
@@ -72,7 +73,11 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public void showOn(View yourView) {
         if (yourView != null) {
-            yourView.setBackground(this);
+            if (Build.VERSION.SDK_INT >= 16) {
+                yourView.setBackground(this);
+            } else {
+                yourView.setBackgroundDrawable(this);
+            }
             yourView.setClickable(true);
         }
     }
@@ -84,7 +89,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground shape(int shape) {
+    public CommonBackground shape(int shape) {
         mShape = shape;
         return this;
     }
@@ -96,7 +101,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground fillMode(int fillMode) {
+    public CommonBackground fillMode(int fillMode) {
         mFillMode = fillMode;
         return this;
     }
@@ -108,7 +113,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground scaleType(int scaleType) {
+    public CommonBackground scaleType(int scaleType) {
         mScaleType = scaleType;
         return this;
     }
@@ -120,7 +125,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground strokeMode(int strokeMode) {
+    public CommonBackground strokeMode(int strokeMode) {
         mStrokeMode = strokeMode;
         return this;
     }
@@ -132,7 +137,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground strokeWidth(int strokeWidth) {
+    public CommonBackground strokeWidth(int strokeWidth) {
         mStrokeWidth = strokeWidth;
         return this;
     }
@@ -144,7 +149,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground strokeDashSolid(int strokeDashSolid) {
+    public CommonBackground strokeDashSolid(int strokeDashSolid) {
         if (mStrokeDash == null) {
             mStrokeDash = new float[2];
         }
@@ -159,7 +164,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground strokeDashSpace(int strokeDashSpace) {
+    public CommonBackground strokeDashSpace(int strokeDashSpace) {
         if (mStrokeDash == null) {
             mStrokeDash = new float[2];
         }
@@ -174,7 +179,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground radius(int radius) {
+    public CommonBackground radius(int radius) {
         mRadius = radius;
         return this;
     }
@@ -186,7 +191,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground colorFill(int colorFill) {
+    public CommonBackground colorFill(int colorFill) {
         mColorFill = colorFill;
         return this;
     }
@@ -198,7 +203,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground colorStroke(int colorStroke) {
+    public CommonBackground colorStroke(int colorStroke) {
         mColorStroke = colorStroke;
         return this;
     }
@@ -210,7 +215,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground bitmap(Bitmap bitmap) {
+    public CommonBackground bitmap(Bitmap bitmap) {
         if (bitmap != null) {
             mBitmap = bitmap;
             mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
@@ -277,7 +282,8 @@ public class CommonBackground extends Drawable implements ICommonBackground {
             case SHAPE_SIDE_CIRCLE_RECT:
                 mRadius = (mBounds.top + mBounds.bottom) / 2.0f; // 自动计算半径
                 strokeRadius = mRadius - narrowBy;
-                canvas.drawRoundRect(mBounds, strokeRadius, strokeRadius, mPaint);
+                canvas.drawRoundRect(narrowBounds(mBounds, narrowBy), strokeRadius, strokeRadius,
+                        mPaint);
                 break;
             case SHAPE_CIRCLE:
                 // 计算圆心
@@ -367,7 +373,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @param canvas 画板
      */
     private void drawFillShape(Canvas canvas) {
-        final float narrowBy = mStrokeWidth - 0.5f; // -0.5是调整误差
+        final float narrowBy = mStrokeWidth > 0.5f ? (mStrokeWidth - 0.5f) : 0; // -0.5是调整误差
         float fillRadius;
 
         switch (mShape) {
@@ -379,7 +385,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
             case SHAPE_SIDE_CIRCLE_RECT:
                 mRadius = (mBounds.top + mBounds.bottom) / 2.0f;
                 fillRadius = mRadius - narrowBy;
-                canvas.drawRoundRect(mBounds, fillRadius, fillRadius, mPaint);
+                canvas.drawRoundRect(narrowBounds(mBounds, narrowBy), fillRadius, fillRadius, mPaint);
                 break;
             case SHAPE_CIRCLE:
                 // 计算圆心

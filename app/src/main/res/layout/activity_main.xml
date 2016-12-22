@@ -262,4 +262,50 @@
             app:strokeMode="solid"
             app:strokeWidth="1dp"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:text="strokeMode"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="solid"
+            app:colorNormal="@android:color/white"
+            app:colorStroke="@color/lighter_blue"
+            app:fillMode="solid"
+            app:shape="side_circle_rect"
+            app:stateful="false"
+            app:strokeMode="solid"
+            app:strokeWidth="2dp"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="dash"
+            app:colorStroke="@color/lighter_blue"
+            app:fillMode="solid"
+            app:shape="rect"
+            app:stateful="false"
+            app:strokeDashSolid="5dp"
+            app:strokeDashSpace="5dp"
+            app:strokeMode="dash"
+            app:strokeWidth="2dp"/>
+    </LinearLayout>
 </LinearLayout>

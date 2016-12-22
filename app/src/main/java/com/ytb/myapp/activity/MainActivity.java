@@ -1,17 +1,11 @@
 package com.ytb.myapp.activity;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.ytb.myapp.R;
-import com.ytb.myapp.widget.commonbackground.CommonBackground;
-import com.ytb.myapp.widget.commonbackground.CommonBackgroundButton;
-import com.ytb.myapp.widget.commonbackground.CommonBackgroundFactory;
 import com.ytb.myapp.widget.commonbackground.CommonBackgroundImageView;
-import com.ytb.myapp.widget.commonbackground.CommonBackgroundSet;
 
 /**
  * Created by Administrator on 2016-10-26.

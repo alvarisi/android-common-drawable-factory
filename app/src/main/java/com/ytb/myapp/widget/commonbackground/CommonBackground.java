@@ -394,15 +394,8 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                 // 图片居中
                 diffX = viewWidth - mBitmap.getWidth() * scaleX;
                 diffY = viewHeight - mBitmap.getHeight() * scaleY;
-                final float translateX, translateY;
-//                if (scaleX != 1.0f || scaleY != 1.0f) {
-//                    // 如果图片进行了缩放，图片的尺寸就一定>=控件的尺寸，平移量肯定均为正
-//                    translateX = Math.abs(diffX) / 2.0f;
-//                    translateY = Math.abs(diffY) / 2.0f;
-//                } else {
-                translateX = diffX / 2.0f;
-                translateY = diffY / 2.0f;
-//                }
+                final float translateX = diffX / 2.0f;
+                final float translateY = diffY / 2.0f;
                 matrix.postTranslate(translateX, translateY);
 
                 mShader.setLocalMatrix(matrix);

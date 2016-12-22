@@ -8,7 +8,7 @@ Android通用控件背景Drawable，支持多种形状、多种状态、多种�
 # Usage
 - Usage in XML(see all configurable attributes in /res/values/attrs.xml):
 ```xml
-<com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+<com.ytb.myapp.widget.commonbackground.CommonBackgroundXXX
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -22,6 +22,8 @@ Android通用控件背景Drawable，支持多种形状、多种状态、多种�
             app:shape="rect"
             app:stateful="true"/>
 ```
+supports TextView, Button, ImageView, CheckBox, FrameLayout, LinearLayout, RelativeLayout.
+
 - Usage in java:
 ```java
         // stateless

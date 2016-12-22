@@ -27,7 +27,7 @@ import android.view.View;
  * @author yintaibing
  * @date 2016/10/28
  */
-public class CommonBackground extends Drawable implements ICommonBackground {
+public class CommonBackground extends Drawable implements ICommonBackground, Cloneable {
     public static final int SHAPE_RECT = 0;             // 矩形
     public static final int SHAPE_ROUND_RECT = 1;       // 圆角矩形
     public static final int SHAPE_SIDE_CIRCLE_RECT = 2; // 圆头矩形
@@ -36,10 +36,10 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     public static final int FILL_MODE_SOLID = 1;        // 纯色填充
     public static final int FILL_MODE_BITMAP = 2;       // 图片填充
 
-    public static final int SCALE_TYPE_CENTER = 0;        // 无缩放
-    public static final int SCALE_TYPE_CENTER_CROP = 1;     // 以控件较长边为准进行缩放
-    public static final int SCALE_TYPE_FIT_CENTER = 2;    // 以控件较短边为准进行缩放
-    public static final int SCALE_TYPE_FIT_XY = 3;      // fitXY
+    public static final int SCALE_TYPE_CENTER = 0;
+    public static final int SCALE_TYPE_CENTER_CROP = 1;
+    public static final int SCALE_TYPE_FIT_CENTER = 2;
+    public static final int SCALE_TYPE_FIT_XY = 3;
 
     public static final int STROKE_MODE_NONE = 0;       // 无描边
     public static final int STROKE_MODE_SOLID = 1;      // 实线描边
@@ -62,6 +62,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     private ColorMatrixColorFilter mColorFilter;
     private Paint mPaint;
     private RectF mBounds;
+    private boolean mIsUsed; // true if this drawable has been set as a view's background
 
     CommonBackground() {
         mPaint = new Paint();
@@ -76,12 +77,17 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public void showOn(View yourView) {
         if (yourView != null) {
-            if (Build.VERSION.SDK_INT >= 16) {
-                yourView.setBackground(this);
+            if (!mIsUsed) {
+                if (Build.VERSION.SDK_INT >= 16) {
+                    yourView.setBackground(this);
+                } else {
+                    yourView.setBackgroundDrawable(this);
+                }
+                yourView.setClickable(true);
+                mIsUsed = true;
             } else {
-                yourView.setBackgroundDrawable(this);
+                ((CommonBackground) this.clone()).showOn(yourView);
             }
-            yourView.setClickable(true);
         }
     }
 
@@ -521,5 +527,15 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                 0, 0, b, 0, 0,
                 0, 0, 0, a, 0
         });
+    }
+
+    @Override
+    protected Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return this;
+        }
     }
 }

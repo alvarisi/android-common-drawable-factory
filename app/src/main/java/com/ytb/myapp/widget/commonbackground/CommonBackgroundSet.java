@@ -12,7 +12,7 @@ import android.view.View;
  * @author yintaibing
  * @date 2016/10/28
  */
-public class CommonBackgroundSet {
+public class CommonBackgroundSet implements Cloneable {
     public static final int STATE_MODE_CLICK = 0;       // 点击模式（类似Button）
     public static final int STATE_MODE_CHECK = 1;       // 选择模式（类似CheckBox）
 
@@ -28,6 +28,7 @@ public class CommonBackgroundSet {
 
     private int mStateMode;
     private CommonBackground[] mDrawables;
+    private boolean mIsUsed;
 
     CommonBackgroundSet() {
         this(STATE_MODE_CLICK);
@@ -120,49 +121,64 @@ public class CommonBackgroundSet {
      */
     public void showOn(View yourView) {
         if (yourView != null) {
-            StateListDrawable stateList = new StateListDrawable();
-            if (mStateMode == STATE_MODE_CLICK) {
-                // 以下顺序不可更改
-                // when disabled
-                stateList.addState(new int[]{-android.R.attr.state_enabled},
-                        mDrawables[CLICK_STATE_DISABLED]);
-                // View.PRESSED_ENABLED_STATE_SET
-                stateList.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled},
-                        mDrawables[CLICK_STATE_PRESSED]);
-                // View.ENABLED_FOCUSED_STATE_SET
-                stateList.addState(new int[]{android.R.attr.state_enabled, android.R.attr.state_focused},
-                        mDrawables[CLICK_STATE_NORMAL]);
-                // View.ENABLED_STATE_SET
-                stateList.addState(new int[]{android.R.attr.state_enabled}, mDrawables[CLICK_STATE_NORMAL]);
-                // View.FOCUSED_STATE_SET
-                stateList.addState(new int[]{android.R.attr.state_focused}, mDrawables[CLICK_STATE_NORMAL]);
-                // View.EMPTY_STATE_SET
-                stateList.addState(new int[]{}, mDrawables[CLICK_STATE_NORMAL]);
-                // View.WINDOW_FOCUSED_STATE_SET
-                stateList.addState(new int[]{android.R.attr.state_window_focused},
-                        mDrawables[CLICK_STATE_DISABLED]);
+            if (!mIsUsed) {
+                StateListDrawable stateList = new StateListDrawable();
+                if (mStateMode == STATE_MODE_CLICK) {
+                    // 以下顺序不可更改
+                    // when disabled
+                    stateList.addState(new int[]{-android.R.attr.state_enabled},
+                            mDrawables[CLICK_STATE_DISABLED]);
+                    // View.PRESSED_ENABLED_STATE_SET
+                    stateList.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled},
+                            mDrawables[CLICK_STATE_PRESSED]);
+                    // View.ENABLED_FOCUSED_STATE_SET
+                    stateList.addState(new int[]{android.R.attr.state_enabled, android.R.attr
+                            .state_focused},
+                            mDrawables[CLICK_STATE_NORMAL]);
+                    // View.ENABLED_STATE_SET
+                    stateList.addState(new int[]{android.R.attr.state_enabled}, mDrawables[CLICK_STATE_NORMAL]);
+                    // View.FOCUSED_STATE_SET
+                    stateList.addState(new int[]{android.R.attr.state_focused}, mDrawables[CLICK_STATE_NORMAL]);
+                    // View.EMPTY_STATE_SET
+                    stateList.addState(new int[]{}, mDrawables[CLICK_STATE_NORMAL]);
+                    // View.WINDOW_FOCUSED_STATE_SET
+                    stateList.addState(new int[]{android.R.attr.state_window_focused},
+                            mDrawables[CLICK_STATE_DISABLED]);
+                } else if (mStateMode == STATE_MODE_CHECK) {
+                    // 以下顺序不可更改
+                    // when disabled
+                    stateList.addState(new int[]{-android.R.attr.state_enabled},
+                            mDrawables[CHECK_STATE_DISABLED]);
+                    stateList.addState(new int[]{android.R.attr.state_checked, android.R.attr.state_enabled},
+                            mDrawables[CHECK_STATE_CHECKED]);
+                    stateList.addState(new int[]{-android.R.attr.state_checked, android.R.attr.state_enabled},
+                            mDrawables[CHECK_STATE_UNCHECKED]);
+                    stateList.addState(new int[]{}, mDrawables[CHECK_STATE_UNCHECKED]);
+                    stateList.addState(new int[]{android.R.attr.state_window_focused},
+                            mDrawables[CLICK_STATE_DISABLED]);
+                }
 
-            } else if (mStateMode == STATE_MODE_CHECK) {
-                // 以下顺序不可更改
-                // when disabled
-                stateList.addState(new int[]{-android.R.attr.state_enabled},
-                        mDrawables[CHECK_STATE_DISABLED]);
-                stateList.addState(new int[]{android.R.attr.state_checked, android.R.attr.state_enabled},
-                        mDrawables[CHECK_STATE_CHECKED]);
-                stateList.addState(new int[]{-android.R.attr.state_checked, android.R.attr.state_enabled},
-                        mDrawables[CHECK_STATE_UNCHECKED]);
-                stateList.addState(new int[]{}, mDrawables[CHECK_STATE_UNCHECKED]);
-                stateList.addState(new int[]{android.R.attr.state_window_focused},
-                        mDrawables[CLICK_STATE_DISABLED]);
-            }
-
-            if (Build.VERSION.SDK_INT >= 16) {
-                yourView.setBackground(stateList);
+                if (Build.VERSION.SDK_INT >= 16) {
+                    yourView.setBackground(stateList);
+                } else {
+                    yourView.setBackgroundDrawable(stateList);
+                }
+                yourView.setClickable(true);
+                mIsUsed = true;
             } else {
-                yourView.setBackgroundDrawable(stateList);
+                ((CommonBackgroundSet) this.clone()).showOn(yourView);
             }
-            yourView.setClickable(true);
         }
+    }
+
+    @Override
+    protected Object clone() {
+        CommonBackgroundSet clone = new CommonBackgroundSet(mStateMode);
+        clone.mDrawables = new CommonBackground[mDrawables.length];
+        for (int i = 0; i < mDrawables.length; i++) {
+            clone.mDrawables[i] = (CommonBackground) mDrawables[i].clone();
+        }
+        return clone;
     }
 
     public class CommonBackgroundIterator implements ICommonBackground {

@@ -64,8 +64,17 @@ public class CommonBackgroundFactory {
      *
      * @return CommonBackgroundSet
      */
-    public static CommonBackgroundSet createStateful() {
-        return new CommonBackgroundSet();
+    public static CommonBackgroundSet createClickable() {
+        return new CommonBackgroundSet(CommonBackgroundSet.STATE_MODE_CLICK);
+    }
+
+    /**
+     * 创建区分状态（disabled, unchecked, checked）的通用背景
+     *
+     * @return CommonBackgroundSet
+     */
+    public static CommonBackgroundSet createCheckable() {
+        return new CommonBackgroundSet(CommonBackgroundSet.STATE_MODE_CHECK);
     }
 
     /**

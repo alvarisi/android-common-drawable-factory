@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 
-
 import com.ytb.myapp.R;
 
 
@@ -97,7 +96,7 @@ public class CommonBackgroundFactory {
             attrs.fillMode = a.getInt(R.styleable.CommonBackground_fillMode,
                     CommonBackground.FILL_MODE_SOLID); // 默认颜色填充
             attrs.scaleType = a.getInt(R.styleable.CommonBackground_scaleType,
-                    CommonBackground.SCALE_TYPE_NONE); // 默认无缩放
+                    CommonBackground.SCALE_TYPE_CENTER); // 默认无缩放
             attrs.strokeMode = a.getInt(R.styleable.CommonBackground_strokeMode,
                     CommonBackground.STROKE_MODE_NONE); // 默认无描边
             if (attrs.strokeMode != CommonBackground.STROKE_MODE_NONE) {
@@ -111,15 +110,17 @@ public class CommonBackgroundFactory {
                     R.styleable.CommonBackground_strokeDashSpace, 0);
             attrs.colorDisabled = a.getColor(R.styleable.CommonBackground_colorDisabled,
                     Color.LTGRAY); // disabled状态默认使用浅灰色
-            if (attrs.stateful) {
-                if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CLICK) {
-                    attrs.colorNormal = a.getColor(R.styleable.CommonBackground_colorNormal,
-                            Color.WHITE); // normal状态默认使用白色
+            if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CLICK) {
+                attrs.colorNormal = a.getColor(R.styleable.CommonBackground_colorNormal,
+                        Color.WHITE); // normal状态默认使用白色
+                if (attrs.stateful) {
                     attrs.colorPressed = a.getColor(R.styleable.CommonBackground_colorPressed,
                             attrs.colorNormal); // pressed状态默认与normal状态相同
-                } else if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CHECK) {
-                    attrs.colorUnchecked = a.getColor(R.styleable.CommonBackground_colorUnchecked,
-                            Color.WHITE);
+                }
+            } else if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CHECK) {
+                attrs.colorUnchecked = a.getColor(R.styleable.CommonBackground_colorUnchecked,
+                        Color.WHITE);
+                if (attrs.stateful) {
                     attrs.colorChecked = a.getColor(R.styleable.CommonBackground_colorChecked,
                             Color.WHITE);
                 }

@@ -27,9 +27,9 @@
 
         <!-- 填充图的缩放类型 -->
         <attr name="scaleType">
-            <enum name="none" value="0"/>
-            <enum name="at_most" value="1"/><!-- 对齐控件width/height中的大者 -->
-            <enum name="at_least" value="2"/><!-- 对齐控件width/height中的小者 -->
+            <enum name="center" value="0"/>
+            <enum name="centerCrop" value="1"/><!-- 对齐控件width/height中的大者 -->
+            <enum name="fitCenter" value="2"/><!-- 对齐控件width/height中的小者 -->
             <enum name="fitXY" value="3"/><!-- 对齐控件长宽 -->
         </attr>
 

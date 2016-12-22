@@ -1,67 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:myapp="http://schemas.android.com/apk/res-auto"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:gravity="center_horizontal"
               android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="6种形状：矩形、圆角矩形、3种圆头矩形、圆形\n3种描边：无描边、实线描边、虚线描边\n3种状态：disabled、normal、pressed\n2种填充：纯色、图片"
-        android:textSize="18sp"/>
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:text="stateful/stateMode"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="false"
+            app:colorNormal="@color/lighter_blue"
+            app:fillMode="solid"
+            app:shape="rect"
+            app:stateMode="click"
+            app:stateful="false"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="click"
+            app:colorNormal="@color/lighter_blue"
+            app:colorPressed="@color/darker_blue"
+            app:fillMode="solid"
+            app:shape="rect"
+            app:stateMode="click"
+            app:stateful="true"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="check"
+            app:colorChecked="@color/lighter_blue"
+            app:colorStroke="@color/lighter_blue"
+            app:colorUnchecked="@android:color/white"
+            app:fillMode="solid"
+            app:shape="side_circle_rect"
+            app:stateMode="check"
+            app:stateful="true"
+            app:strokeMode="solid"
+            app:strokeWidth="1dp"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
-            android:id="@+id/btn1"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="btn1"
-            myapp:colorDisabled="@android:color/darker_gray"
-            myapp:colorNormal="@color/lighter_blue"
-            myapp:colorPressed="@color/darker_blue"
-            myapp:fillMode="solid"
-            myapp:shape="rect"
-            myapp:stateful="true"
-            myapp:strokeMode="none"/>
+            android:lines="2"
+            android:text="shape"/>
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
-            android:id="@+id/btn2"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
             android:gravity="center"
-            android:text="btn2"
-            myapp:bitmap="@mipmap/icon"
-            myapp:colorDisabled="@android:color/darker_gray"
-            myapp:colorNormal="@color/lighter_blue"
-            myapp:colorPressed="@color/darker_blue"
-            myapp:colorStroke="@android:color/darker_gray"
-            myapp:fillMode="bitmap|solid"
-            myapp:scaleType="fitXY"
-            myapp:shape="side_circle_rect"
-            myapp:stateful="true"
-            myapp:strokeMode="none"/>
+            android:padding="5dp"
+            android:text="rect"
+            app:colorNormal="@color/lighter_blue"
+            app:fillMode="solid"
+            app:shape="rect"
+            app:stateful="false"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="round_rect"
+            app:colorNormal="@color/lighter_blue"
+            app:fillMode="solid"
+            app:radius="10dp"
+            app:shape="round_rect"
+            app:stateful="false"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="side_circle_rect"
+            app:colorNormal="@color/lighter_blue"
+            app:fillMode="solid"
+            app:shape="side_circle_rect"
+            app:stateful="false"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="circle"
+            app:colorNormal="@color/lighter_blue"
+            app:fillMode="solid"
+            app:shape="circle"
+            app:stateful="false"/>
     </LinearLayout>
 
-    <com.ytb.myapp.widget.commonbackground.CommonBackgroundCheckBox
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:gravity="center"
-        android:text="btn6"
-        myapp:colorChecked="@color/darker_blue"
-        myapp:colorUnchecked="@color/lighter_blue"
-        myapp:shape="side_circle_rect"
-        myapp:stateMode="check"
-        myapp:stateful="true"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:text="fillMode"/>
+
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="solid"
+            app:colorNormal="@color/lighter_blue"
+            app:fillMode="solid"
+            app:shape="rect"
+            app:stateful="false"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="bitmap"
+            app:bitmap="@mipmap/ic_launcher"
+            app:colorNormal="@color/lighter_blue"
+            app:fillMode="bitmap"
+            app:shape="rect"
+            app:stateful="false"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="solid|bitmap\n(click me)"
+            app:bitmap="@mipmap/ic_launcher"
+            app:colorNormal="#FFFFFFFF"
+            app:colorPressed="#88FFFFFF"
+            app:fillMode="solid|bitmap"
+            app:shape="rect"
+            app:stateful="true"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:text="scaleType"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="none"
+            app:bitmap="@mipmap/ic_launcher"
+            app:colorStroke="@color/lighter_blue"
+            app:fillMode="bitmap"
+            app:scaleType="center"
+            app:shape="rect"
+            app:stateful="false"
+            app:strokeMode="solid"
+            app:strokeWidth="1dp"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="centerCrop"
+            app:bitmap="@mipmap/ic_launcher"
+            app:colorStroke="@color/lighter_blue"
+            app:fillMode="bitmap"
+            app:scaleType="centerCrop"
+            app:shape="rect"
+            app:stateful="false"
+            app:strokeMode="solid"
+            app:strokeWidth="1dp"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="fitCenter"
+            app:bitmap="@mipmap/ic_launcher"
+            app:colorStroke="@color/lighter_blue"
+            app:fillMode="bitmap"
+            app:scaleType="fitCenter"
+            app:shape="rect"
+            app:stateful="false"
+            app:strokeMode="solid"
+            app:strokeWidth="1dp"/>
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="5dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="fitXY"
+            app:bitmap="@mipmap/ic_launcher"
+            app:colorStroke="@color/lighter_blue"
+            app:fillMode="bitmap"
+            app:scaleType="fitXY"
+            app:shape="rect"
+            app:stateful="false"
+            app:strokeMode="solid"
+            app:strokeWidth="1dp"/>
+    </LinearLayout>
 </LinearLayout>

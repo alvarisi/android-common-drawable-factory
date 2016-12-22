@@ -1,6 +1,6 @@
 # Project
-Android通用控件背景Drawable，支持多种形状、多种状态、多种描边和填充模式。
-Android common-background drawable, supports multi shapes, multi states, multi stroke mode, and multi fill mode.
+Android通用控件背景Drawable，支持多种形状、多种状态、多种描边和填充模式。旨在减少书写drawable.xml，提高代码重用。
+\r\nAndroid common-background drawable, supports multi shapes, multi states, multi stroke mode, and multi fill mode. Aiming to reduce drawable.xml, and increase reusability.
 
 # Preview
 ![image](https://github.com/yintaibing/CommonBackgroundWidget/blob/master/screenshot/preview.png)

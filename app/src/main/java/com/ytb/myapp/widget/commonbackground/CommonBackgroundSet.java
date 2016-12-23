@@ -166,6 +166,7 @@ public class CommonBackgroundSet {
             } else {
                 yourView.setBackgroundDrawable(stateList);
             }
+            yourView.setClickable(true);
         }
     }
 

@@ -47,10 +47,10 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
 
     // user data
     private Bitmap mBitmap;
-    private int mShape;
-    private int mFillMode;
-    private int mScaleType;
-    private int mStrokeMode;
+    private int mShape = SHAPE_RECT;
+    private int mFillMode = FILL_MODE_SOLID;
+    private int mScaleType = SCALE_TYPE_CENTER;
+    private int mStrokeMode = STROKE_MODE_NONE;
     private int mColorFill = Color.WHITE;
     private int mColorStroke = Color.TRANSPARENT;
     private float mStrokeWidth;       // px

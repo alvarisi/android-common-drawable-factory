@@ -27,7 +27,7 @@ import android.view.View;
  * @author yintaibing
  * @date 2016/10/28
  */
-public class CommonBackground extends Drawable implements ICommonBackground, Cloneable {
+public class CommonBackground extends Drawable implements ICommonBackground {
     public static final int SHAPE_RECT = 0;             // 矩形
     public static final int SHAPE_ROUND_RECT = 1;       // 圆角矩形
     public static final int SHAPE_SIDE_CIRCLE_RECT = 2; // 圆头矩形
@@ -62,7 +62,6 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
     private ColorMatrixColorFilter mColorFilter;
     private Paint mPaint;
     private RectF mBounds;
-    private boolean mIsUsed; // true if this drawable has been set as a view's background
 
     CommonBackground() {
         mPaint = new Paint();
@@ -77,16 +76,10 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
     @Override
     public void showOn(View yourView) {
         if (yourView != null) {
-            if (!mIsUsed) {
-                if (Build.VERSION.SDK_INT >= 16) {
-                    yourView.setBackground(this);
-                } else {
-                    yourView.setBackgroundDrawable(this);
-                }
-                yourView.setClickable(true);
-                mIsUsed = true;
+            if (Build.VERSION.SDK_INT >= 16) {
+                yourView.setBackground(this);
             } else {
-                ((CommonBackground) this.clone()).showOn(yourView);
+                yourView.setBackgroundDrawable(this);
             }
         }
     }
@@ -280,6 +273,8 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
 
     /**
      * 调整画笔至描边模式
+     *
+     * @return true 需要drawFill，false 不需要drawFill
      */
     private boolean updatePaintToStroke() {
         // STROKE_MODE_NONE
@@ -528,15 +523,5 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
                 0, 0, b, 0, 0,
                 0, 0, 0, a, 0
         });
-    }
-
-    @Override
-    protected Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            return this;
-        }
     }
 }

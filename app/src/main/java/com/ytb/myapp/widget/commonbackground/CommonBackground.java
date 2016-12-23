@@ -270,20 +270,21 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
 
     @Override
     public void draw(@NonNull Canvas canvas) {
-        // 先绘制描边，再缩小边界，绘制填充
-        drawStroke(canvas);
+        // 先绘制描边，再绘制填充
+        if (updatePaintToStroke()) {
+            drawStroke(canvas);
+        }
+        updatePaintToFill();
         drawFill(canvas);
     }
 
     /**
-     * 绘制描边（进调整画笔）
-     *
-     * @param canvas 画板
+     * 调整画笔至描边模式
      */
-    private void drawStroke(Canvas canvas) {
+    private boolean updatePaintToStroke() {
         // STROKE_MODE_NONE
         if (mStrokeMode == STROKE_MODE_NONE) {
-            return;
+            return false;
         }
 
         // STROKE_MODE_SOLID or STROKE_MODE_DASH
@@ -298,15 +299,15 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
                 mPaint.setPathEffect(new DashPathEffect(mStrokeDash, 1.0f));
             }
         }
-        drawStrokeShape(canvas);
+        return true;
     }
 
     /**
-     * 绘制描边（调整画笔后，实际绘制出形状）
+     * 绘制描边
      *
      * @param canvas 画板
      */
-    private void drawStrokeShape(Canvas canvas) {
+    private void drawStroke(Canvas canvas) {
         final float narrowBy = mStrokeWidth / 2.0f; // 绘图半径需缩小mStrokeWidth / 2
         final float strokeRadius;
 
@@ -338,11 +339,9 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
     }
 
     /**
-     * 绘制填充（仅调整画笔）
-     *
-     * @param canvas 画板
+     * 调整画笔至填充模式
      */
-    private void drawFill(Canvas canvas) {
+    private void updatePaintToFill() {
         mPaint.setStyle(Paint.Style.FILL);
 
         if ((mFillMode & FILL_MODE_BITMAP) != 0) {
@@ -419,15 +418,14 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
         } else {
             mPaint.setColor(mColorFill);
         }
-        drawFillShape(canvas);
     }
 
     /**
-     * 绘制填充（调整画笔后，实际绘制出填充形状）
+     * 绘制填充
      *
      * @param canvas 画板
      */
-    private void drawFillShape(Canvas canvas) {
+    private void drawFill(Canvas canvas) {
         final float narrowBy = ((mFillMode & FILL_MODE_BITMAP) == 0 && mStrokeWidth > 1.0f) ?
                 (mStrokeWidth - 1.0f) : mStrokeWidth; // 当非图片填充时（即仅纯色填充时），-1.0调整误差
         float fillRadius;

@@ -38,7 +38,7 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:padding="5dp"
-            android:text="click"
+            android:text="click me"
             app:colorNormal="@color/lighter_blue"
             app:colorPressed="@color/darker_blue"
             app:fillMode="solid"
@@ -47,12 +47,13 @@
             app:stateful="true"/>
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundCheckBox
+            android:id="@+id/cb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:padding="5dp"
-            android:text="check"
+            android:text="check me"
             app:colorChecked="@color/lighter_blue"
             app:colorStroke="@color/lighter_blue"
             app:colorUnchecked="@android:color/white"
@@ -204,7 +205,7 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:padding="5dp"
-            android:text="none"
+            android:text="center"
             app:bitmap="@mipmap/ic_launcher"
             app:colorStroke="@color/lighter_blue"
             app:fillMode="bitmap"
@@ -308,4 +309,9 @@
             app:strokeMode="dash"
             app:strokeWidth="2dp"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="see more attributes in /res/values/attr.xml"/>
 </LinearLayout>

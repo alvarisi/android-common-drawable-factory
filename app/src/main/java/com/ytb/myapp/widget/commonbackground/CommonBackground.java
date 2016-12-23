@@ -350,45 +350,47 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
                 Matrix matrix = new Matrix();
                 final float viewWidth = mBounds.right - mBounds.left;
                 final float viewHeight = mBounds.bottom - mBounds.top;
-                float diffX = Math.abs(viewWidth - mBitmap.getWidth());     // 控件与bitmap的宽度差
-                float diffY = Math.abs(viewHeight - mBitmap.getHeight());   // 控件与bitmap的高度差
+                final float bitmapWidth = mBitmap.getWidth();
+                final float bitmapHeight = mBitmap.getHeight();
+                float diffX = Math.abs(viewWidth - bitmapWidth);     // 控件与bitmap的宽度差
+                float diffY = Math.abs(viewHeight - bitmapHeight);   // 控件与bitmap的高度差
 
                 // 设置缩放
                 float scaleX, scaleY;
                 switch (mScaleType) {
                     case SCALE_TYPE_CENTER_CROP:
-                        if (viewWidth < mBitmap.getWidth() && viewHeight < mBitmap.getHeight()) {
+                        if (viewWidth < bitmapWidth && viewHeight < bitmapHeight) {
                             // 控件长宽均比bitmap小，以差值小的边为准
-                            scaleX = scaleY = diffX < diffY ? viewWidth / mBitmap.getWidth() :
-                                    viewHeight / mBitmap.getHeight();
-                        } else if (viewWidth < mBitmap.getWidth()) {
-                            scaleX = scaleY = viewHeight / mBitmap.getHeight();
-                        } else if (viewHeight < mBitmap.getHeight()) {
-                            scaleX = scaleY = viewWidth / mBitmap.getWidth();
+                            scaleX = scaleY = diffX < diffY ? viewWidth / bitmapWidth :
+                                    viewHeight / bitmapHeight;
+                        } else if (viewWidth < bitmapWidth) {
+                            scaleX = scaleY = viewHeight / bitmapHeight;
+                        } else if (viewHeight < bitmapHeight) {
+                            scaleX = scaleY = viewWidth / bitmapWidth;
                         } else {
                             // 控件长宽均比bitmap大，以差值大的边为准
-                            scaleX = scaleY = diffX < diffY ? viewHeight / mBitmap.getHeight() :
-                                    viewWidth / mBitmap.getWidth();
+                            scaleX = scaleY = diffX < diffY ? viewHeight / bitmapHeight :
+                                    viewWidth / bitmapWidth;
                         }
                         break;
                     case SCALE_TYPE_FIT_CENTER:
-                        if (viewWidth < mBitmap.getWidth() && viewHeight < mBitmap.getHeight()) {
+                        if (viewWidth < bitmapWidth && viewHeight < bitmapHeight) {
                             // 控件长宽均比bitmap小，以差值大的边为准
-                            scaleX = scaleY = diffX < diffY ? viewHeight / mBitmap.getHeight() :
-                                    viewWidth / mBitmap.getWidth();
-                        } else if (viewWidth < mBitmap.getWidth()) {
-                            scaleX = scaleY = viewWidth / mBitmap.getWidth();
-                        } else if (viewHeight < mBitmap.getHeight()) {
-                            scaleX = scaleY = viewHeight / mBitmap.getHeight();
+                            scaleX = scaleY = diffX < diffY ? viewHeight / bitmapHeight :
+                                    viewWidth / bitmapWidth;
+                        } else if (viewWidth < bitmapWidth) {
+                            scaleX = scaleY = viewWidth / bitmapWidth;
+                        } else if (viewHeight < bitmapHeight) {
+                            scaleX = scaleY = viewHeight / bitmapHeight;
                         } else {
                             // 控件长宽均比bitmap大，以差值小的边为准
-                            scaleX = scaleY = diffX < diffY ? viewWidth / mBitmap.getWidth() :
-                                    viewHeight / mBitmap.getHeight();
+                            scaleX = scaleY = diffX < diffY ? viewWidth / bitmapWidth :
+                                    viewHeight / bitmapHeight;
                         }
                         break;
                     case SCALE_TYPE_FIT_XY:
-                        scaleX = viewWidth / mBitmap.getWidth();
-                        scaleY = viewHeight / mBitmap.getHeight();
+                        scaleX = viewWidth / bitmapWidth;
+                        scaleY = viewHeight / bitmapHeight;
                         break;
                     case SCALE_TYPE_CENTER:
                     default:
@@ -398,8 +400,8 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
                 matrix.postScale(scaleX, scaleY);
 
                 // 图片居中
-                diffX = viewWidth - mBitmap.getWidth() * scaleX;
-                diffY = viewHeight - mBitmap.getHeight() * scaleY;
+                diffX = viewWidth - bitmapWidth * scaleX;
+                diffY = viewHeight - bitmapHeight * scaleY;
                 final float translateX = diffX / 2.0f;
                 final float translateY = diffY / 2.0f;
                 matrix.postTranslate(translateX, translateY);
@@ -426,7 +428,8 @@ public class CommonBackground extends Drawable implements ICommonBackground, Clo
      * @param canvas 画板
      */
     private void drawFillShape(Canvas canvas) {
-        final float narrowBy = mStrokeWidth > 0.5f ? (mStrokeWidth - 0.5f) : 0; // -0.5是调整误差
+        final float narrowBy = ((mFillMode & FILL_MODE_BITMAP) == 0 && mStrokeWidth > 1.0f) ?
+                (mStrokeWidth - 1.0f) : mStrokeWidth; // 当非图片填充时（即仅纯色填充时），-1.0调整误差
         float fillRadius;
 
         switch (mShape) {

@@ -16,7 +16,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -28,22 +27,22 @@ import android.view.View;
  * @date 2016/10/28
  */
 public class CommonBackground extends Drawable implements ICommonBackground {
-    public static final int SHAPE_RECT = 0;             // 矩形
-    public static final int SHAPE_ROUND_RECT = 1;       // 圆角矩形
-    public static final int SHAPE_SIDE_CIRCLE_RECT = 2; // 圆头矩形
-    public static final int SHAPE_CIRCLE = 3;           // 圆形
+    public static final int SHAPE_RECT              = 0; // 矩形
+    public static final int SHAPE_ROUND_RECT        = 1; // 圆角矩形
+    public static final int SHAPE_SIDE_CIRCLE_RECT  = 2; // 圆头矩形
+    public static final int SHAPE_CIRCLE            = 3; // 圆形
 
-    public static final int FILL_MODE_SOLID = 1;        // 纯色填充
-    public static final int FILL_MODE_BITMAP = 2;       // 图片填充
+    public static final int FILL_MODE_SOLID         = 1; // 纯色填充
+    public static final int FILL_MODE_BITMAP        = 2; // 图片填充
 
-    public static final int SCALE_TYPE_CENTER = 0;
-    public static final int SCALE_TYPE_CENTER_CROP = 1;
-    public static final int SCALE_TYPE_FIT_CENTER = 2;
-    public static final int SCALE_TYPE_FIT_XY = 3;
+    public static final int STROKE_MODE_NONE        = 0; // 无描边
+    public static final int STROKE_MODE_SOLID       = 1; // 实线描边
+    public static final int STROKE_MODE_DASH        = 2; // 断续线描边
 
-    public static final int STROKE_MODE_NONE = 0;       // 无描边
-    public static final int STROKE_MODE_SOLID = 1;      // 实线描边
-    public static final int STROKE_MODE_DASH = 2;       // 断续线描边
+    public static final int SCALE_TYPE_CENTER       = 0;
+    public static final int SCALE_TYPE_CENTER_CROP  = 1;
+    public static final int SCALE_TYPE_FIT_CENTER   = 2;
+    public static final int SCALE_TYPE_FIT_XY       = 3;
 
     // user data
     private Bitmap mBitmap;
@@ -76,11 +75,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public void showOn(View yourView) {
         if (yourView != null) {
-            if (Build.VERSION.SDK_INT >= 16) {
-                yourView.setBackground(this);
-            } else {
-                yourView.setBackgroundDrawable(this);
-            }
+            yourView.setBackgroundDrawable(this);
         }
     }
 
@@ -264,22 +259,30 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public void draw(@NonNull Canvas canvas) {
         // 先绘制描边，再绘制填充
-        if (updatePaintToStroke()) {
+        if (hasStroke()) {
+            setPaintToStroke();
             drawStroke(canvas);
         }
-        updatePaintToFill();
+        setPaintToFill();
         drawFill(canvas);
     }
 
     /**
-     * 调整画笔至描边模式
+     * 是否有描边
      *
-     * @return true 需要drawFill，false 不需要drawFill
+     * @return true 需要描边，false 不需要描边
      */
-    private boolean updatePaintToStroke() {
+    private boolean hasStroke() {
+        return mStrokeMode != STROKE_MODE_NONE;
+    }
+
+    /**
+     * 调整画笔至描边模式
+     */
+    private void setPaintToStroke() {
         // STROKE_MODE_NONE
         if (mStrokeMode == STROKE_MODE_NONE) {
-            return false;
+            return;
         }
 
         // STROKE_MODE_SOLID or STROKE_MODE_DASH
@@ -288,13 +291,13 @@ public class CommonBackground extends Drawable implements ICommonBackground {
         mPaint.setShader(null);
         mPaint.setColorFilter(null);
         mPaint.setStrokeWidth(mStrokeWidth);
+
         // STROKE_MODE_DASH
         if (mStrokeMode == STROKE_MODE_DASH) {
             if (mPaint.getPathEffect() == null) {
                 mPaint.setPathEffect(new DashPathEffect(mStrokeDash, 1.0f));
             }
         }
-        return true;
     }
 
     /**
@@ -313,7 +316,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                         mPaint);
                 break;
             case SHAPE_SIDE_CIRCLE_RECT:
-                mRadius = (mBounds.top + mBounds.bottom) / 2.0f; // 自动计算半径
+                mRadius = (mBounds.top + mBounds.bottom) / 2.0f; // 计算半径
                 strokeRadius = mRadius - narrowBy;
                 canvas.drawRoundRect(narrowBounds(mBounds, narrowBy), strokeRadius, strokeRadius,
                         mPaint);
@@ -336,7 +339,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     /**
      * 调整画笔至填充模式
      */
-    private void updatePaintToFill() {
+    private void setPaintToFill() {
         mPaint.setStyle(Paint.Style.FILL);
 
         if ((mFillMode & FILL_MODE_BITMAP) != 0) {
@@ -349,42 +352,40 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                 float diffX = Math.abs(viewWidth - bitmapWidth);     // 控件与bitmap的宽度差
                 float diffY = Math.abs(viewHeight - bitmapHeight);   // 控件与bitmap的高度差
 
-                // 设置缩放
-                float scaleX, scaleY;
+                // 计算缩放
+                final float scaleX, scaleY;
+                float ratioX = viewWidth / bitmapWidth;
+                float ratioY = viewHeight / bitmapHeight;
                 switch (mScaleType) {
                     case SCALE_TYPE_CENTER_CROP:
                         if (viewWidth < bitmapWidth && viewHeight < bitmapHeight) {
                             // 控件长宽均比bitmap小，以差值小的边为准
-                            scaleX = scaleY = diffX < diffY ? viewWidth / bitmapWidth :
-                                    viewHeight / bitmapHeight;
+                            scaleX = scaleY = diffX < diffY ? ratioX : ratioY;
                         } else if (viewWidth < bitmapWidth) {
-                            scaleX = scaleY = viewHeight / bitmapHeight;
+                            scaleX = scaleY = ratioY;
                         } else if (viewHeight < bitmapHeight) {
-                            scaleX = scaleY = viewWidth / bitmapWidth;
+                            scaleY = scaleX = ratioX;
                         } else {
                             // 控件长宽均比bitmap大，以差值大的边为准
-                            scaleX = scaleY = diffX < diffY ? viewHeight / bitmapHeight :
-                                    viewWidth / bitmapWidth;
+                            scaleX = scaleY = diffX < diffY ? ratioY: ratioX;
                         }
                         break;
                     case SCALE_TYPE_FIT_CENTER:
                         if (viewWidth < bitmapWidth && viewHeight < bitmapHeight) {
                             // 控件长宽均比bitmap小，以差值大的边为准
-                            scaleX = scaleY = diffX < diffY ? viewHeight / bitmapHeight :
-                                    viewWidth / bitmapWidth;
+                            scaleX = scaleY = diffX < diffY ? ratioY : ratioX;
                         } else if (viewWidth < bitmapWidth) {
-                            scaleX = scaleY = viewWidth / bitmapWidth;
+                            scaleY = scaleX = ratioX;
                         } else if (viewHeight < bitmapHeight) {
-                            scaleX = scaleY = viewHeight / bitmapHeight;
+                            scaleX = scaleY = ratioY;
                         } else {
                             // 控件长宽均比bitmap大，以差值小的边为准
-                            scaleX = scaleY = diffX < diffY ? viewWidth / bitmapWidth :
-                                    viewHeight / bitmapHeight;
+                            scaleX = scaleY = diffX < diffY ? ratioX : ratioY;
                         }
                         break;
                     case SCALE_TYPE_FIT_XY:
-                        scaleX = viewWidth / bitmapWidth;
-                        scaleY = viewHeight / bitmapHeight;
+                        scaleX = ratioX;
+                        scaleY = ratioY;
                         break;
                     case SCALE_TYPE_CENTER:
                     default:

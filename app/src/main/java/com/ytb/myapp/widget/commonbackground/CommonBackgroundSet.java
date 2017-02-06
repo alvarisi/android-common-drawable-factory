@@ -3,7 +3,6 @@ package com.ytb.myapp.widget.commonbackground;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.view.View;
 
 /**
@@ -161,11 +160,7 @@ public class CommonBackgroundSet {
                         mDrawables[CLICK_STATE_DISABLED]);
             }
 
-            if (Build.VERSION.SDK_INT >= 16) {
-                yourView.setBackground(stateList);
-            } else {
-                yourView.setBackgroundDrawable(stateList);
-            }
+            yourView.setBackgroundDrawable(stateList);
             yourView.setClickable(true);
         }
     }

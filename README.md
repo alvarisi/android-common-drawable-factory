@@ -1,12 +1,12 @@
 # Project
 Android通用控件背景Drawable，支持多种形状、多种状态、多种描边和填充模式。旨在减少书写drawable.xml，提高代码重用。
-\r\nAndroid common-background drawable, supports multi shapes, multi states, multi stroke mode, and multi fill mode. Aiming to reduce drawable.xml, and increase reusability.
+Android common-background drawable, supports multi shapes, multi states, multi stroke mode, and multi fill mode. Aiming to reduce drawable.xml, and increase reusability.
 
 # Preview
 ![image](https://github.com/yintaibing/CommonBackgroundWidget/blob/master/screenshot/preview.png)
 
 # Usage
-- Usage in XML(see all configurable attributes in /res/values/attrs.xml):
+- Usage in XML(see all configurable attributes in [attrs.xml](https://github.com/yintaibing/android-common-drawable-factory/blob/master/app/src/main/res/values/attrs.xml)):
 ```xml
 <com.ytb.myapp.widget.commonbackground.CommonBackgroundXXX
             android:layout_width="wrap_content"
@@ -22,7 +22,7 @@ Android通用控件背景Drawable，支持多种形状、多种状态、多种�
             app:shape="rect"
             app:stateful="true"/>
 ```
-supports TextView, Button, ImageView, CheckBox, FrameLayout, LinearLayout, RelativeLayout.
+CommonBackgroundXXX supports TextView, Button, ImageView, CheckBox, FrameLayout, LinearLayout, RelativeLayout.
 
 - Usage in java:
 ```java

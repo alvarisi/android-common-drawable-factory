@@ -35,7 +35,7 @@ CommonBackgroundXXX supports TextView, Button, ImageView, CheckBox, FrameLayout,
         // clickable and checkable
         CommonBackgroundSet set = CommonBackgroundFactory.createClickable();// or createCheckable()
         set.forEach() // use forEach() to set the common attributes of the drawables
-                .shape(CommonBackground.SHAPE_SIDE_CIRCLE_RECT);
+                .shape(CommonBackground.SHAPE_semicircle_rect);
         // then use theXXX() methods to set different attributes
         set.theDisabled().colorFill(Color.DKGRAY);
         set.theNormal().colorFill(Color.WHITE);

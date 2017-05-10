@@ -15,7 +15,7 @@
         <attr name="shape">
             <enum name="rect" value="0"/>
             <enum name="round_rect" value="1"/><!-- 圆角矩形 -->
-            <enum name="side_circle_rect" value="2"/><!-- 圆头矩形（自动计算半径） -->
+            <enum name="semicircle_rect" value="2"/><!-- 圆头矩形（自动计算半径） -->
             <enum name="circle" value="3"/>
         </attr>
 

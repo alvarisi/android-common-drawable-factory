@@ -29,7 +29,7 @@ import android.view.View;
 public class CommonBackground extends Drawable implements ICommonBackground {
     public static final int SHAPE_RECT              = 0; // 矩形
     public static final int SHAPE_ROUND_RECT        = 1; // 圆角矩形
-    public static final int SHAPE_SIDE_CIRCLE_RECT  = 2; // 圆头矩形
+    public static final int SHAPE_SEMICIRCLE_RECT   = 2; // 圆头矩形
     public static final int SHAPE_CIRCLE            = 3; // 圆形
 
     public static final int FILL_MODE_SOLID         = 1; // 纯色填充
@@ -291,6 +291,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
         mPaint.setShader(null);
         mPaint.setColorFilter(null);
         mPaint.setStrokeWidth(mStrokeWidth);
+        mPaint.setStrokeJoin(mRadius > 0f ? Paint.Join.ROUND : Paint.Join.MITER);
 
         // STROKE_MODE_DASH
         if (mStrokeMode == STROKE_MODE_DASH) {
@@ -315,7 +316,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                 canvas.drawRoundRect(narrowBounds(mBounds, narrowBy), strokeRadius, strokeRadius,
                         mPaint);
                 break;
-            case SHAPE_SIDE_CIRCLE_RECT:
+            case SHAPE_SEMICIRCLE_RECT:
                 mRadius = (mBounds.top + mBounds.bottom) / 2.0f; // 计算半径
                 strokeRadius = mRadius - narrowBy;
                 canvas.drawRoundRect(narrowBounds(mBounds, narrowBy), strokeRadius, strokeRadius,
@@ -423,7 +424,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      */
     private void drawFill(Canvas canvas) {
         final float narrowBy = ((mFillMode & FILL_MODE_BITMAP) == 0 && mStrokeWidth > 1.0f) ?
-                (mStrokeWidth - 1.0f) : mStrokeWidth; // 当非图片填充时（即仅纯色填充时），-1.0调整误差
+                (mStrokeWidth - 0.5f) : mStrokeWidth; // 当非图片填充时（即仅纯色填充时），-1.0调整误差
         float fillRadius;
 
         switch (mShape) {
@@ -432,7 +433,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                 canvas.drawRoundRect(narrowBounds(mBounds, narrowBy), fillRadius, fillRadius,
                         mPaint);
                 break;
-            case SHAPE_SIDE_CIRCLE_RECT:
+            case SHAPE_SEMICIRCLE_RECT:
                 mRadius = (mBounds.top + mBounds.bottom) / 2.0f;
                 fillRadius = mRadius - narrowBy;
                 canvas.drawRoundRect(narrowBounds(mBounds, narrowBy), fillRadius, fillRadius,

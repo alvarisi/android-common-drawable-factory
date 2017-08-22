@@ -7,7 +7,7 @@ import android.view.View;
 /**
  * 通用背景接口
  */
-public interface ICommonBackground {
+interface ICommonBackground {
     /**
      * 设置形状
      *
@@ -71,6 +71,18 @@ public interface ICommonBackground {
      * @return
      */
     ICommonBackground radius(int radius);
+
+    /**
+     * 设置圆角或圆形的半径
+     *
+     * @param radiusLeftTop     左上角半径
+     * @param radiusRightTop    右上角半径
+     * @param radiusRightBottom 右下角半径
+     * @param radiusLeftBottom  左下角半径
+     * @return
+     */
+    ICommonBackground radius(int radiusLeftTop, int radiusRightTop,
+                             int radiusRightBottom, int radiusLeftBottom);
 
     /**
      * 设置填充颜色

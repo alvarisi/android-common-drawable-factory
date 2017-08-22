@@ -32,12 +32,13 @@ public class CommonBackgroundFactory {
     /**
      * 从AttrSet解析通用背景
      *
-     * @param view View
+     * @param view    View
      * @param attrSet AttrSet
      */
     public static void fromAttrSet(View view, CommonBackgroundAttrs attrSet) {
         if (attrSet != null) {
-            if (attrSet.stateful) {
+            if (attrSet.stateMode == CommonBackgroundSet.STATE_MODE_CLICK ||
+                    attrSet.stateMode == CommonBackgroundSet.STATE_MODE_CHECK) {
                 CommonBackgroundSet set = stateful(attrSet);
                 set.showOn(view);
             } else {
@@ -88,46 +89,56 @@ public class CommonBackgroundFactory {
             CommonBackgroundAttrs attrs = new CommonBackgroundAttrs();
             TypedArray a = context.obtainStyledAttributes(attributeSet,
                     R.styleable.CommonBackground);
-            attrs.stateful = a.getBoolean(R.styleable.CommonBackground_stateful, false);
-            attrs.stateMode = a.getInt(R.styleable.CommonBackground_stateMode,
-                    CommonBackgroundSet.STATE_MODE_CLICK);
-            attrs.shape = a.getInt(R.styleable.CommonBackground_shape,
+            attrs.stateMode = a.getInt(R.styleable.CommonBackground_bg_stateMode,
+                    CommonBackgroundSet.STATE_MODE_NONE);
+            attrs.shape = a.getInt(R.styleable.CommonBackground_bg_shape,
                     CommonBackground.SHAPE_RECT); // 默认直角矩形
-            attrs.fillMode = a.getInt(R.styleable.CommonBackground_fillMode,
+            attrs.fillMode = a.getInt(R.styleable.CommonBackground_bg_fillMode,
                     CommonBackground.FILL_MODE_SOLID); // 默认颜色填充
-            attrs.scaleType = a.getInt(R.styleable.CommonBackground_scaleType,
+            attrs.scaleType = a.getInt(R.styleable.CommonBackground_bg_scaleType,
                     CommonBackground.SCALE_TYPE_CENTER); // 默认无缩放
-            attrs.strokeMode = a.getInt(R.styleable.CommonBackground_strokeMode,
+            attrs.strokeMode = a.getInt(R.styleable.CommonBackground_bg_strokeMode,
                     CommonBackground.STROKE_MODE_NONE); // 默认无描边
             if (attrs.strokeMode != CommonBackground.STROKE_MODE_NONE) {
                 attrs.strokeWidth = a.getDimensionPixelSize(
-                        R.styleable.CommonBackground_strokeWidth, 0);
+                        R.styleable.CommonBackground_bg_strokeWidth, 0);
             }
-            attrs.radius = a.getDimensionPixelSize(R.styleable.CommonBackground_radius, 0);
+
+            attrs.radius = a.getDimensionPixelSize(R.styleable.CommonBackground_bg_radius, 0);
+            attrs.radiusLeftTop = a.getDimensionPixelSize(
+                    R.styleable.CommonBackground_bg_radiusLeftTop, 0);
+            attrs.radiusLeftBottom = a.getDimensionPixelSize(
+                    R.styleable.CommonBackground_bg_radiusLeftBottom, 0);
+            attrs.radiusRightTop = a.getDimensionPixelSize(
+                    R.styleable.CommonBackground_bg_radiusRightTop, 0);
+            attrs.radiusRightBottom = a.getDimensionPixelSize(
+                    R.styleable.CommonBackground_bg_radiusRightBottom, 0);
+
             attrs.strokeDashSolid = a.getDimensionPixelSize(
-                    R.styleable.CommonBackground_strokeDashSolid, 0);
+                    R.styleable.CommonBackground_bg_strokeDashSolid, 0);
             attrs.strokeDashSpace = a.getDimensionPixelSize(
-                    R.styleable.CommonBackground_strokeDashSpace, 0);
-            attrs.colorDisabled = a.getColor(R.styleable.CommonBackground_colorDisabled,
-                    Color.LTGRAY); // disabled状态默认使用浅灰色
+                    R.styleable.CommonBackground_bg_strokeDashSpace, 0);
             if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CLICK) {
-                attrs.colorNormal = a.getColor(R.styleable.CommonBackground_colorNormal,
-                        Color.WHITE); // normal状态默认使用白色
-                if (attrs.stateful) {
-                    attrs.colorPressed = a.getColor(R.styleable.CommonBackground_colorPressed,
-                            attrs.colorNormal); // pressed状态默认与normal状态相同
-                }
+                attrs.colorNormal = a.getColor(R.styleable.CommonBackground_bg_colorNormal,
+                        Color.TRANSPARENT); // normal状态默认使用白色
+                attrs.colorPressed = a.getColor(R.styleable.CommonBackground_bg_colorPressed,
+                        attrs.colorNormal); // pressed状态默认与normal状态相同
+                attrs.colorDisabled = a.getColor(R.styleable.CommonBackground_bg_colorDisabled,
+                        Color.LTGRAY); // disabled状态默认使用浅灰色
             } else if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CHECK) {
-                attrs.colorUnchecked = a.getColor(R.styleable.CommonBackground_colorUnchecked,
-                        Color.WHITE);
-                if (attrs.stateful) {
-                    attrs.colorChecked = a.getColor(R.styleable.CommonBackground_colorChecked,
-                            Color.WHITE);
-                }
+                attrs.colorUnchecked = a.getColor(R.styleable.CommonBackground_bg_colorUnchecked,
+                        Color.TRANSPARENT);
+                attrs.colorChecked = a.getColor(R.styleable.CommonBackground_bg_colorChecked,
+                        Color.TRANSPARENT);
+                attrs.colorDisabled = a.getColor(R.styleable.CommonBackground_bg_colorDisabled,
+                        Color.LTGRAY); // disabled状态默认使用浅灰色
+            } else {
+                attrs.colorNormal = a.getColor(R.styleable.CommonBackground_bg_colorNormal,
+                        Color.TRANSPARENT);
             }
-            attrs.colorStroke = a.getColor(R.styleable.CommonBackground_colorStroke,
+            attrs.colorStroke = a.getColor(R.styleable.CommonBackground_bg_colorStroke,
                     Color.TRANSPARENT); // 描边默认使用透明
-            int bitmapResId = a.getResourceId(R.styleable.CommonBackground_bitmap,
+            int bitmapResId = a.getResourceId(R.styleable.CommonBackground_bg_bitmap,
                     android.R.drawable.ic_delete);
             attrs.bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResId);
 
@@ -147,6 +158,8 @@ public class CommonBackgroundFactory {
                 .strokeDashSolid(attrs.strokeDashSolid)
                 .strokeDashSpace(attrs.strokeDashSpace)
                 .radius(attrs.radius)
+                .radius(attrs.radiusLeftTop, attrs.radiusRightTop,
+                        attrs.radiusRightBottom, attrs.radiusLeftBottom)
                 .colorStroke(attrs.colorStroke)
                 .colorFill(attrs.colorNormal)
                 .bitmap(attrs.bitmap);
@@ -164,6 +177,8 @@ public class CommonBackgroundFactory {
                 .strokeDashSpace(attrs.strokeDashSpace)
                 .colorStroke(attrs.colorStroke)
                 .radius(attrs.radius)
+                .radius(attrs.radiusLeftTop, attrs.radiusRightTop,
+                        attrs.radiusRightBottom, attrs.radiusLeftBottom)
                 .bitmap(attrs.bitmap);
         set.theDisabled().colorFill(attrs.colorDisabled);
         if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CLICK) {
@@ -172,6 +187,8 @@ public class CommonBackgroundFactory {
         } else if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CHECK) {
             set.theUnchecked().colorFill(attrs.colorUnchecked);
             set.theChecked().colorFill(attrs.colorChecked);
+        } else {
+            set.theNormal().colorFill(attrs.colorNormal);
         }
         return set;
     }

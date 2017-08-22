@@ -11,13 +11,16 @@ import java.io.Serializable;
  * @date 2016/10/28
  */
 public class CommonBackgroundAttrs implements Serializable {
-    boolean stateful;
     int stateMode;
     int shape;
     int fillMode;
     int scaleType;
     int strokeMode;
     int radius;
+    int radiusLeftTop;
+    int radiusRightTop;
+    int radiusLeftBottom;
+    int radiusRightBottom;
     int strokeWidth;
     int strokeDashSolid;
     int strokeDashSpace;

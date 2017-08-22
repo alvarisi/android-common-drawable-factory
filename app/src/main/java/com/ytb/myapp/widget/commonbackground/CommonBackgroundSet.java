@@ -12,15 +12,16 @@ import android.view.View;
  * @date 2016/10/28
  */
 public class CommonBackgroundSet {
-    public static final int STATE_MODE_CLICK = 0;       // 点击模式（类似Button）
-    public static final int STATE_MODE_CHECK = 1;       // 选择模式（类似CheckBox）
+    public static final int STATE_MODE_NONE = 0;        // 无状态
+    public static final int STATE_MODE_CLICK = 1;       // 点击模式（类似Button）
+    public static final int STATE_MODE_CHECK = 2;       // 选择模式（类似CheckBox）
 
-    private static final int CLICK_STATE_COUNT = 3;
+    private static final int STATE_COUNT_CLICK = 3;
     private static final int CLICK_STATE_DISABLED = 0;
     private static final int CLICK_STATE_NORMAL = 1;
     private static final int CLICK_STATE_PRESSED = 2;
 
-    private static final int CHECK_STATE_COUNT = 3;
+    private static final int STATE_COUNT_CHECK = 3;
     private static final int CHECK_STATE_DISABLED = 0;
     private static final int CHECK_STATE_UNCHECKED = 1;
     private static final int CHECK_STATE_CHECKED = 2;
@@ -34,7 +35,8 @@ public class CommonBackgroundSet {
 
     CommonBackgroundSet(int stateMode) {
         mStateMode = stateMode;
-        int size = mStateMode == STATE_MODE_CLICK ? CLICK_STATE_COUNT : CHECK_STATE_COUNT;
+        int size = mStateMode == STATE_MODE_CLICK ? STATE_COUNT_CLICK :
+                mStateMode == STATE_MODE_CHECK ? STATE_COUNT_CHECK : 0;
         mDrawables = new CommonBackground[size];
         for (int i = 0; i < size; i++) {
             mDrawables[i] = new CommonBackground();
@@ -126,12 +128,12 @@ public class CommonBackgroundSet {
                 stateList.addState(new int[]{-android.R.attr.state_enabled},
                         mDrawables[CLICK_STATE_DISABLED]);
                 // View.PRESSED_ENABLED_STATE_SET
-                stateList.addState(new int[]{android.R.attr.state_pressed, android.R.attr
-                        .state_enabled},
+                stateList.addState(new int[]{android.R.attr.state_pressed,
+                        android.R.attr.state_enabled},
                         mDrawables[CLICK_STATE_PRESSED]);
                 // View.ENABLED_FOCUSED_STATE_SET
-                stateList.addState(new int[]{android.R.attr.state_enabled, android.R.attr
-                                .state_focused},
+                stateList.addState(new int[]{android.R.attr.state_enabled,
+                        android.R.attr.state_focused},
                         mDrawables[CLICK_STATE_NORMAL]);
                 // View.ENABLED_STATE_SET
                 stateList.addState(new int[]{android.R.attr.state_enabled},
@@ -149,11 +151,11 @@ public class CommonBackgroundSet {
                 // when disabled
                 stateList.addState(new int[]{-android.R.attr.state_enabled},
                         mDrawables[CHECK_STATE_DISABLED]);
-                stateList.addState(new int[]{android.R.attr.state_checked, android.R.attr
-                        .state_enabled},
+                stateList.addState(new int[]{android.R.attr.state_checked,
+                        android.R.attr.state_enabled},
                         mDrawables[CHECK_STATE_CHECKED]);
-                stateList.addState(new int[]{-android.R.attr.state_checked, android.R.attr
-                        .state_enabled},
+                stateList.addState(new int[]{-android.R.attr.state_checked,
+                        android.R.attr.state_enabled},
                         mDrawables[CHECK_STATE_UNCHECKED]);
                 stateList.addState(new int[]{}, mDrawables[CHECK_STATE_UNCHECKED]);
                 stateList.addState(new int[]{android.R.attr.state_window_focused},
@@ -176,7 +178,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground shape(int shape) {
+        public CommonBackgroundIterator shape(int shape) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.shape(shape);
             }
@@ -190,7 +192,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground fillMode(int fillMode) {
+        public CommonBackgroundIterator fillMode(int fillMode) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.fillMode(fillMode);
             }
@@ -204,7 +206,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground scaleType(int scaleType) {
+        public CommonBackgroundIterator scaleType(int scaleType) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.scaleType(scaleType);
             }
@@ -218,7 +220,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground strokeMode(int strokeMode) {
+        public CommonBackgroundIterator strokeMode(int strokeMode) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.strokeMode(strokeMode);
             }
@@ -232,7 +234,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground strokeWidth(int strokeWidth) {
+        public CommonBackgroundIterator strokeWidth(int strokeWidth) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.strokeWidth(strokeWidth);
             }
@@ -246,7 +248,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground strokeDashSolid(int strokeDashSolid) {
+        public CommonBackgroundIterator strokeDashSolid(int strokeDashSolid) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.strokeDashSolid(strokeDashSolid);
             }
@@ -260,7 +262,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground strokeDashSpace(int strokeDashSpace) {
+        public CommonBackgroundIterator strokeDashSpace(int strokeDashSpace) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.strokeDashSpace(strokeDashSpace);
             }
@@ -274,9 +276,22 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground radius(int radius) {
+        public CommonBackgroundIterator radius(int radius) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.radius(radius);
+            }
+            return this;
+        }
+
+        @Override
+        public CommonBackgroundIterator radius(int radiusLeftTop, int radiusRightTop,
+                                               int radiusRightBottom, int radiusLeftBottom) {
+            if (radiusLeftTop > 0f || radiusRightTop > 0f ||
+                    radiusRightBottom > 0f || radiusLeftBottom > 0f) {
+                for (ICommonBackground drawable : mDrawables) {
+                    drawable.radius(radiusLeftTop, radiusRightTop,
+                            radiusRightBottom, radiusLeftBottom);
+                }
             }
             return this;
         }
@@ -288,7 +303,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground colorFill(int colorFill) {
+        public CommonBackgroundIterator colorFill(int colorFill) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.colorFill(colorFill);
             }
@@ -303,7 +318,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground colorFill(Context context, int colorFillResId) {
+        public CommonBackgroundIterator colorFill(Context context, int colorFillResId) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.colorFill(context, colorFillResId);
             }
@@ -317,7 +332,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground colorStroke(int colorStroke) {
+        public CommonBackgroundIterator colorStroke(int colorStroke) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.colorStroke(colorStroke);
             }
@@ -332,7 +347,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground colorStroke(Context context, int colorStrokeResId) {
+        public CommonBackgroundIterator colorStroke(Context context, int colorStrokeResId) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.colorStroke(context, colorStrokeResId);
             }
@@ -346,7 +361,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public ICommonBackground bitmap(Bitmap bitmap) {
+        public CommonBackgroundIterator bitmap(Bitmap bitmap) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.bitmap(bitmap);
             }

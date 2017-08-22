@@ -16,8 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:lines="2"
-            android:text="stateful/stateMode" />
+            android:lines="2" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -26,11 +25,10 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="false"
-            app:colorNormal="@color/lighter_blue"
-            app:fillMode="solid"
-            app:shape="rect"
-            app:stateMode="click"
-            app:stateful="false" />
+            app:bg_colorNormal="@color/lighter_blue"
+            app:bg_fillMode="solid"
+            app:bg_shape="rect"
+            app:bg_stateMode="click" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
             android:layout_width="wrap_content"
@@ -39,12 +37,11 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="click me"
-            app:colorNormal="@color/lighter_blue"
-            app:colorPressed="@color/darker_blue"
-            app:fillMode="solid"
-            app:shape="rect"
-            app:stateMode="click"
-            app:stateful="true" />
+            app:bg_colorNormal="@color/lighter_blue"
+            app:bg_colorPressed="@color/darker_blue"
+            app:bg_fillMode="solid"
+            app:bg_shape="rect"
+            app:bg_stateMode="click" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundCheckBox
             android:id="@+id/cb"
@@ -54,15 +51,14 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="check me"
-            app:colorChecked="@color/lighter_blue"
-            app:colorStroke="@color/lighter_blue"
-            app:colorUnchecked="@android:color/white"
-            app:fillMode="solid"
-            app:shape="semicircle_rect"
-            app:stateMode="check"
-            app:stateful="true"
-            app:strokeMode="solid"
-            app:strokeWidth="1dp" />
+            app:bg_colorChecked="@color/lighter_blue"
+            app:bg_colorStroke="@color/lighter_blue"
+            app:bg_colorUnchecked="@android:color/white"
+            app:bg_fillMode="solid"
+            app:bg_shape="semicircle_rect"
+            app:bg_stateMode="check"
+            app:bg_strokeMode="solid"
+            app:bg_strokeWidth="1dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -86,10 +82,9 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="rect"
-            app:colorNormal="@color/lighter_blue"
-            app:fillMode="solid"
-            app:shape="rect"
-            app:stateful="false" />
+            app:bg_colorNormal="@color/lighter_blue"
+            app:bg_fillMode="solid"
+            app:bg_shape="rect" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -98,11 +93,10 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="round_rect"
-            app:colorNormal="@color/lighter_blue"
-            app:fillMode="solid"
-            app:radius="10dp"
-            app:shape="round_rect"
-            app:stateful="false" />
+            app:bg_colorNormal="@color/lighter_blue"
+            app:bg_fillMode="solid"
+            app:bg_radius="10dp"
+            app:bg_shape="round_rect" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -111,10 +105,9 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="semicircle_rect"
-            app:colorNormal="@color/lighter_blue"
-            app:fillMode="solid"
-            app:shape="semicircle_rect"
-            app:stateful="false" />
+            app:bg_colorNormal="@color/lighter_blue"
+            app:bg_fillMode="solid"
+            app:bg_shape="semicircle_rect" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -123,10 +116,9 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="circle"
-            app:colorNormal="@color/lighter_blue"
-            app:fillMode="solid"
-            app:shape="circle"
-            app:stateful="false" />
+            app:bg_colorNormal="@color/lighter_blue"
+            app:bg_fillMode="solid"
+            app:bg_shape="circle" />
     </LinearLayout>
 
 
@@ -152,10 +144,9 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="solid"
-            app:colorNormal="@color/lighter_blue"
-            app:fillMode="solid"
-            app:shape="rect"
-            app:stateful="false" />
+            app:bg_colorNormal="@color/lighter_blue"
+            app:bg_fillMode="solid"
+            app:bg_shape="rect" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -164,11 +155,10 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="bitmap"
-            app:bitmap="@mipmap/ic_launcher"
-            app:colorNormal="@color/lighter_blue"
-            app:fillMode="bitmap"
-            app:shape="rect"
-            app:stateful="false" />
+            app:bg_bitmap="@mipmap/ic_launcher"
+            app:bg_colorNormal="@color/lighter_blue"
+            app:bg_fillMode="bitmap"
+            app:bg_shape="rect" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -177,12 +167,12 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="solid|bitmap\n(click me)"
-            app:bitmap="@mipmap/ic_launcher"
-            app:colorNormal="#FFFFFFFF"
-            app:colorPressed="#88FFFFFF"
-            app:fillMode="solid|bitmap"
-            app:shape="rect"
-            app:stateful="true" />
+            app:bg_bitmap="@mipmap/ic_launcher"
+            app:bg_stateMode="click"
+            app:bg_colorNormal="#FFFFFFFF"
+            app:bg_colorPressed="#88FFFFFF"
+            app:bg_fillMode="solid|bitmap"
+            app:bg_shape="rect" />
     </LinearLayout>
 
     <LinearLayout
@@ -206,14 +196,13 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="center"
-            app:bitmap="@mipmap/ic_launcher"
-            app:colorStroke="@color/lighter_blue"
-            app:fillMode="bitmap"
-            app:scaleType="center"
-            app:shape="rect"
-            app:stateful="false"
-            app:strokeMode="solid"
-            app:strokeWidth="1dp" />
+            app:bg_bitmap="@mipmap/ic_launcher"
+            app:bg_colorStroke="@color/lighter_blue"
+            app:bg_fillMode="bitmap"
+            app:bg_scaleType="center"
+            app:bg_shape="rect"
+            app:bg_strokeMode="solid"
+            app:bg_strokeWidth="1dp" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -222,14 +211,13 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="centerCrop"
-            app:bitmap="@mipmap/ic_launcher"
-            app:colorStroke="@color/lighter_blue"
-            app:fillMode="bitmap"
-            app:scaleType="centerCrop"
-            app:shape="rect"
-            app:stateful="false"
-            app:strokeMode="solid"
-            app:strokeWidth="1dp" />
+            app:bg_bitmap="@mipmap/ic_launcher"
+            app:bg_colorStroke="@color/lighter_blue"
+            app:bg_fillMode="bitmap"
+            app:bg_scaleType="centerCrop"
+            app:bg_shape="rect"
+            app:bg_strokeMode="solid"
+            app:bg_strokeWidth="1dp" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -238,14 +226,13 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="fitCenter"
-            app:bitmap="@mipmap/ic_launcher"
-            app:colorStroke="@color/lighter_blue"
-            app:fillMode="bitmap"
-            app:scaleType="fitCenter"
-            app:shape="rect"
-            app:stateful="false"
-            app:strokeMode="solid"
-            app:strokeWidth="1dp" />
+            app:bg_bitmap="@mipmap/ic_launcher"
+            app:bg_colorStroke="@color/lighter_blue"
+            app:bg_fillMode="bitmap"
+            app:bg_scaleType="fitCenter"
+            app:bg_shape="rect"
+            app:bg_strokeMode="solid"
+            app:bg_strokeWidth="1dp" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -254,14 +241,13 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="fitXY"
-            app:bitmap="@mipmap/ic_launcher"
-            app:colorStroke="@color/lighter_blue"
-            app:fillMode="bitmap"
-            app:scaleType="fitXY"
-            app:shape="rect"
-            app:stateful="false"
-            app:strokeMode="solid"
-            app:strokeWidth="1dp" />
+            app:bg_bitmap="@mipmap/ic_launcher"
+            app:bg_colorStroke="@color/lighter_blue"
+            app:bg_fillMode="bitmap"
+            app:bg_scaleType="fitXY"
+            app:bg_shape="rect"
+            app:bg_strokeMode="solid"
+            app:bg_strokeWidth="1dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -285,13 +271,12 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="solid"
-            app:colorNormal="@android:color/white"
-            app:colorStroke="@color/lighter_blue"
-            app:fillMode="solid"
-            app:shape="semicircle_rect"
-            app:stateful="false"
-            app:strokeMode="solid"
-            app:strokeWidth="2dp" />
+            app:bg_colorNormal="@android:color/white"
+            app:bg_colorStroke="@color/lighter_blue"
+            app:bg_fillMode="solid"
+            app:bg_shape="semicircle_rect"
+            app:bg_strokeMode="solid"
+            app:bg_strokeWidth="2dp" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -300,14 +285,13 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="dash"
-            app:colorStroke="@color/lighter_blue"
-            app:fillMode="solid"
-            app:shape="rect"
-            app:stateful="false"
-            app:strokeDashSolid="5dp"
-            app:strokeDashSpace="5dp"
-            app:strokeMode="dash"
-            app:strokeWidth="2dp" />
+            app:bg_colorStroke="@color/lighter_blue"
+            app:bg_fillMode="solid"
+            app:bg_shape="rect"
+            app:bg_strokeDashSolid="5dp"
+            app:bg_strokeDashSpace="5dp"
+            app:bg_strokeMode="dash"
+            app:bg_strokeWidth="2dp" />
     </LinearLayout>
 
     <TextView
@@ -316,15 +300,15 @@
         android:text="see more attributes in /res/values/attr.xml" />
 
     <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
-        android:layout_width="100dp"
-        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
         android:layout_margin="8dp"
-        app:colorPressed="@android:color/darker_gray"
-        app:colorStroke="@color/lighter_blue"
-        app:radius="8dp"
-        app:shape="round_rect"
-        app:stateMode="click"
-        app:stateful="true"
-        app:strokeMode="solid"
-        app:strokeWidth="3dp" />
+        app:bg_colorPressed="@android:color/darker_gray"
+        app:bg_colorStroke="@color/lighter_blue"
+        app:bg_radiusLeftTop="18dp"
+        app:bg_radiusLeftBottom="26dp"
+        app:bg_shape="round_rect"
+        app:bg_stateMode="click"
+        app:bg_strokeMode="solid"
+        app:bg_strokeWidth="5dp" />
 </LinearLayout>

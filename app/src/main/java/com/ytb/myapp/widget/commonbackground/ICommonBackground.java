@@ -25,14 +25,6 @@ interface ICommonBackground {
     ICommonBackground fillMode(int fillMode);
 
     /**
-     * 设置缩放类型
-     *
-     * @param scaleType 缩放类型
-     * @return
-     */
-    ICommonBackground scaleType(int scaleType);
-
-    /**
      * 设置描边模式
      *
      * @param strokeMode 描边模式
@@ -52,17 +44,10 @@ interface ICommonBackground {
      * 设置虚线描边时，单个实线的长度
      *
      * @param strokeDashSolid 单个实线的长度
-     * @return
-     */
-    ICommonBackground strokeDashSolid(int strokeDashSolid);
-
-    /**
-     * 设置虚线描边时，单个空白的长度
-     *
      * @param strokeDashSpace 单个空白的长度
      * @return
      */
-    ICommonBackground strokeDashSpace(int strokeDashSpace);
+    ICommonBackground strokeDash(int strokeDashSolid, int strokeDashSpace);
 
     /**
      * 设置圆角或圆形的半径
@@ -117,12 +102,35 @@ interface ICommonBackground {
     ICommonBackground colorStroke(Context context, int colorStrokeResId);
 
     /**
+     * 设置渐变颜色
+     *
+     * @param startColor
+     * @param endColor
+     * @param orientation
+     * @return
+     */
+    ICommonBackground linearGradient(int startColor, int endColor, int orientation);
+
+    /**
+     * 设置渐变颜色
+     *
+     * @param context
+     * @param startColorResId
+     * @param endColorResId
+     * @param orientation
+     * @return
+     */
+    ICommonBackground linearGradient(Context context, int startColorResId, int endColorResId,
+                                     int orientation);
+
+    /**
      * 设置填充位图
      *
      * @param bitmap 填充位图
+     * @param scaleType 缩放模式
      * @return
      */
-    ICommonBackground bitmap(Bitmap bitmap);
+    ICommonBackground bitmap(Bitmap bitmap, int scaleType);
 
     /**
      * 显示到View上

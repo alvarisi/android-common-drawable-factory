@@ -30,6 +30,9 @@ public class CommonBackgroundAttrs implements Serializable {
     int colorPressed;
     int colorUnchecked;
     int colorChecked;
+    int gradientStartColor;
+    int gradientEndColor;
+    int linearGradientOrientation;
     Bitmap bitmap;
 
     void recycle() {

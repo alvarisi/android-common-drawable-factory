@@ -138,8 +138,15 @@ public class CommonBackgroundFactory {
             }
             attrs.colorStroke = a.getColor(R.styleable.CommonBackground_bg_colorStroke,
                     Color.TRANSPARENT); // 描边默认使用透明
-            int bitmapResId = a.getResourceId(R.styleable.CommonBackground_bg_bitmap,
-                    android.R.drawable.ic_delete);
+
+            attrs.gradientStartColor = a.getColor(
+                    R.styleable.CommonBackground_bg_gradientStartColor, Color.TRANSPARENT);
+            attrs.gradientEndColor = a.getColor(
+                    R.styleable.CommonBackground_bg_gradientEndColor, Color.TRANSPARENT);
+            attrs.linearGradientOrientation = a.getInteger(
+                    R.styleable.CommonBackground_bg_linearGradientOrientation, 0);
+
+            int bitmapResId = a.getResourceId(R.styleable.CommonBackground_bg_bitmap, 0);
             attrs.bitmap = BitmapFactory.decodeResource(context.getResources(), bitmapResId);
 
             a.recycle();
@@ -152,17 +159,17 @@ public class CommonBackgroundFactory {
         return new CommonBackground()
                 .shape(attrs.shape)
                 .fillMode(attrs.fillMode)
-                .scaleType(attrs.scaleType)
                 .strokeMode(attrs.strokeMode)
                 .strokeWidth(attrs.strokeWidth)
-                .strokeDashSolid(attrs.strokeDashSolid)
-                .strokeDashSpace(attrs.strokeDashSpace)
+                .strokeDash(attrs.strokeDashSolid, attrs.strokeDashSpace)
                 .radius(attrs.radius)
                 .radius(attrs.radiusLeftTop, attrs.radiusRightTop,
                         attrs.radiusRightBottom, attrs.radiusLeftBottom)
                 .colorStroke(attrs.colorStroke)
                 .colorFill(attrs.colorNormal)
-                .bitmap(attrs.bitmap);
+                .linearGradient(attrs.gradientStartColor, attrs.gradientEndColor,
+                        attrs.linearGradientOrientation)
+                .bitmap(attrs.bitmap, attrs.scaleType);
     }
 
     private static CommonBackgroundSet stateful(CommonBackgroundAttrs attrs) {
@@ -170,16 +177,16 @@ public class CommonBackgroundFactory {
         set.forEach()
                 .shape(attrs.shape)
                 .fillMode(attrs.fillMode)
-                .scaleType(attrs.scaleType)
                 .strokeMode(attrs.strokeMode)
                 .strokeWidth(attrs.strokeWidth)
-                .strokeDashSolid(attrs.strokeDashSolid)
-                .strokeDashSpace(attrs.strokeDashSpace)
-                .colorStroke(attrs.colorStroke)
+                .strokeDash(attrs.strokeDashSolid, attrs.strokeDashSpace)
                 .radius(attrs.radius)
                 .radius(attrs.radiusLeftTop, attrs.radiusRightTop,
                         attrs.radiusRightBottom, attrs.radiusLeftBottom)
-                .bitmap(attrs.bitmap);
+                .colorStroke(attrs.colorStroke)
+                .linearGradient(attrs.gradientStartColor, attrs.gradientEndColor,
+                        attrs.linearGradientOrientation)
+                .bitmap(attrs.bitmap, attrs.scaleType);
         set.theDisabled().colorFill(attrs.colorDisabled);
         if (attrs.stateMode == CommonBackgroundSet.STATE_MODE_CLICK) {
             set.theNormal().colorFill(attrs.colorNormal);

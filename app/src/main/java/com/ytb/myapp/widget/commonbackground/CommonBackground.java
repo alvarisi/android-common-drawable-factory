@@ -9,6 +9,7 @@ import android.graphics.ColorFilter;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.DashPathEffect;
+import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -46,6 +47,11 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     public static final int SCALE_TYPE_FIT_CENTER = 2;
     public static final int SCALE_TYPE_FIT_XY = 3;
 
+    public static final int GRADIENT_ORIENTATION_LR = 0;
+    public static final int GRADIENT_ORIENTATION_TB = 1;
+    public static final int GRADIENT_ORIENTATION_RL = 2;
+    public static final int GRADIENT_ORIENTATION_BT = 3;
+
     // user data
     private Bitmap mBitmap;
     private int mShape = SHAPE_RECT;
@@ -54,13 +60,16 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     private int mStrokeMode = STROKE_MODE_NONE;
     private int mColorFill = Color.TRANSPARENT;
     private int mColorStroke = Color.TRANSPARENT;
+    private int mGradientStartColor = Color.TRANSPARENT;
+    private int mGradientEndColor = Color.TRANSPARENT;
+    private int mLinearGradientOrientation = 0;
     private float mStrokeWidth;       // px
     private float[] mStrokeDash;      // px
     private float mRadius;            // px
     private float[] mRadiusArray;     // px
 
     // inner data
-    private BitmapShader mShader;
+    private Shader mShader;
     private ColorMatrixColorFilter mColorFilter;
     private final Paint mFillPaint;
     private Paint mStrokePaint;
@@ -115,19 +124,6 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     }
 
     /**
-     * 设置缩放类型
-     *
-     * @param scaleType 缩放类型
-     * @return this
-     */
-    @Override
-    public CommonBackground scaleType(int scaleType) {
-        mScaleType = scaleType;
-        markFillPaintDirty();
-        return this;
-    }
-
-    /**
      * 设置描边模式
      *
      * @param strokeMode 描边模式
@@ -157,29 +153,15 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * 设置虚线描边时，单个实线的长度
      *
      * @param strokeDashSolid 单个实线的长度
-     * @return this
-     */
-    @Override
-    public CommonBackground strokeDashSolid(int strokeDashSolid) {
-        if (mStrokeDash == null) {
-            mStrokeDash = new float[2];
-        }
-        mStrokeDash[0] = strokeDashSolid;
-        markStrokePaintDirty();
-        return this;
-    }
-
-    /**
-     * 设置虚线描边时，单个空白的长度
-     *
      * @param strokeDashSpace 单个空白的长度
      * @return this
      */
     @Override
-    public CommonBackground strokeDashSpace(int strokeDashSpace) {
+    public CommonBackground strokeDash(int strokeDashSolid, int strokeDashSpace) {
         if (mStrokeDash == null) {
             mStrokeDash = new float[2];
         }
+        mStrokeDash[0] = strokeDashSolid;
         mStrokeDash[1] = strokeDashSpace;
         markStrokePaintDirty();
         return this;
@@ -237,9 +219,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      */
     @Override
     public ICommonBackground colorFill(Context context, int colorFillResId) {
-        mColorFill = ContextCompat.getColor(context, colorFillResId);
-        markFillPaintDirty();
-        return this;
+        return colorFill(ContextCompat.getColor(context, colorFillResId));
     }
 
     /**
@@ -264,23 +244,55 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      */
     @Override
     public ICommonBackground colorStroke(Context context, int colorStrokeResId) {
-        mColorStroke = ContextCompat.getColor(context, colorStrokeResId);
-        markStrokePaintDirty();
+        return colorStroke(ContextCompat.getColor(context, colorStrokeResId));
+    }
+
+    /**
+     * 设置渐变颜色
+     *
+     * @param startColor
+     * @param endColor
+     * @param orientation
+     * @return
+     */
+    @Override
+    public ICommonBackground linearGradient(int startColor, int endColor, int orientation) {
+        mGradientStartColor = startColor;
+        mGradientEndColor = endColor;
+        mLinearGradientOrientation = orientation;
+        mShader = null;
+        markFillPaintDirty();
         return this;
+    }
+
+    /**
+     * 设置渐变颜色
+     *
+     * @param context
+     * @param startColorResId
+     * @param endColorResId
+     * @param orientation
+     * @return
+     */
+    @Override
+    public ICommonBackground linearGradient(Context context, int startColorResId, int endColorResId,
+                                            int orientation) {
+        return linearGradient(ContextCompat.getColor(context, startColorResId),
+                ContextCompat.getColor(context, endColorResId), orientation);
     }
 
     /**
      * 设置填充位图
      *
      * @param bitmap 填充位图
+     * @param scaleType 缩放类型
      * @return this
      */
     @Override
-    public CommonBackground bitmap(Bitmap bitmap) {
-        if (bitmap != null) {
-            mBitmap = bitmap;
-            mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-        }
+    public CommonBackground bitmap(Bitmap bitmap, int scaleType) {
+        mBitmap = bitmap;
+        mScaleType = scaleType;
+        mShader = null;
         markFillPaintDirty();
         return this;
     }
@@ -353,8 +365,14 @@ public class CommonBackground extends Drawable implements ICommonBackground {
 
         mFillPaint.setStyle(Paint.Style.FILL);
 
+        // bitmap or bitmap|color
         if ((mFillMode & FILL_MODE_BITMAP) != 0) {
             if (mBitmap != null) {
+                if (mShader == null) {
+                    mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP,
+                            Shader.TileMode.CLAMP);
+                }
+
                 Matrix matrix = new Matrix();
                 final float bitmapInset = mStrokeWidth / 2f;
                 final float viewWidth = mRect.width() - bitmapInset;
@@ -417,15 +435,67 @@ public class CommonBackground extends Drawable implements ICommonBackground {
             }
             mFillPaint.setShader(mShader);
             if ((mFillMode & FILL_MODE_COLOR) != 0) {
-                // 如果fillMode == solid|bitmap，则根据设置图片的颜色蒙层
-                if (mColorFilter == null) {
-                    mColorFilter = new ColorMatrixColorFilter(parseColorMatrix(mColorFill));
-                }
-                mFillPaint.setColorFilter(mColorFilter);
+                // 如果fillMode == bitmap|color，则根据设置图片的颜色蒙层
+                setPaintColorFilter(mFillPaint, mColorFill);
             }
-        } else {
-            mFillPaint.setColor(mColorFill);
+            return;
         }
+
+        // linearGradient or linearGradient|color
+        if ((mFillMode & FILL_MODE_LINEAR_GRADIENT) != 0) {
+            if (mShader == null) {
+                mShader = createLinearGradient(mRect, mGradientStartColor, mGradientEndColor,
+                        mLinearGradientOrientation);
+            }
+            mFillPaint.setShader(mShader);
+            if ((mFillMode & FILL_MODE_COLOR) != 0) {
+                // 如果fillMode == linearGradient|color，则根据设置图片的颜色蒙层
+                setPaintColorFilter(mFillPaint, mColorFill);
+            }
+            return;
+        }
+
+        // color
+        mFillPaint.setColor(mColorFill);
+    }
+
+    private void setPaintColorFilter(Paint paint, int colorFilter) {
+        if (mColorFilter == null) {
+            mColorFilter = new ColorMatrixColorFilter(parseColorMatrix(colorFilter));
+        }
+        paint.setColorFilter(mColorFilter);
+    }
+
+    private LinearGradient createLinearGradient(RectF rect, int startColor, int endColor,
+                                                int orientation) {
+        float x0, y0, x1, y1;
+        switch (orientation) {
+            case GRADIENT_ORIENTATION_LR:
+            default:
+                x0 = rect.left;
+                x1 = rect.right;
+                y0 = y1 = rect.top;
+                break;
+
+            case GRADIENT_ORIENTATION_TB:
+                y0 = rect.top;
+                y1 = rect.bottom;
+                x0 = x1 = rect.left;
+                break;
+
+            case GRADIENT_ORIENTATION_RL:
+                x0 = rect.right;
+                x1 = rect.left;
+                y0 = y1 = rect.top;
+                break;
+
+            case GRADIENT_ORIENTATION_BT:
+                y0 = rect.bottom;
+                y1 = rect.top;
+                x0 = x1 = rect.left;
+                break;
+        }
+        return new LinearGradient(x0, y0, x1, y1, startColor, endColor, Shader.TileMode.CLAMP);
     }
 
     /**

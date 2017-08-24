@@ -48,8 +48,8 @@ public class CommonBackgroundSet {
      *
      * @return this
      */
-    public CommonBackgroundIterator forEach() {
-        return new CommonBackgroundIterator();
+    public CommonBackgroundTraverser forEach() {
+        return new CommonBackgroundTraverser(mDrawables);
     }
 
     /**
@@ -167,8 +167,11 @@ public class CommonBackgroundSet {
         }
     }
 
-    public class CommonBackgroundIterator implements ICommonBackground {
-        CommonBackgroundIterator() {
+    static class CommonBackgroundTraverser implements ICommonBackground {
+        private ICommonBackground[] mDrawables;
+
+        CommonBackgroundTraverser(ICommonBackground[] drawables) {
+            mDrawables = drawables;
         }
 
         /**
@@ -178,7 +181,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public CommonBackgroundIterator shape(int shape) {
+        public CommonBackgroundTraverser shape(int shape) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.shape(shape);
             }
@@ -192,23 +195,9 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public CommonBackgroundIterator fillMode(int fillMode) {
+        public CommonBackgroundTraverser fillMode(int fillMode) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.fillMode(fillMode);
-            }
-            return this;
-        }
-
-        /**
-         * 设置缩放类型
-         *
-         * @param scaleType 缩放类型
-         * @return this
-         */
-        @Override
-        public CommonBackgroundIterator scaleType(int scaleType) {
-            for (ICommonBackground drawable : mDrawables) {
-                drawable.scaleType(scaleType);
             }
             return this;
         }
@@ -220,7 +209,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public CommonBackgroundIterator strokeMode(int strokeMode) {
+        public CommonBackgroundTraverser strokeMode(int strokeMode) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.strokeMode(strokeMode);
             }
@@ -234,7 +223,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public CommonBackgroundIterator strokeWidth(int strokeWidth) {
+        public CommonBackgroundTraverser strokeWidth(int strokeWidth) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.strokeWidth(strokeWidth);
             }
@@ -245,26 +234,13 @@ public class CommonBackgroundSet {
          * 设置虚线描边时，单个实线的长度
          *
          * @param strokeDashSolid 单个实线的长度
-         * @return this
-         */
-        @Override
-        public CommonBackgroundIterator strokeDashSolid(int strokeDashSolid) {
-            for (ICommonBackground drawable : mDrawables) {
-                drawable.strokeDashSolid(strokeDashSolid);
-            }
-            return this;
-        }
-
-        /**
-         * 设置虚线描边时，单个空白的长度
-         *
          * @param strokeDashSpace 单个空白的长度
          * @return this
          */
         @Override
-        public CommonBackgroundIterator strokeDashSpace(int strokeDashSpace) {
+        public CommonBackgroundTraverser strokeDash(int strokeDashSolid, int strokeDashSpace) {
             for (ICommonBackground drawable : mDrawables) {
-                drawable.strokeDashSpace(strokeDashSpace);
+                drawable.strokeDash(strokeDashSolid, strokeDashSpace);
             }
             return this;
         }
@@ -276,7 +252,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public CommonBackgroundIterator radius(int radius) {
+        public CommonBackgroundTraverser radius(int radius) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.radius(radius);
             }
@@ -284,8 +260,8 @@ public class CommonBackgroundSet {
         }
 
         @Override
-        public CommonBackgroundIterator radius(int radiusLeftTop, int radiusRightTop,
-                                               int radiusRightBottom, int radiusLeftBottom) {
+        public CommonBackgroundTraverser radius(int radiusLeftTop, int radiusRightTop,
+                                                int radiusRightBottom, int radiusLeftBottom) {
             if (radiusLeftTop > 0f || radiusRightTop > 0f ||
                     radiusRightBottom > 0f || radiusLeftBottom > 0f) {
                 for (ICommonBackground drawable : mDrawables) {
@@ -303,7 +279,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public CommonBackgroundIterator colorFill(int colorFill) {
+        public CommonBackgroundTraverser colorFill(int colorFill) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.colorFill(colorFill);
             }
@@ -318,7 +294,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public CommonBackgroundIterator colorFill(Context context, int colorFillResId) {
+        public CommonBackgroundTraverser colorFill(Context context, int colorFillResId) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.colorFill(context, colorFillResId);
             }
@@ -332,7 +308,7 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public CommonBackgroundIterator colorStroke(int colorStroke) {
+        public CommonBackgroundTraverser colorStroke(int colorStroke) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.colorStroke(colorStroke);
             }
@@ -347,9 +323,26 @@ public class CommonBackgroundSet {
          * @return this
          */
         @Override
-        public CommonBackgroundIterator colorStroke(Context context, int colorStrokeResId) {
+        public CommonBackgroundTraverser colorStroke(Context context, int colorStrokeResId) {
             for (ICommonBackground drawable : mDrawables) {
                 drawable.colorStroke(context, colorStrokeResId);
+            }
+            return this;
+        }
+
+        @Override
+        public ICommonBackground linearGradient(int startColor, int endColor, int orientation) {
+            for (ICommonBackground drawable : mDrawables) {
+                drawable.linearGradient(startColor, endColor, orientation);
+            }
+            return this;
+        }
+
+        @Override
+        public ICommonBackground linearGradient(Context context, int startColorResId,
+                                                int endColorResId, int orientation) {
+            for (ICommonBackground drawable : mDrawables) {
+                drawable.linearGradient(context, startColorResId, endColorResId, orientation);
             }
             return this;
         }
@@ -358,21 +351,20 @@ public class CommonBackgroundSet {
          * 设置填充位图
          *
          * @param bitmap 填充位图
+         * @param scaleType 缩放类型
          * @return this
          */
         @Override
-        public CommonBackgroundIterator bitmap(Bitmap bitmap) {
+        public CommonBackgroundTraverser bitmap(Bitmap bitmap, int scaleType) {
             for (ICommonBackground drawable : mDrawables) {
-                drawable.bitmap(bitmap);
+                drawable.bitmap(bitmap, scaleType);
             }
             return this;
         }
 
         @Override
         public void showOn(View yourView) {
-            if (yourView != null) {
-                CommonBackgroundSet.this.showOn(yourView);
-            }
+            // plz call CommonBackgroundSet.showOn() instead
         }
     }
 }

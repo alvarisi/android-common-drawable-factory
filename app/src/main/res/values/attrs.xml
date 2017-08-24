@@ -52,6 +52,14 @@
         <attr name="bg_colorUnchecked" format="color"/>
         <attr name="bg_colorChecked" format="color"/>
         <attr name="bg_colorStroke" format="color"/><!-- 描边颜色 -->
+        <attr name="bg_gradientStartColor" format="color"/>
+        <attr name="bg_gradientEndColor" format="color"/>
+        <attr name="bg_linearGradientOrientation">
+            <enum name="left_right" value="0"/>
+            <enum name="top_bottom" value="1"/>
+            <enum name="right_left" value="2"/>
+            <enum name="bottom_top" value="3"/>
+        </attr>
         <attr name="bg_bitmap" format="reference"/><!-- 填充图资源id -->
     </declare-styleable>
 </resources>

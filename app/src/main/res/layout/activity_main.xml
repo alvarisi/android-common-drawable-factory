@@ -16,7 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:lines="2" />
+            android:lines="2"
+            android:text="stateMode" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
@@ -24,7 +25,7 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:padding="5dp"
-            android:text="false"
+            android:text="none"
             app:bg_colorNormal="@color/lighter_blue"
             app:bg_fillMode="color"
             app:bg_shape="rect"
@@ -36,9 +37,9 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:padding="5dp"
-            android:text="click me"
+            android:text="click"
             app:bg_colorNormal="@color/lighter_blue"
-            app:bg_colorPressed="@color/darker_blue"
+            app:bg_colorPressed="@color/colorAccent"
             app:bg_fillMode="color"
             app:bg_shape="rect"
             app:bg_stateMode="click" />
@@ -50,7 +51,7 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:padding="5dp"
-            android:text="check me"
+            android:text="check"
             app:bg_colorChecked="@color/lighter_blue"
             app:bg_colorStroke="@color/lighter_blue"
             app:bg_colorUnchecked="@android:color/white"
@@ -91,11 +92,11 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="6dp"
             android:text="round_rect"
             app:bg_colorNormal="@color/lighter_blue"
             app:bg_fillMode="color"
-            app:bg_radius="10dp"
+            app:bg_radius="5dp"
             app:bg_shape="round_rect" />
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
@@ -166,11 +167,51 @@
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:padding="5dp"
-            android:text="solid|bitmap\n(click me)"
+            android:text="bitmap|color\n(click me)"
             app:bg_bitmap="@mipmap/ic_launcher"
             app:bg_colorNormal="#FFFFFFFF"
             app:bg_colorPressed="#88FFFFFF"
             app:bg_fillMode="color|bitmap"
+            app:bg_shape="rect"
+            app:bg_stateMode="click" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="linearGradient"
+            app:bg_colorNormal="#FFFFFFFF"
+            app:bg_colorPressed="#88FFFFFF"
+            app:bg_fillMode="linearGradient|color"
+            app:bg_gradientEndColor="@color/colorPrimary"
+            app:bg_gradientStartColor="@color/colorAccent"
+            app:bg_linearGradientOrientation="left_right"
+            app:bg_shape="rect"
+            app:bg_stateMode="click" />
+
+        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="linearGradient|color\n(click me)"
+            app:bg_colorNormal="#FFFFFFFF"
+            app:bg_colorPressed="#88FFFFFF"
+            app:bg_fillMode="linearGradient|color"
+            app:bg_gradientEndColor="@color/colorPrimary"
+            app:bg_gradientStartColor="@color/colorAccent"
+            app:bg_linearGradientOrientation="left_right"
             app:bg_shape="rect"
             app:bg_stateMode="click" />
     </LinearLayout>
@@ -299,10 +340,12 @@
         android:layout_height="wrap_content"
         android:text="see more attributes in /res/values/attr.xml" />
 
-    <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
+    <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="50dp"
         android:layout_margin="8dp"
+        android:gravity="center"
+        android:text="custom"
         app:bg_colorNormal="#FFFFFFFF"
         app:bg_colorPressed="#88FFFFFF"
         app:bg_colorStroke="@color/colorPrimaryDark"
@@ -310,8 +353,8 @@
         app:bg_gradientEndColor="@color/colorPrimary"
         app:bg_gradientStartColor="@color/colorAccent"
         app:bg_linearGradientOrientation="left_right"
-        app:bg_radiusLeftBottom="26dp"
-        app:bg_radiusLeftTop="18dp"
+        app:bg_radiusLeftTop="10dp"
+        app:bg_radiusRightBottom="26dp"
         app:bg_shape="round_rect"
         app:bg_stateMode="click"
         app:bg_strokeMode="solid"

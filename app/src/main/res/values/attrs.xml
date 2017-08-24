@@ -19,8 +19,9 @@
 
         <!-- 填充模式，若为solid|bitmap，此时填充色将作为图片蒙层，注意设置填充色的透明度 -->
         <attr name="bg_fillMode">
-            <flag name="solid" value="1"/><!-- 纯色填充 -->
+            <flag name="color" value="1"/><!-- 纯色填充 -->
             <flag name="bitmap" value="2"/><!-- 图片填充 -->
+            <flag name="linearGradient" value="4"/><!-- 线性渐变填充 -->
         </attr>
 
         <!-- 填充图的缩放类型 -->

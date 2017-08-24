@@ -94,7 +94,7 @@ public class CommonBackgroundFactory {
             attrs.shape = a.getInt(R.styleable.CommonBackground_bg_shape,
                     CommonBackground.SHAPE_RECT); // 默认直角矩形
             attrs.fillMode = a.getInt(R.styleable.CommonBackground_bg_fillMode,
-                    CommonBackground.FILL_MODE_SOLID); // 默认颜色填充
+                    CommonBackground.FILL_MODE_COLOR); // 默认颜色填充
             attrs.scaleType = a.getInt(R.styleable.CommonBackground_bg_scaleType,
                     CommonBackground.SCALE_TYPE_CENTER); // 默认无缩放
             attrs.strokeMode = a.getInt(R.styleable.CommonBackground_bg_strokeMode,

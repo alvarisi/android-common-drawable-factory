@@ -33,8 +33,9 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     public static final int SHAPE_SEMICIRCLE_RECT = 2; // 圆头矩形
     public static final int SHAPE_CIRCLE = 3; // 圆形
 
-    public static final int FILL_MODE_SOLID = 1; // 纯色填充
+    public static final int FILL_MODE_COLOR = 1; // 纯色填充
     public static final int FILL_MODE_BITMAP = 2; // 图片填充
+    public static final int FILL_MODE_LINEAR_GRADIENT = 4; // 线性渐变填充
 
     public static final int STROKE_MODE_NONE = 0; // 无描边
     public static final int STROKE_MODE_SOLID = 1; // 实线描边
@@ -48,7 +49,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     // user data
     private Bitmap mBitmap;
     private int mShape = SHAPE_RECT;
-    private int mFillMode = FILL_MODE_SOLID;
+    private int mFillMode = FILL_MODE_COLOR;
     private int mScaleType = SCALE_TYPE_CENTER;
     private int mStrokeMode = STROKE_MODE_NONE;
     private int mColorFill = Color.TRANSPARENT;
@@ -56,18 +57,22 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     private float mStrokeWidth;       // px
     private float[] mStrokeDash;      // px
     private float mRadius;            // px
-    private float[] mRadiusEach;      // px
+    private float[] mRadiusArray;     // px
 
     // inner data
     private BitmapShader mShader;
     private ColorMatrixColorFilter mColorFilter;
-    private Paint mPaint;
+    private final Paint mFillPaint;
+    private Paint mStrokePaint;
     private Path mPath;
-    private RectF mBounds;
-    private boolean mIsBoundsDirty;
+    private RectF mRect;
+    private boolean mIsRectDirty = true;
+    private boolean mIsPathDirty = true;
+    private boolean mIsFillPaintDirty = true, mIsStrokePaintDirty = true;
 
     CommonBackground() {
-        mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mRect = new RectF();
+        mFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPath = new Path();
     }
 
@@ -92,6 +97,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public CommonBackground shape(int shape) {
         mShape = shape;
+        markPathDirty();
         return this;
     }
 
@@ -104,6 +110,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public CommonBackground fillMode(int fillMode) {
         mFillMode = fillMode;
+        markFillPaintDirty();
         return this;
     }
 
@@ -116,6 +123,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public CommonBackground scaleType(int scaleType) {
         mScaleType = scaleType;
+        markFillPaintDirty();
         return this;
     }
 
@@ -128,6 +136,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public CommonBackground strokeMode(int strokeMode) {
         mStrokeMode = strokeMode;
+        markStrokePaintDirty();
         return this;
     }
 
@@ -140,6 +149,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public CommonBackground strokeWidth(int strokeWidth) {
         mStrokeWidth = strokeWidth;
+        markStrokePaintDirty();
         return this;
     }
 
@@ -155,6 +165,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
             mStrokeDash = new float[2];
         }
         mStrokeDash[0] = strokeDashSolid;
+        markStrokePaintDirty();
         return this;
     }
 
@@ -170,6 +181,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
             mStrokeDash = new float[2];
         }
         mStrokeDash[1] = strokeDashSpace;
+        markStrokePaintDirty();
         return this;
     }
 
@@ -182,6 +194,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public CommonBackground radius(int radius) {
         mRadius = radius;
+        markPathDirty();
         return this;
     }
 
@@ -190,14 +203,15 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                                    int radiusRightBottom, int radiusLeftBottom) {
         if (radiusLeftTop > 0f || radiusRightTop > 0f ||
                 radiusRightBottom > 0f || radiusLeftBottom > 0f) {
-            if (mRadiusEach == null) {
-                mRadiusEach = new float[4];
+            if (mRadiusArray == null) {
+                mRadiusArray = new float[8];
             }
-            mRadiusEach[0] = radiusLeftTop;
-            mRadiusEach[1] = radiusRightTop;
-            mRadiusEach[2] = radiusRightBottom;
-            mRadiusEach[3] = radiusLeftBottom;
+            mRadiusArray[0] = mRadiusArray[1] = radiusLeftTop;
+            mRadiusArray[2] = mRadiusArray[3] = radiusRightTop;
+            mRadiusArray[4] = mRadiusArray[5] = radiusRightBottom;
+            mRadiusArray[6] = mRadiusArray[7] = radiusLeftBottom;
         }
+        markPathDirty();
         return this;
     }
 
@@ -210,6 +224,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public CommonBackground colorFill(int colorFill) {
         mColorFill = colorFill;
+        markFillPaintDirty();
         return this;
     }
 
@@ -223,6 +238,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public ICommonBackground colorFill(Context context, int colorFillResId) {
         mColorFill = ContextCompat.getColor(context, colorFillResId);
+        markFillPaintDirty();
         return this;
     }
 
@@ -235,6 +251,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public CommonBackground colorStroke(int colorStroke) {
         mColorStroke = colorStroke;
+        markStrokePaintDirty();
         return this;
     }
 
@@ -248,6 +265,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     @Override
     public ICommonBackground colorStroke(Context context, int colorStrokeResId) {
         mColorStroke = ContextCompat.getColor(context, colorStrokeResId);
+        markStrokePaintDirty();
         return this;
     }
 
@@ -263,6 +281,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
             mBitmap = bitmap;
             mShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
         }
+        markFillPaintDirty();
         return this;
     }
 
@@ -278,13 +297,31 @@ public class CommonBackground extends Drawable implements ICommonBackground {
 
     @Override
     public void draw(@NonNull Canvas canvas) {
+        // 准备绘制区域
+        prepareRect();
+
         // 先绘制描边，再绘制填充
-        prepareFillPaint(mPaint);
-        drawFill(canvas, mPaint);
+        prepareFillPaint();
+        drawFill(canvas);
         if (needStroke()) {
-            prepareStrokePaint(mPaint);
-            drawStroke(canvas, mPaint);
+            prepareStrokePaint();
+            drawStroke(canvas);
         }
+    }
+
+    /**
+     * 准备绘制区域
+     */
+    private void prepareRect() {
+        if (!mIsRectDirty) {
+            return;
+        }
+        mIsRectDirty = false;
+
+        final Rect bounds = getBounds();
+        final float inset = mStrokeWidth / 2f;
+        mRect.set(bounds);
+        mRect.inset(inset, inset);
     }
 
     /**
@@ -302,90 +339,26 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     private boolean hasSameCorners() {
-        return mRadiusEach == null || (mRadiusEach[0] == 0f && mRadiusEach[1] == 0f &&
-                mRadiusEach[2] == 0f && mRadiusEach[3] == 0f);
-    }
-
-    /**
-     * 调整画笔至描边模式
-     */
-    private void prepareStrokePaint(Paint paint) {
-        // STROKE_MODE_NONE
-        if (mStrokeMode == STROKE_MODE_NONE) {
-            return;
-        }
-
-        // STROKE_MODE_SOLID or STROKE_MODE_DASH
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setColor(mColorStroke);
-        paint.setShader(null);
-        paint.setColorFilter(null);
-        paint.setStrokeWidth(mStrokeWidth);
-//        paint.setStrokeJoin(mRadius > 0f || !hasSameCorners() ? Paint.Join.ROUND :
-//                Paint.Join.MITER);
-//        paint.setDither(true);
-
-        // STROKE_MODE_DASH
-        if (mStrokeMode == STROKE_MODE_DASH) {
-            if (paint.getPathEffect() == null) {
-                paint.setPathEffect(new DashPathEffect(mStrokeDash, 1.0f));
-            }
-        }
-    }
-
-    /**
-     * 绘制描边
-     *
-     * @param canvas 画板
-     */
-    private void drawStroke(Canvas canvas, Paint paint) {
-        final float narrowBy = mStrokeWidth / 2.0f; // 绘图半径需缩小mStrokeWidth / 2
-        final float strokeRadius;
-
-        switch (mShape) {
-            case SHAPE_ROUND_RECT:
-                if (hasSameCorners()) {
-                    strokeRadius = mRadius - narrowBy;
-                    canvas.drawRoundRect(inset(mBounds, narrowBy),
-                            strokeRadius, strokeRadius, paint);
-                } else {
-//                    resetPath(mBounds.width(), mBounds.height(), mStrokeWidth, true);
-                    resetPath1(mPath, inset(mBounds, narrowBy), mRadiusEach);
-                    canvas.drawPath(mPath, paint);
-                }
-                break;
-            case SHAPE_SEMICIRCLE_RECT:
-                mRadius = (mBounds.top + mBounds.bottom) / 2.0f; // 计算半径
-                strokeRadius = mRadius - narrowBy;
-                canvas.drawRoundRect(inset(mBounds, narrowBy), strokeRadius, strokeRadius,
-                        paint);
-                break;
-            case SHAPE_CIRCLE:
-                // 计算圆心
-                float cx = (mBounds.left + mBounds.right) / 2.0f;
-                float cy = (mBounds.top + mBounds.bottom) / 2.0f;
-                mRadius = Math.min(cx, cy);
-                strokeRadius = mRadius - narrowBy;
-                canvas.drawCircle(cx, cy, strokeRadius, paint);
-                break;
-            case SHAPE_RECT:
-            default:
-                canvas.drawRect(inset(mBounds, narrowBy), paint);
-                break;
-        }
+        return mRadiusArray == null;
     }
 
     /**
      * 调整画笔至填充模式
      */
-    private void prepareFillPaint(Paint paint) {
-        paint.setStyle(Paint.Style.FILL);
+    private void prepareFillPaint() {
+        if (!mIsFillPaintDirty) {
+            return;
+        }
+        mIsFillPaintDirty = false;
+
+        mFillPaint.setStyle(Paint.Style.FILL);
 
         if ((mFillMode & FILL_MODE_BITMAP) != 0) {
             if (mBitmap != null) {
                 Matrix matrix = new Matrix();
-                final float viewWidth = mBounds.right - mBounds.left;
-                final float viewHeight = mBounds.bottom - mBounds.top;
+                final float bitmapInset = mStrokeWidth / 2f;
+                final float viewWidth = mRect.width() - bitmapInset;
+                final float viewHeight = mRect.height() - bitmapInset;
                 final float bitmapWidth = mBitmap.getWidth();
                 final float bitmapHeight = mBitmap.getHeight();
                 float diffX = Math.abs(viewWidth - bitmapWidth);     // 控件与bitmap的宽度差
@@ -428,7 +401,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                         break;
                     case SCALE_TYPE_CENTER:
                     default:
-                        scaleX = scaleY = 1.0f;
+                        scaleX = scaleY = 1f;
                         break;
                 }
                 matrix.postScale(scaleX, scaleY);
@@ -436,22 +409,22 @@ public class CommonBackground extends Drawable implements ICommonBackground {
                 // 图片居中
                 diffX = viewWidth - bitmapWidth * scaleX;
                 diffY = viewHeight - bitmapHeight * scaleY;
-                final float translateX = diffX / 2.0f;
-                final float translateY = diffY / 2.0f;
+                final float translateX = diffX / 2f;
+                final float translateY = diffY / 2f;
                 matrix.postTranslate(translateX, translateY);
 
                 mShader.setLocalMatrix(matrix);
             }
-            paint.setShader(mShader);
-            if ((mFillMode & FILL_MODE_SOLID) != 0) {
+            mFillPaint.setShader(mShader);
+            if ((mFillMode & FILL_MODE_COLOR) != 0) {
                 // 如果fillMode == solid|bitmap，则根据设置图片的颜色蒙层
                 if (mColorFilter == null) {
                     mColorFilter = new ColorMatrixColorFilter(parseColorMatrix(mColorFill));
                 }
-                paint.setColorFilter(mColorFilter);
+                mFillPaint.setColorFilter(mColorFilter);
             }
         } else {
-            paint.setColor(mColorFill);
+            mFillPaint.setColor(mColorFill);
         }
     }
 
@@ -460,125 +433,136 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      *
      * @param canvas 画板
      */
-    private void drawFill(Canvas canvas, Paint paint) {
-        final float narrowBy = /*((mFillMode & FILL_MODE_BITMAP) == 0 && mStrokeWidth > 1.0f) ?
-                (mStrokeWidth - 0.5f) : */mStrokeWidth / 2f; // 当非图片填充时（即仅纯色填充时），-0.5调整误差
-        float fillRadius;
-
+    private void drawFill(Canvas canvas) {
         switch (mShape) {
             case SHAPE_ROUND_RECT:
                 if (hasSameCorners()) {
-                    fillRadius = mRadius - narrowBy;
-                    canvas.drawRoundRect(mBounds/*inset(mBounds, narrowBy)*/, fillRadius, fillRadius,
-                            paint);
+                    canvas.drawRoundRect(mRect, mRadius, mRadius, mFillPaint);
                 } else {
-//                    resetPath(mBounds.width(), mBounds.height(), mStrokeWidth, false);
-                    resetPath1(mPath, inset(mBounds, narrowBy), mRadiusEach);
-                    canvas.drawPath(mPath, paint);
+                    preparePath(mRect, mRadiusArray);
+                    canvas.drawPath(mPath, mFillPaint);
                 }
                 break;
             case SHAPE_SEMICIRCLE_RECT:
-                mRadius = (mBounds.top + mBounds.bottom) / 2.0f;
-                fillRadius = mRadius - narrowBy;
-                canvas.drawRoundRect(inset(mBounds, narrowBy), fillRadius, fillRadius,
-                        paint);
+                mRadius = mRect.height() / 2f;
+                canvas.drawRoundRect(mRect, mRadius, mRadius, mFillPaint);
                 break;
             case SHAPE_CIRCLE:
                 // 计算圆心
-                float cx = (mBounds.left + mBounds.right) / 2.0f;
-                float cy = (mBounds.top + mBounds.bottom) / 2.0f;
+                float cx = mRect.width() / 2f;
+                float cy = mRect.height() / 2f;
                 mRadius = Math.min(cx, cy);
-                fillRadius = mRadius - narrowBy;
-                canvas.drawCircle(cx, cy, fillRadius, paint);
+                canvas.drawCircle(cx, cy, mRadius, mFillPaint);
                 break;
             case SHAPE_RECT:
             default:
-                canvas.drawRect(inset(mBounds, narrowBy), paint);
+                canvas.drawRect(mRect, mFillPaint);
                 break;
         }
     }
 
     /**
-     * 绘制路径。路径会沿着描边的中线走。
-     *
-     * @param width       绘制区域宽度
-     * @param height      绘制区域高度
-     * @param strokeWidth 描边宽度
+     * 调整画笔至描边模式
      */
-    private void resetPath(float width, float height, float strokeWidth, boolean isStroke) {
-        final float pathPadding = isStroke ? strokeWidth / 2f : strokeWidth;
-        final RectF corner = new RectF();
-        mPath.reset();
-        float cornerRadius;
-
-        // 先移动出发点至左边中央
-        mPath.moveTo(pathPadding, height / 2f);
-
-        // 左上角
-        cornerRadius = mRadiusEach[0];
-        if (cornerRadius > 0f) {
-            corner.set(pathPadding, pathPadding, cornerRadius, cornerRadius);
-            mPath.lineTo(corner.left, corner.bottom);
-            mPath.arcTo(corner, 180f, 90f);
-        } else {
-            mPath.lineTo(pathPadding, pathPadding);
+    private void prepareStrokePaint() {
+        // STROKE_MODE_NONE
+        if (mStrokeMode == STROKE_MODE_NONE) {
+            return;
         }
 
-        // 右上角
-        cornerRadius = mRadiusEach[1];
-        if (cornerRadius > 0f) {
-            corner.set(width - pathPadding, pathPadding, width - pathPadding, cornerRadius);
-            mPath.lineTo(corner.left, corner.top);
-            mPath.arcTo(corner, 270f, 90f);
-        } else {
-            mPath.lineTo(width - pathPadding, pathPadding);
+        if (!mIsStrokePaintDirty) {
+            return;
+        }
+        mIsStrokePaintDirty = false;
+
+        if (mStrokePaint == null) {
+            mStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         }
 
-        // 右下角
-        cornerRadius = mRadiusEach[2];
-        if (cornerRadius > 0f) {
-            corner.set(width - cornerRadius, height - cornerRadius,
-                    width - pathPadding, height - pathPadding);
-            mPath.lineTo(corner.right, corner.top);
-            mPath.arcTo(corner, 0f, 90f);
-        } else {
-            mPath.lineTo(width - pathPadding, height - pathPadding);
-        }
+        // STROKE_MODE_SOLID or STROKE_MODE_DASH
+        mStrokePaint.setStyle(Paint.Style.STROKE);
+        mStrokePaint.setColor(mColorStroke);
+        mStrokePaint.setShader(null);
+        mStrokePaint.setColorFilter(null);
+        mStrokePaint.setStrokeWidth(mStrokeWidth);
 
-        // 左下角
-        cornerRadius = mRadiusEach[3];
-        if (cornerRadius > 0f) {
-            corner.set(pathPadding, height - cornerRadius, cornerRadius, height - pathPadding);
-            mPath.lineTo(corner.right, corner.bottom);
-            mPath.arcTo(corner, 90f, 90f);
-        } else {
-            mPath.lineTo(pathPadding, height - pathPadding);
+        // STROKE_MODE_DASH
+        if (mStrokeMode == STROKE_MODE_DASH) {
+            if (mStrokePaint.getPathEffect() == null) {
+                mStrokePaint.setPathEffect(new DashPathEffect(mStrokeDash, 1f));
+            }
         }
-
-        // 回到出发点
-        mPath.lineTo(pathPadding, height / 2f);
     }
 
-    private void resetPath1(Path path, RectF rect, float[] radius) {
-        path.reset();
-        path.addRoundRect(rect, new float[] {
-                radius[0], radius[0],
-                radius[1], radius[1],
-                radius[2], radius[2],
-                radius[3], radius[3]
-        }, Path.Direction.CW);
+    /**
+     * 绘制描边
+     *
+     * @param canvas 画板
+     */
+    private void drawStroke(Canvas canvas) {
+        switch (mShape) {
+            case SHAPE_ROUND_RECT:
+                if (hasSameCorners()) {
+                    canvas.drawRoundRect(mRect, mRadius, mRadius, mStrokePaint);
+                } else {
+                    preparePath(mRect, mRadiusArray);
+                    canvas.drawPath(mPath, mStrokePaint);
+                }
+                break;
+            case SHAPE_SEMICIRCLE_RECT:
+                mRadius = mRect.height() / 2f; // 计算半径
+                canvas.drawRoundRect(mRect, mRadius, mRadius, mStrokePaint);
+                break;
+            case SHAPE_CIRCLE:
+                // 计算圆心
+                float cx = mRect.width() / 2f;
+                float cy = mRect.height() / 2f;
+                mRadius = Math.min(cx, cy);
+                canvas.drawCircle(cx, cy, mRadius, mStrokePaint);
+                break;
+            case SHAPE_RECT:
+            default:
+                canvas.drawRect(mRect, mStrokePaint);
+                break;
+        }
+    }
+
+    private void preparePath(RectF rect, float[] radius) {
+        if (!mIsPathDirty) {
+            return;
+        }
+        mIsPathDirty = false;
+
+        mPath.reset();
+        mPath.addRoundRect(rect, radius, Path.Direction.CW);
     }
 
     @Override
     public void setBounds(int left, int top, int right, int bottom) {
         super.setBounds(left, top, right, bottom);
-        mBounds = new RectF(left, top, right, bottom);
+        markRectDirty();
+        markPathDirty();
     }
 
     @Override
     public void setBounds(@NonNull Rect bounds) {
         super.setBounds(bounds);
-        mBounds = new RectF(bounds.left, bounds.top, bounds.right, bounds.bottom);
+        markRectDirty();
+        markPathDirty();
+    }
+
+    @Override
+    protected void onBoundsChange(Rect bounds) {
+        super.onBoundsChange(bounds);
+        markRectDirty();
+        markPathDirty();
+    }
+
+    @Override
+    protected boolean onLevelChange(int level) {
+        markRectDirty();
+        markPathDirty();
+        return super.onLevelChange(level);
     }
 
     @Override
@@ -599,28 +583,17 @@ public class CommonBackground extends Drawable implements ICommonBackground {
 
     @Override
     public void setAlpha(int alpha) {
-        mPaint.setAlpha(alpha);
+        mFillPaint.setAlpha(alpha);
     }
 
     @Override
     public void setColorFilter(ColorFilter colorFilter) {
-        mPaint.setColorFilter(colorFilter);
+        mFillPaint.setColorFilter(colorFilter);
     }
 
     @Override
     public int getOpacity() {
         return PixelFormat.OPAQUE;
-    }
-
-    /**
-     * 缩小边界
-     *
-     * @param src 原边界大小
-     * @param by  缩小的距离
-     * @return 缩小后得到的边界
-     */
-    private RectF inset(RectF src, float by) {
-        return new RectF(src.left + by, src.top + by, src.right - by, src.bottom - by);
     }
 
     /**
@@ -630,15 +603,43 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return 蒙层的ColorMatrix
      */
     private ColorMatrix parseColorMatrix(int color) {
-        float r = Color.red(color) / 255.0f;
-        float g = Color.green(color) / 255.0f;
-        float b = Color.blue(color) / 255.0f;
-        float a = Color.alpha(color) / 255.0f;
+        float r = Color.red(color) / 255f;
+        float g = Color.green(color) / 255f;
+        float b = Color.blue(color) / 255f;
+        float a = Color.alpha(color) / 255f;
         return new ColorMatrix(new float[]{
                 r, 0, 0, 0, 0,
                 0, g, 0, 0, 0,
                 0, 0, b, 0, 0,
                 0, 0, 0, a, 0
         });
+    }
+
+    /**
+     * 标记rect脏位
+     */
+    private void markRectDirty() {
+        mIsRectDirty = true;
+    }
+
+    /**
+     * 标记path脏位
+     */
+    private void markPathDirty() {
+        mIsPathDirty = true;
+    }
+
+    /**
+     * 标记填充paint脏位
+     */
+    private void markFillPaintDirty() {
+        mIsFillPaintDirty = true;
+    }
+
+    /**
+     * 标记描边paint脏位
+     */
+    private void markStrokePaintDirty() {
+        mIsStrokePaintDirty = true;
     }
 }

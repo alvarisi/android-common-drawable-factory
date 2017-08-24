@@ -26,7 +26,7 @@
             android:padding="5dp"
             android:text="false"
             app:bg_colorNormal="@color/lighter_blue"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_shape="rect"
             app:bg_stateMode="click"/>
 
@@ -39,7 +39,7 @@
             android:text="click me"
             app:bg_colorNormal="@color/lighter_blue"
             app:bg_colorPressed="@color/darker_blue"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_shape="rect"
             app:bg_stateMode="click"/>
 
@@ -54,7 +54,7 @@
             app:bg_colorChecked="@color/lighter_blue"
             app:bg_colorStroke="@color/lighter_blue"
             app:bg_colorUnchecked="@android:color/white"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_shape="semicircle_rect"
             app:bg_stateMode="check"
             app:bg_strokeMode="solid"
@@ -83,7 +83,7 @@
             android:padding="5dp"
             android:text="rect"
             app:bg_colorNormal="@color/lighter_blue"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_shape="rect"/>
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
@@ -94,7 +94,7 @@
             android:padding="5dp"
             android:text="round_rect"
             app:bg_colorNormal="@color/lighter_blue"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_radius="10dp"
             app:bg_shape="round_rect"/>
 
@@ -106,7 +106,7 @@
             android:padding="5dp"
             android:text="semicircle_rect"
             app:bg_colorNormal="@color/lighter_blue"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_shape="semicircle_rect"/>
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
@@ -117,7 +117,7 @@
             android:padding="5dp"
             android:text="circle"
             app:bg_colorNormal="@color/lighter_blue"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_shape="circle"/>
     </LinearLayout>
 
@@ -145,7 +145,7 @@
             android:padding="5dp"
             android:text="solid"
             app:bg_colorNormal="@color/lighter_blue"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_shape="rect"/>
 
         <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
@@ -170,7 +170,7 @@
             app:bg_bitmap="@mipmap/ic_launcher"
             app:bg_colorNormal="#FFFFFFFF"
             app:bg_colorPressed="#88FFFFFF"
-            app:bg_fillMode="solid|bitmap"
+            app:bg_fillMode="color|bitmap"
             app:bg_shape="rect"
             app:bg_stateMode="click"/>
     </LinearLayout>
@@ -273,7 +273,7 @@
             android:text="solid"
             app:bg_colorNormal="@android:color/white"
             app:bg_colorStroke="@color/lighter_blue"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_shape="semicircle_rect"
             app:bg_strokeMode="solid"
             app:bg_strokeWidth="2dp"/>
@@ -286,7 +286,7 @@
             android:padding="10dp"
             android:text="dash"
             app:bg_colorStroke="@color/lighter_blue"
-            app:bg_fillMode="solid"
+            app:bg_fillMode="color"
             app:bg_shape="rect"
             app:bg_strokeDashSolid="5dp"
             app:bg_strokeDashSpace="5dp"

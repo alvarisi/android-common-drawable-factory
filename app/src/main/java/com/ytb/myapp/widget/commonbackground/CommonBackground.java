@@ -218,7 +218,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return this
      */
     @Override
-    public ICommonBackground colorFill(Context context, int colorFillResId) {
+    public CommonBackground colorFill(Context context, int colorFillResId) {
         return colorFill(ContextCompat.getColor(context, colorFillResId));
     }
 
@@ -243,7 +243,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return this
      */
     @Override
-    public ICommonBackground colorStroke(Context context, int colorStrokeResId) {
+    public CommonBackground colorStroke(Context context, int colorStrokeResId) {
         return colorStroke(ContextCompat.getColor(context, colorStrokeResId));
     }
 
@@ -256,7 +256,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground linearGradient(int startColor, int endColor, int orientation) {
+    public CommonBackground linearGradient(int startColor, int endColor, int orientation) {
         mGradientStartColor = startColor;
         mGradientEndColor = endColor;
         mLinearGradientOrientation = orientation;
@@ -275,7 +275,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
      * @return
      */
     @Override
-    public ICommonBackground linearGradient(Context context, int startColorResId, int endColorResId,
+    public CommonBackground linearGradient(Context context, int startColorResId, int endColorResId,
                                             int orientation) {
         return linearGradient(ContextCompat.getColor(context, startColorResId),
                 ContextCompat.getColor(context, endColorResId), orientation);

@@ -174,8 +174,7 @@ public class CommonBackgroundFactory {
 
     private static CommonBackgroundSet stateful(CommonBackgroundAttrs attrs) {
         CommonBackgroundSet set = new CommonBackgroundSet(attrs.stateMode);
-        set.forEach()
-                .shape(attrs.shape)
+        set.shape(attrs.shape)
                 .fillMode(attrs.fillMode)
                 .strokeMode(attrs.strokeMode)
                 .strokeWidth(attrs.strokeWidth)

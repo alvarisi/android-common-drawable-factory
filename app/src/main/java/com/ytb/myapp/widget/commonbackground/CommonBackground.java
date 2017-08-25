@@ -559,7 +559,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
         // STROKE_MODE_DASH
         if (mStrokeMode == STROKE_MODE_DASH) {
             if (mStrokePaint.getPathEffect() == null) {
-                mStrokePaint.setPathEffect(new DashPathEffect(mStrokeDash, 1f));
+                mStrokePaint.setPathEffect(new DashPathEffect(mStrokeDash, 0f));
             }
         }
     }

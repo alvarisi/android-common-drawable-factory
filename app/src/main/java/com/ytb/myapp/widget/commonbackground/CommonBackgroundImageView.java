@@ -98,7 +98,7 @@ public class CommonBackgroundImageView extends ImageView {
      */
     private void resetFillMode(CommonBackgroundAttrs attrSet) {
         if ((CommonBackground.FILL_MODE_BITMAP & attrSet.fillMode) == 0) {
-            attrSet.fillMode = CommonBackground.FILL_MODE_BITMAP;
+            attrSet.fillMode |= CommonBackground.FILL_MODE_BITMAP;
         }
     }
 }

@@ -1,15 +1,16 @@
-package com.ytb.myapp.widget.commonbackground;
+package com.ytb.commonbackground;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
-
-import com.ytb.myapp.util.ImageUtils;
 
 /**
  * 支持XML配置的通用背景ImageView
@@ -47,7 +48,7 @@ public class CommonBackgroundImageView extends ImageView {
 
     @Override
     public void setImageDrawable(Drawable drawable) {
-        mCommonBackgroundAttrs.bitmap = ImageUtils.drawableToBitmap(drawable);
+        mCommonBackgroundAttrs.bitmap = drawableToBitmap(drawable);
         resetFillMode(mCommonBackgroundAttrs);
         CommonBackgroundFactory.fromAttrSet(this, mCommonBackgroundAttrs);
     }
@@ -100,5 +101,33 @@ public class CommonBackgroundImageView extends ImageView {
         if ((CommonBackground.FILL_MODE_BITMAP & attrSet.fillMode) == 0) {
             attrSet.fillMode |= CommonBackground.FILL_MODE_BITMAP;
         }
+    }
+
+    /**
+     * Drawable转Bitmap
+     *
+     * @param drawable Drawable
+     * @return Bitmap
+     */
+    private Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        }
+
+        int w = drawable.getIntrinsicWidth();
+        int h = drawable.getIntrinsicHeight();
+        if (w <= 0) {
+            w = 50;
+        }
+        if (h <= 0) {
+            h = 50;
+        }
+        Bitmap bitmap = Bitmap.createBitmap(w, h,
+                drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap
+                        .Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, w, h);
+        drawable.draw(canvas);
+        return bitmap;
     }
 }

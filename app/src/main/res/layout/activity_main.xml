@@ -19,7 +19,7 @@
             android:lines="2"
             android:text="stateMode" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -31,7 +31,7 @@
             app:bg_shape="rect"
             app:bg_stateMode="click" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundButton
+        <com.ytb.commonbackground.CommonBackgroundButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -44,7 +44,7 @@
             app:bg_shape="rect"
             app:bg_stateMode="click" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundCheckBox
+        <com.ytb.commonbackground.CommonBackgroundCheckBox
             android:id="@+id/cb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
             android:lines="2"
             android:text="shape" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -87,7 +87,7 @@
             app:bg_fillMode="color"
             app:bg_shape="rect" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -99,7 +99,7 @@
             app:bg_radius="5dp"
             app:bg_shape="round_rect" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -110,7 +110,7 @@
             app:bg_fillMode="color"
             app:bg_shape="semicircle_rect" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -138,7 +138,7 @@
             android:text="fillMode" />
 
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -149,7 +149,7 @@
             app:bg_fillMode="color"
             app:bg_shape="rect" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -161,7 +161,7 @@
             app:bg_fillMode="bitmap"
             app:bg_shape="rect" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -183,7 +183,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -199,7 +199,7 @@
             app:bg_shape="rect"
             app:bg_stateMode="click" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -230,7 +230,7 @@
             android:lines="2"
             android:text="scaleType" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="50dp"
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
@@ -245,7 +245,7 @@
             app:bg_strokeMode="solid"
             app:bg_strokeWidth="1dp" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
@@ -260,7 +260,7 @@
             app:bg_strokeMode="solid"
             app:bg_strokeWidth="1dp" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
@@ -275,7 +275,7 @@
             app:bg_strokeMode="solid"
             app:bg_strokeWidth="1dp" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
@@ -305,7 +305,7 @@
             android:lines="2"
             android:text="strokeMode" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -319,7 +319,7 @@
             app:bg_strokeMode="solid"
             app:bg_strokeWidth="2dp" />
 
-        <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+        <com.ytb.commonbackground.CommonBackgroundTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -340,7 +340,7 @@
         android:layout_height="wrap_content"
         android:text="see more attributes in /res/values/attr.xml" />
 
-    <com.ytb.myapp.widget.commonbackground.CommonBackgroundTextView
+    <com.ytb.commonbackground.CommonBackgroundTextView
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_margin="8dp"

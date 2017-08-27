@@ -1,18 +1,15 @@
-package com.ytb.myapp.activity;
+package com.ytb.demo;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-
-import com.ytb.myapp.R;
-import com.ytb.myapp.widget.commonbackground.CommonBackgroundImageView;
 
 /**
  * Created by Administrator on 2016-10-26.
  */
 
 public class MainActivity extends Activity implements View.OnClickListener {
-    CommonBackgroundImageView iv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

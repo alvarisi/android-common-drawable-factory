@@ -1,4 +1,4 @@
-package com.ytb.myapp.widget.commonbackground;
+package com.ytb.commonbackground;
 
 import android.graphics.Bitmap;
 

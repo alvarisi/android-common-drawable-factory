@@ -1,4 +1,4 @@
-package com.ytb.myapp.widget.commonbackground;
+package com.ytb.commonbackground;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -6,9 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
-
-import com.ytb.myapp.R;
-
 
 /**
  * 通用背景工厂类

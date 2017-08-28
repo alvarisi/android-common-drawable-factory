@@ -8,7 +8,6 @@ import android.widget.TextView;
  * 支持XML配置的通用背景TextView
  *
  * @author yintaibing
- * @date 2016/10/28
  */
 public class CommonBackgroundTextView extends TextView {
 

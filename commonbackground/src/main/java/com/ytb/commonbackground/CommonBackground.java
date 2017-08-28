@@ -26,7 +26,6 @@ import android.view.View;
  * 通用背景Drawable
  *
  * @author yintaibing
- * @date 2016/10/28
  */
 public class CommonBackground extends Drawable implements ICommonBackground {
     public static final int SHAPE_RECT = 0; // 矩形
@@ -180,6 +179,15 @@ public class CommonBackground extends Drawable implements ICommonBackground {
         return this;
     }
 
+    /**
+     * 设置不同四个角的圆角
+     *
+     * @param radiusLeftTop     左上角半径
+     * @param radiusRightTop    右上角半径
+     * @param radiusRightBottom 右下角半径
+     * @param radiusLeftBottom  左下角半径
+     * @return this
+     */
     @Override
     public CommonBackground radius(int radiusLeftTop, int radiusRightTop,
                                    int radiusRightBottom, int radiusLeftBottom) {
@@ -250,10 +258,10 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     /**
      * 设置渐变颜色
      *
-     * @param startColor
-     * @param endColor
-     * @param orientation
-     * @return
+     * @param startColor  渐变开始色
+     * @param endColor    渐变结束色
+     * @param orientation 渐变方向
+     * @return this
      */
     @Override
     public CommonBackground linearGradient(int startColor, int endColor, int orientation) {
@@ -268,11 +276,11 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     /**
      * 设置渐变颜色
      *
-     * @param context
-     * @param startColorResId
-     * @param endColorResId
-     * @param orientation
-     * @return
+     * @param context         Context
+     * @param startColorResId 渐变开始色id
+     * @param endColorResId   渐变结束色id
+     * @param orientation     渐变方向
+     * @return this
      */
     @Override
     public CommonBackground linearGradient(Context context, int startColorResId, int endColorResId,
@@ -284,7 +292,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     /**
      * 设置填充位图
      *
-     * @param bitmap 填充位图
+     * @param bitmap    填充位图
      * @param scaleType 缩放类型
      * @return this
      */
@@ -348,7 +356,7 @@ public class CommonBackground extends Drawable implements ICommonBackground {
     /**
      * 四个角半径是否相同
      *
-     * @return
+     * @return true 不同半径，false 相同半径
      */
     private boolean hasSameCorners() {
         return mRadiusArray == null;

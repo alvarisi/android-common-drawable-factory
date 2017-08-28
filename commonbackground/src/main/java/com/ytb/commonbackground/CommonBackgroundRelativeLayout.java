@@ -8,7 +8,6 @@ import android.widget.RelativeLayout;
  * 支持XML配置的通用背景RelativeLayout
  *
  * @author yintaibing
- * @date 2016/10/28
  */
 public class CommonBackgroundRelativeLayout extends RelativeLayout {
     public CommonBackgroundRelativeLayout(Context context) {

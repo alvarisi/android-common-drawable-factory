@@ -8,7 +8,6 @@ import android.widget.Button;
  * 支持XML配置的通用背景Button
  *
  * @author yintaibing
- * @date 2016/10/28
  */
 public class CommonBackgroundButton extends Button {
 

@@ -12,7 +12,7 @@ interface ICommonBackground {
      * 设置形状
      *
      * @param shape 形状
-     * @return
+     * @return this
      */
     ICommonBackground shape(int shape);
 
@@ -20,7 +20,7 @@ interface ICommonBackground {
      * 设置填充模式
      *
      * @param fillMode 填充模式
-     * @return
+     * @return this
      */
     ICommonBackground fillMode(int fillMode);
 
@@ -28,7 +28,7 @@ interface ICommonBackground {
      * 设置描边模式
      *
      * @param strokeMode 描边模式
-     * @return
+     * @return this
      */
     ICommonBackground strokeMode(int strokeMode);
 
@@ -36,7 +36,7 @@ interface ICommonBackground {
      * 设置描边宽度
      *
      * @param strokeWidth 设置描边宽度
-     * @return
+     * @return this
      */
     ICommonBackground strokeWidth(int strokeWidth);
 
@@ -45,7 +45,7 @@ interface ICommonBackground {
      *
      * @param strokeDashSolid 单个实线的长度
      * @param strokeDashSpace 单个空白的长度
-     * @return
+     * @return this
      */
     ICommonBackground strokeDash(int strokeDashSolid, int strokeDashSpace);
 
@@ -53,7 +53,7 @@ interface ICommonBackground {
      * 设置圆角或圆形的半径
      *
      * @param radius 圆角或圆形的半径
-     * @return
+     * @return this
      */
     ICommonBackground radius(int radius);
 
@@ -64,7 +64,7 @@ interface ICommonBackground {
      * @param radiusRightTop    右上角半径
      * @param radiusRightBottom 右下角半径
      * @param radiusLeftBottom  左下角半径
-     * @return
+     * @return this
      */
     ICommonBackground radius(int radiusLeftTop, int radiusRightTop,
                              int radiusRightBottom, int radiusLeftBottom);
@@ -73,7 +73,7 @@ interface ICommonBackground {
      * 设置填充颜色
      *
      * @param colorFill 填充颜色
-     * @return
+     * @return this
      */
     ICommonBackground colorFill(int colorFill);
 
@@ -81,7 +81,7 @@ interface ICommonBackground {
      * 设置填充颜色
      *
      * @param colorFillResId 填充颜色资源ID
-     * @return
+     * @return this
      */
     ICommonBackground colorFill(Context context, int colorFillResId);
 
@@ -89,7 +89,7 @@ interface ICommonBackground {
      * 设置描边颜色
      *
      * @param colorStroke 描边颜色
-     * @return
+     * @return this
      */
     ICommonBackground colorStroke(int colorStroke);
 
@@ -97,28 +97,28 @@ interface ICommonBackground {
      * 设置描边颜色
      *
      * @param colorStrokeResId 描边颜色资源ID
-     * @return
+     * @return this
      */
     ICommonBackground colorStroke(Context context, int colorStrokeResId);
 
     /**
      * 设置渐变颜色
      *
-     * @param startColor
-     * @param endColor
-     * @param orientation
-     * @return
+     * @param startColor  渐变开始色
+     * @param endColor    渐变结束色
+     * @param orientation 渐变方向
+     * @return this
      */
     ICommonBackground linearGradient(int startColor, int endColor, int orientation);
 
     /**
      * 设置渐变颜色
      *
-     * @param context
-     * @param startColorResId
-     * @param endColorResId
-     * @param orientation
-     * @return
+     * @param context         Context
+     * @param startColorResId 渐变开始色id
+     * @param endColorResId   渐变结束色id
+     * @param orientation     渐变方向
+     * @return this
      */
     ICommonBackground linearGradient(Context context, int startColorResId, int endColorResId,
                                      int orientation);
@@ -128,14 +128,14 @@ interface ICommonBackground {
      *
      * @param bitmap 填充位图
      * @param scaleType 缩放模式
-     * @return
+     * @return this
      */
     ICommonBackground bitmap(Bitmap bitmap, int scaleType);
 
     /**
      * 显示到View上
      *
-     * @param yourView
+     * @param yourView 你的View
      */
     void showOn(View yourView);
 }

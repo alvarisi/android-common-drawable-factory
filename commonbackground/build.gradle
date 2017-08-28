@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'//添加
 
 android {
     compileSdkVersion 25
@@ -19,9 +20,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    options.encoding = "UTF-8"
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:25.2.0'
+}
+
+publish {
+    userOrg = 'yintaibing'//bintray.com用户名
+    groupId = 'com.ytb'//jcenter上的路径
+    artifactId = 'commonbackground'//项目名称
+    publishVersion = '1.0.0'//版本号
+    desc = 'android common background drawable'//描述，不重要
+    website = 'https://github.com/yintaibing/android-common-drawable-factory'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
 }

@@ -11,7 +11,6 @@ import android.view.View;
  * 通用背景工厂类
  *
  * @author yintaibing
- * @date 2016/10/29
  */
 public class CommonBackgroundFactory {
 

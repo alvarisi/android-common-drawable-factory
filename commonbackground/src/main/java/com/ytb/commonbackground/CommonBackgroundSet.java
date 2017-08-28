@@ -9,7 +9,6 @@ import android.view.View;
  * CommonBackground的集合
  *
  * @author yintaibing
- * @date 2016/10/28
  */
 public class CommonBackgroundSet implements ICommonBackground {
     public static final int STATE_MODE_NONE = 0;        // 无状态

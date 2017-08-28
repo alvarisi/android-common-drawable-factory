@@ -8,7 +8,6 @@ import java.io.Serializable;
  * 通用背景属性集
  *
  * @author yintaibing
- * @date 2016/10/28
  */
 public class CommonBackgroundAttrs implements Serializable {
     int stateMode;

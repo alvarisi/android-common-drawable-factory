@@ -8,7 +8,6 @@ import android.widget.CheckBox;
  * 支持XML配置的通用背景CheckBox
  *
  * @author yintaibing
- * @date 2016/10/28
  */
 public class CommonBackgroundCheckBox extends CheckBox {
     public CommonBackgroundCheckBox(Context context) {

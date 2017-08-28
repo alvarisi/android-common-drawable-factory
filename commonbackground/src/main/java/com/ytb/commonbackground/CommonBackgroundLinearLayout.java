@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
  * 支持XML配置的通用背景LinearLayout
  *
  * @author yintaibing
- * @date 2016/10/28
  */
 public class CommonBackgroundLinearLayout extends LinearLayout {
     public CommonBackgroundLinearLayout(Context context) {

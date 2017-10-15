@@ -9,6 +9,7 @@ Android common-background drawable, supports multi shapes, multi states, multi s
 gradle
 ```groovy
 compile "com.ytb:commonbackground:1.0.0"
+```
 
 # Usage
 - Usage in XML(see all configurable attributes in attrs.xml below

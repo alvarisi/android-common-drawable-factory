@@ -5,6 +5,11 @@ Android common-background drawable, supports multi shapes, multi states, multi s
 # Preview
 ![image](https://github.com/yintaibing/CommonBackgroundWidget/blob/master/screenshot/preview.png)
 
+# Compile
+gradle
+```groovy
+compile "com.ytb:commonbackground:1.0.0"
+
 # Usage
 - Usage in XML(see all configurable attributes in attrs.xml below
 ```xml

@@ -8,25 +8,25 @@ Android common-background drawable, supports multi shapes, multi states, multi s
 # Compile
 gradle
 ```groovy
-compile "com.ytb:commonbackground:1.0.0"
+compile "com.ytb:commonbackground:1.0.1"
 ```
 
 # Usage
 - Usage in XML(see all configurable attributes in attrs.xml below
 ```xml
-<com.ytb.myapp.widget.commonbackground.CommonBackgroundXXX
+<com.ytb.commonbackground.CommonBackgroundXXX
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:gravity="center"
             android:padding="5dp"
             android:text="solid|bitmap\n(click me)"
-            app:bitmap="@mipmap/ic_launcher"
-            app:colorNormal="#FFFFFFFF"
-            app:colorPressed="#88FFFFFF"
-            app:fillMode="solid|bitmap"
-            app:shape="rect"
-            app:stateful="true"/>
+            app:bg_bitmap="@mipmap/ic_launcher"
+            app:bg_colorNormal="#FFFFFFFF"
+            app:bg_colorPressed="#88FFFFFF"
+            app:bg_fillMode="solid|bitmap"
+            app:bg_shape="rect"
+            app:bg_stateful="true"/>
 ```
 CommonBackgroundXXX supports TextView, Button, ImageView, CheckBox, FrameLayout, LinearLayout, RelativeLayout.
 
@@ -48,7 +48,7 @@ CommonBackgroundXXX supports TextView, Button, ImageView, CheckBox, FrameLayout,
         set.thePressed().colorFill(Color.LTGRAY);
         // set.theUnchecked()...
         // set.theChecked()...
-        set.showOn(yourView);
+        set.showOn(yourView);// set.toDrawable()...
 ```
 
 # attrs.xml

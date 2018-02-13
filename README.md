@@ -1,3 +1,7 @@
+# Deprecated
+This project is deprecated, plz go to my another project below.
+https://github.com/yintaibing/UniversalDrawable
+
 # Project
 Android通用控件背景Drawable，支持多种形状、多种状态、多种描边和填充模式。旨在减少书写drawable.xml，提高代码重用。
 Android common-background drawable, supports multi shapes, multi states, multi stroke mode, and multi fill mode. Aiming to reduce drawable.xml, and increase reusability.
